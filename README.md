@@ -1,2 +1,3 @@
-# CZ3004-Android
-Android Application for CZ3004 Multi-Disciplinary Design Project
+# Android Application
+
+Android Application for Multi-Disciplinary Design Project
