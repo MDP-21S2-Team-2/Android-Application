@@ -1,16 +1,16 @@
-package com.example.mdpapplication.ui.slideshow;
+package com.example.mdpapplication.ui.communication;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SlideshowViewModel extends ViewModel {
+public class CommunicationViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public SlideshowViewModel() {
+    public CommunicationViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is slideshow fragment");
+        mText.setValue("This is communication fragment");
     }
 
     public LiveData<String> getText() {

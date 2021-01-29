@@ -1,4 +1,4 @@
-package com.example.mdpapplication.ui.slideshow;
+package com.example.mdpapplication.ui.communication;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mdpapplication.R;
 
-public class SlideshowFragment extends Fragment {
+public class CommunicationFragment extends Fragment {
 
-    private SlideshowViewModel slideshowViewModel;
+    private CommunicationViewModel communicationViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        slideshowViewModel =
-                new ViewModelProvider(this).get(SlideshowViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
-        final TextView textView = root.findViewById(R.id.text_slideshow);
-        slideshowViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        communicationViewModel =
+                new ViewModelProvider(this).get(CommunicationViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_communication, container, false);
+        final TextView textView = root.findViewById(R.id.text_communication);
+        communicationViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
