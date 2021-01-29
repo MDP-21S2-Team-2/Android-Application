@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "MDP Application"
+rootProject.name = "MDPApplication"
