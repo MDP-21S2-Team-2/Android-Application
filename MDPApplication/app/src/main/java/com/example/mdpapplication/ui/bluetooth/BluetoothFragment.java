@@ -1,4 +1,4 @@
-package com.example.mdpapplication.ui.gallery;
+package com.example.mdpapplication.ui.bluetooth;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mdpapplication.R;
 
-public class GalleryFragment extends Fragment {
+public class BluetoothFragment extends Fragment {
 
-    private GalleryViewModel galleryViewModel;
+    private BluetoothViewModel bluetoothViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
-        final TextView textView = root.findViewById(R.id.text_gallery);
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        bluetoothViewModel =
+                new ViewModelProvider(this).get(BluetoothViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_bluetooth, container, false);
+        final TextView textView = root.findViewById(R.id.text_bluetooth);
+        bluetoothViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
