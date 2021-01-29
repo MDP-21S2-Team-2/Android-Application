@@ -1,4 +1,4 @@
-package com.example.mdpapplication.ui.home;
+package com.example.mdpapplication.ui.maze;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mdpapplication.R;
 
-public class HomeFragment extends Fragment {
+public class MazeFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private MazeViewModel mazeViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        mazeViewModel =
+                new ViewModelProvider(this).get(MazeViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_maze, container, false);
+        final TextView textView = root.findViewById(R.id.text_maze);
+        mazeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
