@@ -30,8 +30,9 @@ public class BluetoothFragment extends Fragment {
         // Set adapter for myDevicesArrayAdapter
         myDevicesArrayAdapter = new ArrayAdapter<String>(this.getContext(), R.layout.device_name);
         myDevicesListView.setAdapter(myDevicesArrayAdapter);
-//        myDevicesArrayAdapter.add("Test Device 1");
-//        myDevicesArrayAdapter.add("Test Device 2");
+        // TODO: Remove dummy devices
+        myDevicesArrayAdapter.add("Dummy Device 1");
+        myDevicesArrayAdapter.add("Dummy Device 2");
 
         return root;
     }
