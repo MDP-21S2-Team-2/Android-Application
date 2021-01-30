@@ -7,9 +7,49 @@
     tools:context=".ui.communication.CommunicationFragment">
 
     <EditText
+        android:id="@+id/editTextCommunicationString2"
+        android:layout_width="356dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:autofillHints="Enter your communication string 2 here"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        app:layout_constraintEnd_toStartOf="@+id/stringUpdateButton2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCommunicationString1" />
+
+    <Button
+        android:id="@+id/stringUpdateButton2"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/update"
+        app:layout_constraintEnd_toStartOf="@+id/stringSendButton2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/editTextCommunicationString2"
+        app:layout_constraintTop_toBottomOf="@+id/stringUpdateButton1" />
+
+    <Button
+        android:id="@+id/stringSendButton2"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/send"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/stringUpdateButton2"
+        app:layout_constraintTop_toBottomOf="@+id/stringSendButton1" />
+
+    <EditText
         android:id="@+id/editTextCommunicationString1"
         android:layout_width="0dp"
-        android:layout_height="59dp"
+        android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
