@@ -13,4 +13,5 @@
     <string name="update">Update</string>
     <string name="send">Send</string>
     <string name="persistent_text_strings">Persistent Text Strings</string>
+    <string name="bidirectional_data_transmission">Bidirectional Data Transmission</string>
 </resources>
