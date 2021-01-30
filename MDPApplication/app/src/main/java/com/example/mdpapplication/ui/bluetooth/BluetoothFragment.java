@@ -23,13 +23,13 @@ public class BluetoothFragment extends Fragment {
         bluetoothViewModel =
                 new ViewModelProvider(this).get(BluetoothViewModel.class);
         View root = inflater.inflate(R.layout.fragment_bluetooth, container, false);
-        final TextView textView = root.findViewById(R.id.text_bluetooth);
-        bluetoothViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+//        final TextView textView = root.findViewById(R.id.text_bluetooth);
+//        bluetoothViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                textView.setText(s);
+//            }
+//        });
         return root;
     }
 }
