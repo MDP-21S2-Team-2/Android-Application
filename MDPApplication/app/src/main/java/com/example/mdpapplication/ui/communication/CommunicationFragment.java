@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,14 +26,32 @@ public class CommunicationFragment extends Fragment {
     private CommunicationViewModel communicationViewModel;
     private TextView textViewCommunicationString1;
     private TextView textViewCommunicationString2;
+    private Button stringSendButton1;
+    private Button stringSendButton2;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         communicationViewModel =
                 new ViewModelProvider(this).get(CommunicationViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_communication, container, false);
         textViewCommunicationString1 = root.findViewById(R.id.editTextCommunicationString1);
         textViewCommunicationString2 = root.findViewById(R.id.editTextCommunicationString2);
+        stringSendButton1 = root.findViewById(R.id.stringSendButton1);
+        stringSendButton2 = root.findViewById(R.id.stringSendButton2);
+
+        stringSendButton1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // TODO: Send textViewCommunicationString1
+            }
+        });
+
+        stringSendButton2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // TODO: Send textViewCommunicationString2
+            }
+        });
+
         return root;
     }
 
@@ -47,7 +66,7 @@ public class CommunicationFragment extends Fragment {
         editor.putString(PERSISTENT_STRING_KEY_1, "" + textViewCommunicationString1.getText());
         System.out.println("Saved to shared preferences: " + textViewCommunicationString1.getText());
         editor.putString(PERSISTENT_STRING_KEY_2, "" + textViewCommunicationString2.getText());
-        editor.commit();
+        editor.apply();
     }
 
     @Override
