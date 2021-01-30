@@ -21,6 +21,7 @@ public class BluetoothFragment extends Fragment {
     private ListView otherDevicesListView;
     private Button enableBluetoothButton;
     private Button refreshMyDevicesButton;
+    private Button refreshOtherDevicesButton;
 
     private ArrayAdapter<String> myDevicesArrayAdapter;
     private ArrayAdapter<String> otherDevicesArrayAdapter;
@@ -34,6 +35,7 @@ public class BluetoothFragment extends Fragment {
         otherDevicesListView = root.findViewById(R.id.otherDevicesListView);
         enableBluetoothButton = root.findViewById(R.id.enableBluetoothButton);
         refreshMyDevicesButton = root.findViewById(R.id.refreshMyDevicesButton);
+        refreshOtherDevicesButton = root.findViewById(R.id.refreshOtherDevicesButton);
 
         // Set adapter for myDevicesArrayAdapter
         myDevicesArrayAdapter = new ArrayAdapter<>(this.getContext(), R.layout.device_name);
@@ -58,6 +60,12 @@ public class BluetoothFragment extends Fragment {
         refreshMyDevicesButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // TODO: Refresh my devices list
+            }
+        });
+
+        refreshOtherDevicesButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // TODO: Refresh other available devices list
             }
         });
 
