@@ -10,7 +10,7 @@ public class CommunicationViewModel extends ViewModel {
 
     public CommunicationViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("Enter your persistent communication string 1 here");
+        mText.setValue("Default persistent communication string 1");
     }
 
     public LiveData<String> getText() {

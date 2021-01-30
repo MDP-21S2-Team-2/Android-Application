@@ -23,13 +23,13 @@ public class CommunicationFragment extends Fragment {
         communicationViewModel =
                 new ViewModelProvider(this).get(CommunicationViewModel.class);
         View root = inflater.inflate(R.layout.fragment_communication, container, false);
-        final TextView textView = root.findViewById(R.id.editTextCommunicationString1);
-        communicationViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+//        final TextView textView = root.findViewById(R.id.editTextCommunicationString1);
+//        communicationViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                textView.setText(s);
+//            }
+//        });
         return root;
     }
 }
