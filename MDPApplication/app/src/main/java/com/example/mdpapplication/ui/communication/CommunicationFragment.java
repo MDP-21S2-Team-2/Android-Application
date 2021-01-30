@@ -41,6 +41,7 @@ public class CommunicationFragment extends Fragment {
         super.onPause();
 
         // Write persistent strings in SharedPreferences
+        // https://stackoverflow.com/questions/21720089/how-do-i-use-shared-preferences-in-a-fragment-on-android
         SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(PERSISTENT_STRING_KEY_1, "" + textViewCommunicationString1.getText());
@@ -54,6 +55,7 @@ public class CommunicationFragment extends Fragment {
         super.onResume();
 
         // Get persistent strings from SharedPreferences
+        // https://stackoverflow.com/questions/21720089/how-do-i-use-shared-preferences-in-a-fragment-on-android
         SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         String communicationStringValue1 = sharedPreferences.getString(PERSISTENT_STRING_KEY_1, PERSISTENT_STRING_DEFAULT_1);
         String communicationStringValue2 = sharedPreferences.getString(PERSISTENT_STRING_KEY_2, PERSISTENT_STRING_DEFAULT_2);
