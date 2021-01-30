@@ -20,5 +20,6 @@
     <string name="receive_data_placeholder">Your received text strings will appear here</string>
     <string name="available_devices">Available Devices</string>
     <string name="my_devices">My Devices</string>
-    <string name="enable_bluetooth">Enable Bluetooth</string>
+    <string name="enable_bluetooth">Enable Discovery via Bluetooth</string>
+    <string name="refresh_my_devices">Refresh My Devices</string>
 </resources>
