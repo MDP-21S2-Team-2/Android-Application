@@ -10,7 +10,7 @@ public class CommunicationViewModel extends ViewModel {
 
     public CommunicationViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is communication fragment");
+        mText.setValue("Enter your persistent communication string 1 here");
     }
 
     public LiveData<String> getText() {

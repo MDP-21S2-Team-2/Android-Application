@@ -10,4 +10,5 @@
     <string name="menu_maze">Maze</string>
     <string name="menu_bluetooth">Bluetooth</string>
     <string name="menu_communication">Communication</string>
+    <string name="update">Update</string>
 </resources>
