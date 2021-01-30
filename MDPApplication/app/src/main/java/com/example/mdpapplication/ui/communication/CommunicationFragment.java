@@ -22,12 +22,17 @@ public class CommunicationFragment extends Fragment {
     private static final String PERSISTENT_STRING_KEY_2 = "persistent_string_2";
     private static final String PERSISTENT_STRING_DEFAULT_1 = "This is persistent text string 1";
     private static final String PERSISTENT_STRING_DEFAULT_2 = "This is persistent text string 2";
+    private static final String RECEIVED_DATA_PLACEHOLDER = "Your received text strings will appear here";
 
     private CommunicationViewModel communicationViewModel;
-    private TextView textViewCommunicationString1;
-    private TextView textViewCommunicationString2;
-    private Button stringSendButton1;
-    private Button stringSendButton2;
+    private TextView textViewPersistentCommunicationString1;
+    private TextView textViewPersistentCommunicationString2;
+    private TextView textViewVolatileCommunicationString;
+    private TextView textViewReceivedStrings;
+    private Button persistentStringSendButton1;
+    private Button persistentStringSendButton2;
+    private Button volatileStringSendButton;
+    private Button receivedDataClearButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -35,20 +40,36 @@ public class CommunicationFragment extends Fragment {
                 new ViewModelProvider(this).get(CommunicationViewModel.class);
 
         View root = inflater.inflate(R.layout.fragment_communication, container, false);
-        textViewCommunicationString1 = root.findViewById(R.id.editTextCommunicationString1);
-        textViewCommunicationString2 = root.findViewById(R.id.editTextCommunicationString2);
-        stringSendButton1 = root.findViewById(R.id.stringSendButton1);
-        stringSendButton2 = root.findViewById(R.id.stringSendButton2);
+        textViewPersistentCommunicationString1 = root.findViewById(R.id.editTextCommunicationString1);
+        textViewPersistentCommunicationString2 = root.findViewById(R.id.editTextCommunicationString2);
+        textViewVolatileCommunicationString = root.findViewById(R.id.editTextCommunicationString);
+        textViewReceivedStrings = root.findViewById(R.id.textViewReceivedStrings); // TODO: Update textViewReceivedStrings when new strings are received
+        persistentStringSendButton1 = root.findViewById(R.id.stringSendButton1);
+        persistentStringSendButton2 = root.findViewById(R.id.stringSendButton2);
+        volatileStringSendButton = root.findViewById(R.id.stringSendButton);
+        receivedDataClearButton = root.findViewById(R.id.receivedDataClearButton);
 
-        stringSendButton1.setOnClickListener(new View.OnClickListener() {
+        persistentStringSendButton1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // TODO: Send textViewCommunicationString1
+                // TODO: Send textViewPersistentCommunicationString1
             }
         });
 
-        stringSendButton2.setOnClickListener(new View.OnClickListener() {
+        persistentStringSendButton2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // TODO: Send textViewCommunicationString2
+                // TODO: Send textViewPersistentCommunicationString2
+            }
+        });
+
+        volatileStringSendButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // TODO: Send textViewVolatileCommunicationString
+            }
+        });
+
+        receivedDataClearButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                textViewReceivedStrings.setText(RECEIVED_DATA_PLACEHOLDER);
             }
         });
 
@@ -63,9 +84,9 @@ public class CommunicationFragment extends Fragment {
         // https://stackoverflow.com/questions/21720089/how-do-i-use-shared-preferences-in-a-fragment-on-android
         SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(PERSISTENT_STRING_KEY_1, "" + textViewCommunicationString1.getText());
-        System.out.println("Saved to shared preferences: " + textViewCommunicationString1.getText());
-        editor.putString(PERSISTENT_STRING_KEY_2, "" + textViewCommunicationString2.getText());
+        editor.putString(PERSISTENT_STRING_KEY_1, "" + textViewPersistentCommunicationString1.getText());
+        System.out.println("Saved to shared preferences: " + textViewPersistentCommunicationString1.getText());
+        editor.putString(PERSISTENT_STRING_KEY_2, "" + textViewPersistentCommunicationString2.getText());
         editor.apply();
     }
 
@@ -78,7 +99,7 @@ public class CommunicationFragment extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         String communicationStringValue1 = sharedPreferences.getString(PERSISTENT_STRING_KEY_1, PERSISTENT_STRING_DEFAULT_1);
         String communicationStringValue2 = sharedPreferences.getString(PERSISTENT_STRING_KEY_2, PERSISTENT_STRING_DEFAULT_2);
-        textViewCommunicationString1.setText(communicationStringValue1);
-        textViewCommunicationString2.setText(communicationStringValue2);
+        textViewPersistentCommunicationString1.setText(communicationStringValue1);
+        textViewPersistentCommunicationString2.setText(communicationStringValue2);
     }
 }
