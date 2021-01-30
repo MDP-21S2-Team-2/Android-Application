@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mdpapplication.R;
 
-
 public class CommunicationFragment extends Fragment {
 
     private static final String PERSISTENT_STRING_KEY_1 = "persistent_string_1";
