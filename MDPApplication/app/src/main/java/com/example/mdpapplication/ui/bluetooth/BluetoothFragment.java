@@ -18,10 +18,12 @@ public class BluetoothFragment extends Fragment {
 
     private BluetoothViewModel bluetoothViewModel;
     private ListView myDevicesListView;
+    private ListView otherDevicesListView;
     private Button enableBluetoothButton;
     private Button refreshMyDevicesButton;
 
     private ArrayAdapter<String> myDevicesArrayAdapter;
+    private ArrayAdapter<String> otherDevicesArrayAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class BluetoothFragment extends Fragment {
                 new ViewModelProvider(this).get(BluetoothViewModel.class);
         View root = inflater.inflate(R.layout.fragment_bluetooth, container, false);
         myDevicesListView = root.findViewById(R.id.myDevicesListView);
+        otherDevicesListView = root.findViewById(R.id.otherDevicesListView);
         enableBluetoothButton = root.findViewById(R.id.enableBluetoothButton);
         refreshMyDevicesButton = root.findViewById(R.id.refreshMyDevicesButton);
 
@@ -38,6 +41,13 @@ public class BluetoothFragment extends Fragment {
         // TODO: Remove dummy devices
         myDevicesArrayAdapter.add("Dummy Device 1");
         myDevicesArrayAdapter.add("Dummy Device 2");
+
+        // Set adapter for myDevicesArrayAdapter
+        otherDevicesArrayAdapter = new ArrayAdapter<>(this.getContext(), R.layout.device_name);
+        otherDevicesListView.setAdapter(otherDevicesArrayAdapter);
+        // TODO: Remove dummy devices
+        otherDevicesArrayAdapter.add("Dummy Device A");
+        otherDevicesArrayAdapter.add("Dummy Device B");
 
         enableBluetoothButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

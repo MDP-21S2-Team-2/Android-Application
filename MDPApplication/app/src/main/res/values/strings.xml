@@ -22,4 +22,5 @@
     <string name="my_devices">My Devices</string>
     <string name="enable_bluetooth">Enable Discovery via Bluetooth</string>
     <string name="refresh_my_devices">Refresh My Devices</string>
+    <string name="other_available_devices">Other Available Devices</string>
 </resources>
