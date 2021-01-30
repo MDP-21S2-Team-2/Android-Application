@@ -14,4 +14,8 @@
     <string name="send">Send</string>
     <string name="persistent_text_strings">Persistent Text Strings</string>
     <string name="bidirectional_data_transmission">Bidirectional Data Transmission</string>
+    <string name="clear">Clear</string>
+    <string name="send_data">Send Data</string>
+    <string name="receive_data">Receive Data</string>
+    <string name="receive_data_placeholder">Your received text strings will appear here</string>
 </resources>

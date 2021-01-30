@@ -21,15 +21,51 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextCommunicationString1" />
 
+    <EditText
+        android:id="@+id/editTextCommunicationString"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:autofillHints="Enter your communication string 2 here"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        app:layout_constraintEnd_toStartOf="@+id/stringSendButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSendDataTitle" />
+
     <Button
         android:id="@+id/stringSendButton2"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="60dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="@string/send"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stringSendButton1" />
+
+    <Button
+        android:id="@+id/stringSendButton"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/send"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSendDataTitle" />
+
+    <Button
+        android:id="@+id/receivedDataClearButton"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/clear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewReceiveDataTitle" />
 
     <EditText
         android:id="@+id/editTextCommunicationString1"
@@ -49,7 +85,7 @@
 
     <Button
         android:id="@+id/stringSendButton1"
-        android:layout_width="80dp"
+        android:layout_width="100dp"
         android:layout_height="60dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
@@ -84,5 +120,48 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextCommunicationString2" />
+
+    <TextView
+        android:id="@+id/textViewReceivedStrings"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/purple_100"
+        android:padding="10dp"
+        android:scrollbars="vertical"
+        android:text="@string/receive_data_placeholder"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/receivedDataClearButton"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewReceiveDataTitle" />
+
+    <TextView
+        android:id="@+id/textViewSendDataTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/send_data"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dataTransmissionTitle" />
+
+    <TextView
+        android:id="@+id/textViewReceiveDataTitle"
+        android:layout_width="568dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/receive_data"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextCommunicationString" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
