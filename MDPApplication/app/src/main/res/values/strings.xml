@@ -11,4 +11,6 @@
     <string name="menu_bluetooth">Bluetooth</string>
     <string name="menu_communication">Communication</string>
     <string name="update">Update</string>
+    <string name="send">Send</string>
+    <string name="persistent_text_strings">Persistent Text Strings</string>
 </resources>
