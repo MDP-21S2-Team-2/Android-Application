@@ -8,8 +8,8 @@
 
     <com.example.mdpapplication.ui.maze.MazeView
         android:id="@+id/mazeView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="445dp"
+        android:layout_height="575dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="128dp"
@@ -81,6 +81,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/mazeView"
         app:layout_constraintTop_toBottomOf="@+id/divider10" />
+
+    <TextView
+        android:id="@+id/robotMovementControlTitleTextView"
+        android:layout_width="290dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/robot_movement_control"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mazeView" />
 
     <TextView
         android:id="@+id/robotStatusTextView"
@@ -239,5 +250,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/autoTextView"
         app:layout_constraintTop_toBottomOf="@+id/updateModeTitleTextView" />
+
+    <Button
+        android:id="@+id/moveForwardButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="⬆"
+        android:textSize="30sp"
+        app:layout_constraintStart_toEndOf="@+id/turnLeftButton"
+        app:layout_constraintTop_toBottomOf="@+id/robotMovementControlTitleTextView" />
+
+    <Button
+        android:id="@+id/turnLeftButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="↶"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/moveForwardButton" />
+
+    <Button
+        android:id="@+id/turnRightButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="↷"
+        android:textSize="30sp"
+        app:layout_constraintStart_toEndOf="@+id/moveForwardButton"
+        app:layout_constraintTop_toBottomOf="@+id/moveForwardButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

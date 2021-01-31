@@ -32,4 +32,5 @@
     <string name="selected_grid">Selected Grid</string>
     <string name="update_mode">Update Mode</string>
     <string name="auto">Auto</string>
+    <string name="robot_movement_control">Robot Movement Control</string>
 </resources>
