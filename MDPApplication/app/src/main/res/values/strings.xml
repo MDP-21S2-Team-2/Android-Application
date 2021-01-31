@@ -33,4 +33,5 @@
     <string name="update_mode">Update Mode</string>
     <string name="auto">Auto</string>
     <string name="robot_movement_control">Robot Movement Control</string>
+    <string name="tilt_sensing">Tilt Sensing</string>
 </resources>
