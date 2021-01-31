@@ -28,4 +28,5 @@
     <string name="n_a">N/A</string>
     <string name="waypoint">Waypoint</string>
     <string name="dummy_coordinates">(0, 0)</string>
+    <string name="start_position">Start Position</string>
 </resources>
