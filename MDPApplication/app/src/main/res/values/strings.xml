@@ -29,4 +29,5 @@
     <string name="waypoint">Waypoint</string>
     <string name="dummy_coordinates">(0, 0)</string>
     <string name="start_position">Start Position</string>
+    <string name="selected_grid">Selected Grid</string>
 </resources>

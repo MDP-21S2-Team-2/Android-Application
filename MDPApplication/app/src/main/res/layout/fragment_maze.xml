@@ -57,6 +57,19 @@
         app:layout_constraintTop_toBottomOf="@+id/divider8" />
 
     <TextView
+        android:id="@+id/selectedGridTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/selected_grid"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mazeView"
+        app:layout_constraintTop_toBottomOf="@+id/divider9" />
+
+    <TextView
         android:id="@+id/robotStatusTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -95,6 +108,19 @@
         app:layout_constraintStart_toEndOf="@+id/mazeView"
         app:layout_constraintTop_toBottomOf="@+id/startPositionTitleTextView" />
 
+    <TextView
+        android:id="@+id/startPositionTextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/dummy_coordinates"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mazeView"
+        app:layout_constraintTop_toBottomOf="@+id/selectedGridTitleTextView" />
+
     <View
         android:id="@+id/divider6"
         android:layout_width="0dp"
@@ -118,6 +144,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/mazeView"
         app:layout_constraintTop_toBottomOf="@+id/updateWaypointButton" />
+
+    <View
+        android:id="@+id/divider10"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mazeView"
+        app:layout_constraintTop_toBottomOf="@+id/startPositionTextView2" />
 
     <View
         android:id="@+id/divider9"
