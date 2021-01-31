@@ -35,4 +35,7 @@
     <string name="robot_movement_control">Robot Movement Control</string>
     <string name="tilt_sensing">Tilt Sensing</string>
     <string name="start_robot">Start Robot</string>
+    <string name="start_fastest_path">Start Fastest Path</string>
+    <string name="start_exploration">Start Exploration</string>
+    <string name="start_image_exploration">Start Image Exploration</string>
 </resources>
