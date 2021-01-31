@@ -26,4 +26,6 @@
     <string name="refresh_other_available_devices">Refresh Other Available Devices</string>
     <string name="robot_status">Robot Status</string>
     <string name="n_a">N/A</string>
+    <string name="waypoint">Waypoint</string>
+    <string name="dummy_coordinates">(0, 0)</string>
 </resources>

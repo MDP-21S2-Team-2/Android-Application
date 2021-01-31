@@ -31,6 +31,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/waypointTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/waypoint"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mazeView"
+        app:layout_constraintTop_toBottomOf="@+id/divider6" />
+
+    <TextView
         android:id="@+id/robotStatusTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,6 +56,19 @@
         app:layout_constraintStart_toEndOf="@+id/mazeView"
         app:layout_constraintTop_toBottomOf="@+id/robotStatusTitleTextView" />
 
+    <TextView
+        android:id="@+id/waypointTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/dummy_coordinates"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mazeView"
+        app:layout_constraintTop_toBottomOf="@+id/waypointTitleTextView" />
+
     <View
         android:id="@+id/divider6"
         android:layout_width="0dp"
@@ -54,5 +80,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/mazeView"
         app:layout_constraintTop_toBottomOf="@+id/robotStatusTextView" />
+
+    <Button
+        android:id="@+id/updateWaypointButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/update"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mazeView"
+        app:layout_constraintTop_toBottomOf="@+id/waypointTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
