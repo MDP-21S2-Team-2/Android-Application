@@ -70,6 +70,19 @@
         app:layout_constraintTop_toBottomOf="@+id/divider9" />
 
     <TextView
+        android:id="@+id/updateModeTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/update_mode"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mazeView"
+        app:layout_constraintTop_toBottomOf="@+id/divider10" />
+
+    <TextView
         android:id="@+id/robotStatusTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -109,7 +122,18 @@
         app:layout_constraintTop_toBottomOf="@+id/startPositionTitleTextView" />
 
     <TextView
-        android:id="@+id/startPositionTextView2"
+        android:id="@+id/autoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/auto"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/autoUpdateModeToggleButton"
+        app:layout_constraintEnd_toStartOf="@+id/autoUpdateModeToggleButton"
+        app:layout_constraintStart_toEndOf="@+id/mazeView" />
+
+    <TextView
+        android:id="@+id/selectedGridTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -155,7 +179,7 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/mazeView"
-        app:layout_constraintTop_toBottomOf="@+id/startPositionTextView2" />
+        app:layout_constraintTop_toBottomOf="@+id/selectedGridTextView" />
 
     <View
         android:id="@+id/divider9"
@@ -167,7 +191,7 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/mazeView"
-        app:layout_constraintTop_toBottomOf="@+id/updateWaypointButton2" />
+        app:layout_constraintTop_toBottomOf="@+id/updateStartPositionButton" />
 
     <Button
         android:id="@+id/updateWaypointButton"
@@ -182,7 +206,7 @@
         app:layout_constraintTop_toBottomOf="@+id/waypointTextView" />
 
     <Button
-        android:id="@+id/updateWaypointButton2"
+        android:id="@+id/updateStartPositionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -192,5 +216,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/mazeView"
         app:layout_constraintTop_toBottomOf="@+id/startPositionTextView" />
+
+    <Button
+        android:id="@+id/manualUpdateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/update"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mazeView"
+        app:layout_constraintTop_toBottomOf="@+id/autoUpdateModeToggleButton" />
+
+    <ToggleButton
+        android:id="@+id/autoUpdateModeToggleButton"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/autoTextView"
+        app:layout_constraintTop_toBottomOf="@+id/updateModeTitleTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
