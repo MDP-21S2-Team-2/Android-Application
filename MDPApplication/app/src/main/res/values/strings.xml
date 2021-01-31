@@ -24,4 +24,6 @@
     <string name="refresh_my_devices">Refresh My Devices</string>
     <string name="other_available_devices">Other Available Devices</string>
     <string name="refresh_other_available_devices">Refresh Other Available Devices</string>
+    <string name="robot_status">Robot Status</string>
+    <string name="n_a">N/A</string>
 </resources>
