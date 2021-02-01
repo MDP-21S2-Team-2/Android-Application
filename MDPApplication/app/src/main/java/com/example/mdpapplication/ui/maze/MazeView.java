@@ -262,6 +262,7 @@ public class MazeView extends View {
         invalidate();
 
         mazeFragment.updateStartPositionTextView(startCoordinates);
+        mazeFragment.updateSelectedGridTextView(selectedCoordinates);
     }
 
     /*
