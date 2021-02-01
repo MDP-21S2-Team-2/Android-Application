@@ -16,26 +16,34 @@ public class MazeView extends View {
     private static final int ROW_NUM = 20;
     public static final int START_ZONE_SIZE = 3;
     public static final int GOAL_ZONE_SIZE = 3;
+
     private static Grid[][] grids;
+    private static boolean[][] obstacles;
+
     private static int gridSize;
 
     private final Paint gridLinePaint;
+    private final Paint emptyGridPaint;
     private final Paint goalPaint;
     private final Paint startPaint;
-    private final Paint emptyGridPaint;
+    private final Paint obstaclePaint;
 
     public MazeView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         gridLinePaint = new Paint();
+        emptyGridPaint = new Paint();
         goalPaint = new Paint();
         startPaint = new Paint();
-        emptyGridPaint = new Paint();
+        obstaclePaint = new Paint();
 
         gridLinePaint.setColor(Color.WHITE);
+        emptyGridPaint.setColor(Color.LTGRAY);
         goalPaint.setColor(Color.CYAN);
         startPaint.setColor(Color.CYAN);
-        emptyGridPaint.setColor(Color.LTGRAY);
+        obstaclePaint.setColor(Color.BLACK);
+
+        obstacles = new boolean[COLUMN_NUM][ROW_NUM]; // TODO: Update the boolean matrix based on data received
 
         createMaze();
     }
@@ -58,9 +66,9 @@ public class MazeView extends View {
         drawGridLines(canvas);
         drawStartZone(canvas);
         drawGoalZone(canvas);
+        drawObstacles(canvas);
 
-        // TODO: Draw Robot
-        // TODO: Draw Obstacles
+        // TODO: Draw robot
         // TODO: Draw waypoint
         // TODO: Draw image number ID blocks
     }
@@ -94,14 +102,27 @@ public class MazeView extends View {
     }
 
     private void drawGoalZone(Canvas canvas) {
-        for (int i = COLUMN_NUM - GOAL_ZONE_SIZE; i < COLUMN_NUM; i++)
-            for (int j = ROW_NUM - GOAL_ZONE_SIZE; j < ROW_NUM; j++)
+        for (int i = COLUMN_NUM - GOAL_ZONE_SIZE; i < COLUMN_NUM; i++) {
+            for (int j = ROW_NUM - GOAL_ZONE_SIZE; j < ROW_NUM; j++) {
                 canvas.drawRect(i * gridSize, (ROW_NUM - 1 - j) * gridSize,
                         (i + 1) * gridSize, (ROW_NUM - j) * gridSize, goalPaint);
+            }
+        }
+    }
+
+    private void drawObstacles(Canvas canvas) {
+        for (int i = 0; i < COLUMN_NUM; i++) {
+            for (int j = 0; j < ROW_NUM; j++) {
+                if (obstacles[i][j]) {
+                    canvas.drawRect(i * gridSize, (ROW_NUM - 1 - j) * gridSize,
+                            (i + 1) * gridSize, (ROW_NUM - j) * gridSize, obstaclePaint);
+                }
+            }
+        }
     }
 
     private void createMaze() {
-        grids = new Grid[COLUMN_NUM + 1][ROW_NUM + 1];
+        grids = new Grid[COLUMN_NUM][ROW_NUM];
         for (int i = 0; i < COLUMN_NUM; i++) {
             for (int j = 0; j < ROW_NUM; j++) {
                 grids[i][j] = new Grid(i, j);
