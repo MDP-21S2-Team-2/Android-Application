@@ -1,14 +1,19 @@
 package com.example.mdpapplication.ui.maze;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
+
+import com.example.mdpapplication.R;
 
 public class MazeView extends View {
 
@@ -18,6 +23,7 @@ public class MazeView extends View {
     public static final int GOAL_ZONE_SIZE = 3;
 
     private static Grid[][] grids;
+    private RobotPosition robotPosition;
     private static boolean[][] obstacles;
 
     private static int gridSize;
@@ -26,6 +32,7 @@ public class MazeView extends View {
     private final Paint emptyGridPaint;
     private final Paint goalPaint;
     private final Paint startPaint;
+    private final Paint robotPaint;
     private final Paint obstaclePaint;
 
     public MazeView(Context context, @Nullable AttributeSet attrs) {
@@ -35,14 +42,17 @@ public class MazeView extends View {
         emptyGridPaint = new Paint();
         goalPaint = new Paint();
         startPaint = new Paint();
+        robotPaint = new Paint();
         obstaclePaint = new Paint();
 
         gridLinePaint.setColor(Color.WHITE);
         emptyGridPaint.setColor(Color.LTGRAY);
         goalPaint.setColor(Color.CYAN);
         startPaint.setColor(Color.CYAN);
+        robotPaint.setColor(Color.BLUE);
         obstaclePaint.setColor(Color.BLACK);
 
+        robotPosition = new RobotPosition(new int[]{1, 1}, 0); // TODO: Update robot position based on data received
         obstacles = new boolean[COLUMN_NUM][ROW_NUM]; // TODO: Update the boolean matrix based on data received
 
         createMaze();
@@ -66,6 +76,7 @@ public class MazeView extends View {
         drawGridLines(canvas);
         drawStartZone(canvas);
         drawGoalZone(canvas);
+        drawRobot(canvas);
         drawObstacles(canvas);
 
         // TODO: Draw robot
@@ -110,6 +121,36 @@ public class MazeView extends View {
         }
     }
 
+    private void drawRobot(Canvas canvas) {
+        // Do not draw robot if coordinates are invalid
+        if (robotPosition.robotCoordinates[0] < 0
+                || robotPosition.robotCoordinates[0] >= COLUMN_NUM
+                || robotPosition.robotCoordinates[1] < 0
+                || robotPosition.robotCoordinates[1] >= ROW_NUM) {
+            return;
+        }
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_robot);
+        Bitmap resizeBitmap = Bitmap.createScaledBitmap(bitmap, gridSize * 3, gridSize * 3, false);
+        Matrix matrix = new Matrix();
+        matrix.setRotate(robotPosition.robotDirection, resizeBitmap.getWidth(), resizeBitmap.getHeight());
+        switch (robotPosition.robotDirection) {
+            case 90:
+                matrix.postTranslate((robotPosition.robotCoordinates[0] - 4) * gridSize, (ROW_NUM - robotPosition.robotCoordinates[1] - 2) * gridSize);
+                break;
+            case 180:
+                matrix.postTranslate((robotPosition.robotCoordinates[0] - 4) * gridSize, (ROW_NUM - robotPosition.robotCoordinates[1] - 5) * gridSize);
+                break;
+            case 270:
+                matrix.postTranslate((robotPosition.robotCoordinates[0] - 1) * gridSize, (ROW_NUM - robotPosition.robotCoordinates[1] - 5) * gridSize);
+                break;
+            default:
+                matrix.postTranslate((robotPosition.robotCoordinates[0] - 1) * gridSize, (ROW_NUM - robotPosition.robotCoordinates[1] - 2) * gridSize);
+                break;
+        }
+        canvas.drawBitmap(resizeBitmap, matrix, emptyGridPaint);
+    }
+
     private void drawObstacles(Canvas canvas) {
         for (int i = 0; i < COLUMN_NUM; i++) {
             for (int j = 0; j < ROW_NUM; j++) {
@@ -139,6 +180,16 @@ public class MazeView extends View {
         public Grid(int col, int row) {
             this.col = col;
             this.row = row;
+        }
+    }
+
+    private static class RobotPosition {
+        int[] robotCoordinates;
+        int robotDirection; // 0, 90, 180, 270
+
+        public RobotPosition(int[] robotCoordinates, int robotDirection) {
+            this.robotCoordinates = robotCoordinates;
+            this.robotDirection = robotDirection;
         }
     }
 }

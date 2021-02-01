@@ -19,6 +19,8 @@ public class MazeFragment extends Fragment {
     private MazeView mazeView;
     private TextView textViewRobotStatus;
 
+    private RobotStatus robotStatus;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         mazeViewModel =
@@ -29,5 +31,12 @@ public class MazeFragment extends Fragment {
         textViewRobotStatus = root.findViewById(R.id.robotStatusTextView); // TODO: Update robot status based on data received
 
         return root;
+    }
+
+    enum RobotStatus {
+        IDLE,
+        RUNNING,
+        CALIBRATING,
+        REACHED_GOAL,
     }
 }
