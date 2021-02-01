@@ -27,6 +27,7 @@ public class MazeView extends View {
     private static boolean[][] obstacles;
     private static int[] selectedCoordinates;
     private static int[] waypointCoordinates;
+    private static int[] startCoordinates;
 
     private static int gridSize;
 
@@ -66,6 +67,7 @@ public class MazeView extends View {
         obstacles = new boolean[COLUMN_NUM][ROW_NUM]; // TODO: Update the boolean matrix based on data received
         selectedCoordinates = new int[]{-1, -1};
         waypointCoordinates = new int[]{-1, -1};
+        startCoordinates = new int[]{1, 1};
 
         createMaze();
 
@@ -241,6 +243,25 @@ public class MazeView extends View {
         invalidate();
 
         mazeFragment.updateWaypointTextView(waypointCoordinates);
+    }
+
+    protected void updateStartCoordinates() {
+        // Update start coordinates
+        startCoordinates[0] = selectedCoordinates[0];
+        startCoordinates[1] = selectedCoordinates[1];
+
+        // Update robot position
+        robotPosition.robotCoordinates[0] = startCoordinates[0];
+        robotPosition.robotCoordinates[1] = startCoordinates[1];
+
+        // Clear selected grid
+        selectedCoordinates[0] = -1;
+        selectedCoordinates[1] = -1;
+
+        // Draw the canvas again
+        invalidate();
+
+        mazeFragment.updateStartPositionTextView(startCoordinates);
     }
 
     /*
