@@ -183,6 +183,9 @@ public class MazeView extends View {
         }
     }
 
+    /*
+    Class representing current robot position in the maze.
+     */
     private static class RobotPosition {
         int[] robotCoordinates;
         int robotDirection; // 0, 90, 180, 270
