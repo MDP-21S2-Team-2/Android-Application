@@ -26,6 +26,7 @@ public class MazeView extends View {
     private RobotPosition robotPosition;
     private static boolean[][] obstacles;
     private static int[] selectedCoordinates;
+    private static int[] waypointCoordinates;
 
     private static int gridSize;
 
@@ -36,6 +37,7 @@ public class MazeView extends View {
     private final Paint robotPaint;
     private final Paint obstaclePaint;
     private final Paint selectedGridPaint;
+    private final Paint waypointPaint;
 
     private final MazeFragment mazeFragment;
 
@@ -49,6 +51,7 @@ public class MazeView extends View {
         robotPaint = new Paint();
         obstaclePaint = new Paint();
         selectedGridPaint = new Paint();
+        waypointPaint = new Paint();
 
         gridLinePaint.setColor(Color.WHITE);
         emptyGridPaint.setColor(Color.LTGRAY);
@@ -57,10 +60,12 @@ public class MazeView extends View {
         robotPaint.setColor(Color.BLUE);
         obstaclePaint.setColor(Color.BLACK);
         selectedGridPaint.setColor(Color.BLUE);
+        waypointPaint.setColor(Color.GREEN);
 
         robotPosition = new RobotPosition(new int[]{1, 1}, 0); // TODO: Update robot position based on data received
         obstacles = new boolean[COLUMN_NUM][ROW_NUM]; // TODO: Update the boolean matrix based on data received
         selectedCoordinates = new int[]{-1, -1};
+        waypointCoordinates = new int[]{-1, -1};
 
         createMaze();
 
@@ -89,8 +94,10 @@ public class MazeView extends View {
         drawRobot(canvas);
         drawObstacles(canvas);
         drawSelectedPoint(canvas);
+        drawWaypoint(canvas);
 
         // TODO: Draw waypoint
+        // TODO: Draw start position
         // TODO: Draw image number ID blocks
     }
 
@@ -173,10 +180,29 @@ public class MazeView extends View {
     }
 
     private void drawSelectedPoint(Canvas canvas) {
-        if (selectedCoordinates[0] >= 0) {
-            canvas.drawRect(selectedCoordinates[0] * gridSize, (ROW_NUM - 1 - selectedCoordinates[1]) * gridSize,
-                    (selectedCoordinates[0] + 1) * gridSize, (ROW_NUM - selectedCoordinates[1]) * gridSize, selectedGridPaint);
+        // Do not draw robot if coordinates are invalid
+        if (selectedCoordinates[0] < 0
+                || selectedCoordinates[0] >= COLUMN_NUM
+                || selectedCoordinates[1] < 0
+                || selectedCoordinates[1] >= ROW_NUM) {
+            return;
         }
+
+        canvas.drawRect(selectedCoordinates[0] * gridSize, (ROW_NUM - 1 - selectedCoordinates[1]) * gridSize,
+                (selectedCoordinates[0] + 1) * gridSize, (ROW_NUM - selectedCoordinates[1]) * gridSize, selectedGridPaint);
+    }
+
+    private void drawWaypoint(Canvas canvas) {
+        // Do not draw robot if coordinates are invalid
+        if (waypointCoordinates[0] < 0
+                || waypointCoordinates[0] >= COLUMN_NUM
+                || waypointCoordinates[1] < 0
+                || waypointCoordinates[1] >= ROW_NUM) {
+            return;
+        }
+
+        canvas.drawRect(waypointCoordinates[0] * gridSize, (ROW_NUM - 1 - waypointCoordinates[1]) * gridSize,
+                (waypointCoordinates[0] + 1) * gridSize, (ROW_NUM - waypointCoordinates[1]) * gridSize, waypointPaint);
     }
 
     private void createMaze() {
@@ -199,11 +225,22 @@ public class MazeView extends View {
         selectedCoordinates[0] = (x == selectedCoordinates[0] && y == selectedCoordinates[1]) ? -1 : x;
         selectedCoordinates[1] = (x == selectedCoordinates[0] && y == selectedCoordinates[1]) ? -1 : y;
 
-        invalidate(); // Draw the canvas again
+        // Draw the canvas again
+        invalidate();
 
         mazeFragment.updateSelectedGridTextView(selectedCoordinates);
 
         return true;
+    }
+
+    protected void updateWaypointCoordinates() {
+        waypointCoordinates[0] = selectedCoordinates[0];
+        waypointCoordinates[1] = selectedCoordinates[1];
+
+        // Draw the canvas again
+        invalidate();
+
+        mazeFragment.updateWaypointTextView(waypointCoordinates);
     }
 
     /*

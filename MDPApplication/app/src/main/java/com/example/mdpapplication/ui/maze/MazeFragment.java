@@ -52,6 +52,7 @@ public class MazeFragment extends Fragment {
         updateWaypointButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // TODO: Update waypoint coordinates TextView
+                mazeView.updateWaypointCoordinates();
             }
         });
 
@@ -73,6 +74,14 @@ public class MazeFragment extends Fragment {
             textViewSelectedGrid.setText(N_A_COORDINATES);
         } else {
             textViewSelectedGrid.setText(String.format("(%d, %d)", selectedPosition[0], selectedPosition[1]));
+        }
+    }
+
+    protected void updateWaypointTextView(int[] waypointCoordinates) {
+        if (waypointCoordinates[0] < 0 || waypointCoordinates[1] < 0) {
+            textViewWaypoint.setText(N_A_COORDINATES);
+        } else {
+            textViewWaypoint.setText(String.format("(%d, %d)", waypointCoordinates[0], waypointCoordinates[1]));
         }
     }
 
