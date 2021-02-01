@@ -8,8 +8,8 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 
@@ -25,6 +25,7 @@ public class MazeView extends View {
     private static Grid[][] grids;
     private RobotPosition robotPosition;
     private static boolean[][] obstacles;
+    private static int[] selectedCoordinates;
 
     private static int gridSize;
 
@@ -34,6 +35,9 @@ public class MazeView extends View {
     private final Paint startPaint;
     private final Paint robotPaint;
     private final Paint obstaclePaint;
+    private final Paint selectedGridPaint;
+
+    private final MazeFragment mazeFragment;
 
     public MazeView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -44,6 +48,7 @@ public class MazeView extends View {
         startPaint = new Paint();
         robotPaint = new Paint();
         obstaclePaint = new Paint();
+        selectedGridPaint = new Paint();
 
         gridLinePaint.setColor(Color.WHITE);
         emptyGridPaint.setColor(Color.LTGRAY);
@@ -51,11 +56,15 @@ public class MazeView extends View {
         startPaint.setColor(Color.CYAN);
         robotPaint.setColor(Color.BLUE);
         obstaclePaint.setColor(Color.BLACK);
+        selectedGridPaint.setColor(Color.BLUE);
 
         robotPosition = new RobotPosition(new int[]{1, 1}, 0); // TODO: Update robot position based on data received
         obstacles = new boolean[COLUMN_NUM][ROW_NUM]; // TODO: Update the boolean matrix based on data received
+        selectedCoordinates = new int[]{-1, -1};
 
         createMaze();
+
+        mazeFragment = MazeFragment.getInstance();
     }
 
     protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
@@ -63,7 +72,8 @@ public class MazeView extends View {
 
         // Calculate grid size based on canvas dimensions
         gridSize = Math.min(getWidth() / COLUMN_NUM, getHeight() / ROW_NUM);
-        this.setLayoutParams(new RelativeLayout.LayoutParams(gridSize * COLUMN_NUM, gridSize * ROW_NUM));
+        // TODO: Fix the layout params
+//        this.setLayoutParams(new ConstraintLayout.LayoutParams(gridSize * COLUMN_NUM, gridSize * ROW_NUM));
 
         super.invalidate();
     }
@@ -78,8 +88,8 @@ public class MazeView extends View {
         drawGoalZone(canvas);
         drawRobot(canvas);
         drawObstacles(canvas);
+        drawSelectedPoint(canvas);
 
-        // TODO: Draw robot
         // TODO: Draw waypoint
         // TODO: Draw image number ID blocks
     }
@@ -162,6 +172,13 @@ public class MazeView extends View {
         }
     }
 
+    private void drawSelectedPoint(Canvas canvas) {
+        if (selectedCoordinates[0] >= 0) {
+            canvas.drawRect(selectedCoordinates[0] * gridSize, (ROW_NUM - 1 - selectedCoordinates[1]) * gridSize,
+                    (selectedCoordinates[0] + 1) * gridSize, (ROW_NUM - selectedCoordinates[1]) * gridSize, selectedGridPaint);
+        }
+    }
+
     private void createMaze() {
         grids = new Grid[COLUMN_NUM][ROW_NUM];
         for (int i = 0; i < COLUMN_NUM; i++) {
@@ -169,6 +186,24 @@ public class MazeView extends View {
                 grids[i][j] = new Grid(i, j);
             }
         }
+    }
+
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() != MotionEvent.ACTION_DOWN) {
+            return true;
+        }
+
+        int x = (int) (event.getX() / gridSize);
+        int y = ROW_NUM - 1 - (int) (event.getY() / gridSize);
+
+        selectedCoordinates[0] = (x == selectedCoordinates[0] && y == selectedCoordinates[1]) ? -1 : x;
+        selectedCoordinates[1] = (x == selectedCoordinates[0] && y == selectedCoordinates[1]) ? -1 : y;
+
+        invalidate(); // Draw the canvas again
+
+        mazeFragment.updateSelectedGridTextView(selectedCoordinates);
+
+        return true;
     }
 
     /*
