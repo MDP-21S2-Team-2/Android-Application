@@ -26,14 +26,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.bluetoothStatusFloatingActionButton);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        FloatingActionButton bluetoothStatusFloatingActionButton = findViewById(R.id.bluetoothStatusFloatingActionButton);
+        bluetoothStatusFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                // TODO: Display current bluetooth status
+                Snackbar.make(view, "The current bluetooth status is: NOT CONNECTED", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
+        // TODO: Update bluetoothStatusFloatingActionButton background color when bluetooth status changes
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
