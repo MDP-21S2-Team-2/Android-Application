@@ -18,6 +18,7 @@ public class MazeFragment extends Fragment {
     private MazeViewModel mazeViewModel;
 
     private static final String N_A_COORDINATES = "N/A";
+    private static final String INITIAL_START_COORDINATES = "(1, 1)";
 
     private MazeView mazeView;
     private TextView textViewRobotStatus;
@@ -47,6 +48,8 @@ public class MazeFragment extends Fragment {
         updateWaypointButton = root.findViewById(R.id.updateWaypointButton);
         updateStartPositionButton = root.findViewById(R.id.updateStartPositionButton);
 
+        textViewWaypoint.setText(N_A_COORDINATES);
+        textViewStartPostion.setText(INITIAL_START_COORDINATES);
         textViewSelectedGrid.setText(N_A_COORDINATES);
 
         updateWaypointButton.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +85,7 @@ public class MazeFragment extends Fragment {
         } else {
             textViewWaypoint.setText(String.format("(%d, %d)", waypointCoordinates[0], waypointCoordinates[1]));
         }
+        // TODO: Send waypoint position via Bluetooth
     }
 
     protected void updateStartPositionTextView(int[] startCoordinates) {
@@ -90,6 +94,7 @@ public class MazeFragment extends Fragment {
         } else {
             textViewStartPostion.setText(String.format("(%d, %d)", startCoordinates[0], startCoordinates[1]));
         }
+        // TODO: Send start position via Bluetooth
     }
 
     enum RobotStatus {

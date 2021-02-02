@@ -98,8 +98,6 @@ public class MazeView extends View {
         drawSelectedPoint(canvas);
         drawWaypoint(canvas);
 
-        // TODO: Draw waypoint
-        // TODO: Draw start position
         // TODO: Draw image number ID blocks
     }
 
@@ -236,13 +234,19 @@ public class MazeView extends View {
     }
 
     protected void updateWaypointCoordinates() {
+        // Update waypoint coordinates
         waypointCoordinates[0] = selectedCoordinates[0];
         waypointCoordinates[1] = selectedCoordinates[1];
+
+        // Clear selected grid
+        selectedCoordinates[0] = -1;
+        selectedCoordinates[1] = -1;
 
         // Draw the canvas again
         invalidate();
 
         mazeFragment.updateWaypointTextView(waypointCoordinates);
+        mazeFragment.updateSelectedGridTextView(selectedCoordinates);
     }
 
     protected void updateStartCoordinates() {
