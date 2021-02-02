@@ -41,6 +41,9 @@ public class MazeFragment extends Fragment {
     private Button updateWaypointButton;
     private Button updateStartPositionButton;
     private Button manualUpdateButton;
+    private Button moveForwardButton;
+    private Button turnLeftButton;
+    private Button turnRightButton;
     private ToggleButton autoUpdateModeToggleButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -56,12 +59,15 @@ public class MazeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_maze, container, false);
         mazeView = root.findViewById(R.id.mazeView);
         textViewRobotStatus = root.findViewById(R.id.robotStatusTextView); // TODO: Update robot status based on data received
-        textViewWaypoint = root.findViewById(R.id.waypointTextView); // TODO: Update waypoint text based on user action
-        textViewStartPostion = root.findViewById(R.id.startPositionTextView); // TODO: Update start position text based on user action
-        textViewSelectedGrid = root.findViewById(R.id.selectedGridTextView); // TODO: Update selected grid text based on user action
+        textViewWaypoint = root.findViewById(R.id.waypointTextView);
+        textViewStartPostion = root.findViewById(R.id.startPositionTextView);
+        textViewSelectedGrid = root.findViewById(R.id.selectedGridTextView);
         updateWaypointButton = root.findViewById(R.id.updateWaypointButton);
         updateStartPositionButton = root.findViewById(R.id.updateStartPositionButton);
         manualUpdateButton = root.findViewById(R.id.manualUpdateButton);
+        moveForwardButton = root.findViewById(R.id.moveForwardButton);
+        turnLeftButton = root.findViewById(R.id.turnLeftButton);
+        turnRightButton = root.findViewById(R.id.turnRightButton);
         autoUpdateModeToggleButton = root.findViewById(R.id.autoUpdateModeToggleButton); // TODO: Automatically query for maze update when auto update mode is on
 
         updateRobotStatusTextView();
@@ -84,6 +90,24 @@ public class MazeFragment extends Fragment {
         manualUpdateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 // TODO: Query for maze update and update maze display when button is clicked
+            }
+        });
+
+        moveForwardButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                // TODO: Send move forward signal via Bluetooth
+            }
+        });
+
+        turnLeftButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                // TODO: Send turn left signal via Bluetooth
+            }
+        });
+
+        turnRightButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                // TODO: Send turn right signal via Bluetooth
             }
         });
 
