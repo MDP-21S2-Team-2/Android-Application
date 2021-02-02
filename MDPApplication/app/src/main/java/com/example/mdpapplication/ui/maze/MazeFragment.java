@@ -30,7 +30,7 @@ public class MazeFragment extends Fragment {
     private static final String CALIBRATING_ROBOT_STATUS = "Calibrating";
     private static final String REACHED_GOAL_ROBOT_STATUS = "Reached Goal";
 
-    // SnackBar messages
+    // Snackbar messages
     private static final String AUTO_MAZE_UPDATE_IS_SWITCHED_OFF = "Auto maze update mode is switched OFF";
     private static final String AUTO_MAZE_UPDATE_IS_SWITCHED_ON = "Auto maze update mode is switched ON";
     private static final String TILT_SENSING_MODE_IS_SWITCHED_OFF = "Tilt sensing mode is switched OFF";

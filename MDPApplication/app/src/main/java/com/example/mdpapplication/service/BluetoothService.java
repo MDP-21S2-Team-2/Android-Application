@@ -1,5 +1,7 @@
 package com.example.mdpapplication.service;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -13,9 +15,11 @@ public class BluetoothService {
     private boolean isConnected;
 
     private static BluetoothCommunicationService bluetoothCommunicationService;
+    private static BluetoothAdapter bluetoothAdapter;
 
     public BluetoothService() {
         bluetoothCommunicationService = new BluetoothCommunicationService(handler);
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     }
 
     // This method is adopted from The Android Open Source Project by Google
@@ -30,6 +34,7 @@ public class BluetoothService {
                     switch (msg.arg1) {
                         case BluetoothCommunicationService.STATE_CONNECTED: // bluetooth service has connected to a device
                             Log.d(HANDLER_LOG, "STATE_CONNECTED");
+                            isConnected = true; // TODO: Set to false when disconnected (to receive message via LocalBroadcastManager)
                             // TODO: Update bluetooth connection status to BluetoothFragment and MainActivity via LocalBroadcastManager
                             break;
                         case BluetoothCommunicationService.STATE_CONNECTING: // bluetooth service is connecting to a device
@@ -66,4 +71,18 @@ public class BluetoothService {
             }
         }
     };
+
+    /**
+     * Connect to a Bluetooth device.
+     *
+     * @param macAddress MAC address of the Bluetooth device to be connected
+     * @return boolean value indicating whether connection is successful
+     */
+    // TODO: Test this method on the tablet
+    public boolean connectToBluetoothDevice(String macAddress) {
+        final BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(macAddress);
+        bluetoothCommunicationService = new BluetoothCommunicationService(handler);
+        bluetoothCommunicationService.connect(bluetoothDevice, false);
+        return isConnected;
+    }
 }
