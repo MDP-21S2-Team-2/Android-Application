@@ -17,19 +17,20 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class MazeFragment extends Fragment {
 
-    public static final String MAZE_DISPLAY_UPDATED = "Maze display updated";
-    public static final String WAYPOINT_POSITION_UPDATED_TO = "Waypoint position updated to ";
-    public static final String ROBOT_START_POSITION_UPDATED_TO = "Robot start position updated to";
     private MazeViewModel mazeViewModel;
 
     private static MazeFragment instance;
 
     private static final String N_A_COORDINATES = "N/A";
     private static final String INITIAL_START_COORDINATES = "(1, 1)";
+
+    // Robot status texts
     private static final String IDLE_ROBOT_STATUS = "Idle";
     private static final String RUNNING_ROBOT_STATUS = "Running";
     private static final String CALIBRATING_ROBOT_STATUS = "Calibrating";
     private static final String REACHED_GOAL_ROBOT_STATUS = "Reached Goal";
+
+    // SnackBar messages
     private static final String AUTO_MAZE_UPDATE_IS_SWITCHED_OFF = "Auto maze update mode is switched OFF";
     private static final String AUTO_MAZE_UPDATE_IS_SWITCHED_ON = "Auto maze update mode is switched ON";
     private static final String TILT_SENSING_MODE_IS_SWITCHED_OFF = "Tilt sensing mode is switched OFF";
@@ -37,6 +38,9 @@ public class MazeFragment extends Fragment {
     private static final String FASTEST_PATH_TASK_STARTED = "Fastest path task started";
     private static final String EXPLORATION_TASK_STARTED = "Exploration task started";
     private static final String EXPLORATION_WITH_IMAGE_RECOGNITION_TASK_STARTED = "Exploration with image recognition task started";
+    private static final String MAZE_DISPLAY_UPDATED = "Maze display updated";
+    private static final String WAYPOINT_POSITION_UPDATED_TO = "Waypoint position updated to ";
+    private static final String ROBOT_START_POSITION_UPDATED_TO = "Robot start position updated to";
 
     private RobotStatus robotStatus;
     private MazeUpdateMode mazeUpdateMode;
