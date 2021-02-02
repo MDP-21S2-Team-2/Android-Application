@@ -17,6 +17,9 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class MazeFragment extends Fragment {
 
+    public static final String MAZE_DISPLAY_UPDATED = "Maze display updated";
+    public static final String WAYPOINT_POSITION_UPDATED_TO = "Waypoint position updated to ";
+    public static final String ROBOT_START_POSITION_UPDATED_TO = "Robot start position updated to";
     private MazeViewModel mazeViewModel;
 
     private static MazeFragment instance;
@@ -93,18 +96,25 @@ public class MazeFragment extends Fragment {
         updateWaypointButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 mazeView.updateWaypointCoordinates();
+                Snackbar.make(view, WAYPOINT_POSITION_UPDATED_TO + textViewWaypoint.getText(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
 
         updateStartPositionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 mazeView.updateStartCoordinates();
+                Snackbar.make(view, ROBOT_START_POSITION_UPDATED_TO + textViewStartPostion.getText(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
 
         manualUpdateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 // TODO: Query for maze update and update maze display when button is clicked
+
+                Snackbar.make(view, MAZE_DISPLAY_UPDATED, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
 
@@ -128,25 +138,28 @@ public class MazeFragment extends Fragment {
 
         startFastestPathButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                // TODO: Send start fastest path signal via Bluetooth
+
                 Snackbar.make(view, FASTEST_PATH_TASK_STARTED, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                // TODO: Send start fastest path signal via Bluetooth
             }
         });
 
         startExplorationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                // TODO: Send start exploration signal via Bluetooth
+
                 Snackbar.make(view, EXPLORATION_TASK_STARTED, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                // TODO: Send start exploration signal via Bluetooth
             }
         });
 
         startImageExplorationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                // TODO: Send start exploration with image recognition signal via Bluetooth
+
                 Snackbar.make(view, EXPLORATION_WITH_IMAGE_RECOGNITION_TASK_STARTED, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                // TODO: Send start exploration with image recognition signal via Bluetooth
             }
         });
 
