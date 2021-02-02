@@ -40,6 +40,7 @@ public class MazeFragment extends Fragment {
     private TextView textViewSelectedGrid;
     private Button updateWaypointButton;
     private Button updateStartPositionButton;
+    private Button manualUpdateButton;
     private ToggleButton autoUpdateModeToggleButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -60,6 +61,7 @@ public class MazeFragment extends Fragment {
         textViewSelectedGrid = root.findViewById(R.id.selectedGridTextView); // TODO: Update selected grid text based on user action
         updateWaypointButton = root.findViewById(R.id.updateWaypointButton);
         updateStartPositionButton = root.findViewById(R.id.updateStartPositionButton);
+        manualUpdateButton = root.findViewById(R.id.manualUpdateButton);
         autoUpdateModeToggleButton = root.findViewById(R.id.autoUpdateModeToggleButton); // TODO: Automatically query for maze update when auto update mode is on
 
         updateRobotStatusTextView();
@@ -76,6 +78,12 @@ public class MazeFragment extends Fragment {
         updateStartPositionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 mazeView.updateStartCoordinates();
+            }
+        });
+
+        manualUpdateButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                // TODO: Query for maze update and update maze display when button is clicked
             }
         });
 
