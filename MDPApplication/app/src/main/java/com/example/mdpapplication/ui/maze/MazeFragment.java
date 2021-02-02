@@ -17,8 +17,16 @@ public class MazeFragment extends Fragment {
 
     private MazeViewModel mazeViewModel;
 
+    private static MazeFragment instance;
+
     private static final String N_A_COORDINATES = "N/A";
     private static final String INITIAL_START_COORDINATES = "(1, 1)";
+    private static final String IDLE_ROBOT_STATUS = "Idle";
+    private static final String RUNNING_ROBOT_STATUS = "Running";
+    private static final String CALIBRATING_ROBOT_STATUS = "Calibrating";
+    private static final String REACHED_GOAL_ROBOT_STATUS = "Reached Goal";
+
+    private RobotStatus robotStatus;
 
     private MazeView mazeView;
     private TextView textViewRobotStatus;
@@ -28,16 +36,14 @@ public class MazeFragment extends Fragment {
     private Button updateWaypointButton;
     private Button updateStartPositionButton;
 
-    private RobotStatus robotStatus;
-
-    private static MazeFragment instance;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         mazeViewModel =
                 new ViewModelProvider(this).get(MazeViewModel.class);
 
         instance = this;
+
+        robotStatus = RobotStatus.IDLE;
 
         View root = inflater.inflate(R.layout.fragment_maze, container, false);
         mazeView = root.findViewById(R.id.mazeView);
@@ -48,6 +54,7 @@ public class MazeFragment extends Fragment {
         updateWaypointButton = root.findViewById(R.id.updateWaypointButton);
         updateStartPositionButton = root.findViewById(R.id.updateStartPositionButton);
 
+        updateRobotStatusTextView();
         textViewWaypoint.setText(N_A_COORDINATES);
         textViewStartPostion.setText(INITIAL_START_COORDINATES);
         textViewSelectedGrid.setText(N_A_COORDINATES);
@@ -69,6 +76,19 @@ public class MazeFragment extends Fragment {
 
     public static MazeFragment getInstance() {
         return instance;
+    }
+
+    private void updateRobotStatusTextView() {
+        switch (robotStatus) {
+            case RUNNING:
+                textViewRobotStatus.setText(RUNNING_ROBOT_STATUS);
+            case CALIBRATING:
+                textViewRobotStatus.setText(CALIBRATING_ROBOT_STATUS);
+            case REACHED_GOAL:
+                textViewRobotStatus.setText(REACHED_GOAL_ROBOT_STATUS);
+            default:
+                textViewRobotStatus.setText(IDLE_ROBOT_STATUS);
+        }
     }
 
     protected void updateSelectedGridTextView(int[] selectedPosition) {
