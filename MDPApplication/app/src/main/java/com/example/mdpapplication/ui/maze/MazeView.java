@@ -15,6 +15,9 @@ import androidx.annotation.Nullable;
 
 import com.example.mdpapplication.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MazeView extends View {
 
     private static final int COLUMN_NUM = 15;
@@ -28,6 +31,7 @@ public class MazeView extends View {
     private static int[] selectedCoordinates;
     private static int[] waypointCoordinates;
     private static int[] startCoordinates;
+    private static List<int[]> imageInfoList; // Format: [x, y, ID]
 
     private static int gridSize;
 
@@ -39,6 +43,7 @@ public class MazeView extends View {
     private final Paint obstaclePaint;
     private final Paint selectedGridPaint;
     private final Paint waypointPaint;
+    private final Paint numberIdPaint;
 
     private final MazeFragment mazeFragment;
 
@@ -53,6 +58,7 @@ public class MazeView extends View {
         obstaclePaint = new Paint();
         selectedGridPaint = new Paint();
         waypointPaint = new Paint();
+        numberIdPaint = new Paint();
 
         gridLinePaint.setColor(Color.WHITE);
         emptyGridPaint.setColor(Color.LTGRAY);
@@ -62,12 +68,15 @@ public class MazeView extends View {
         obstaclePaint.setColor(Color.BLACK);
         selectedGridPaint.setColor(Color.BLUE);
         waypointPaint.setColor(Color.GREEN);
+        numberIdPaint.setColor(Color.WHITE);
+        numberIdPaint.setTextSize(40f);
 
         robotPosition = new RobotPosition(new int[]{1, 1}, 0); // TODO: Update robot position based on data received
         obstacles = new boolean[COLUMN_NUM][ROW_NUM]; // TODO: Update the boolean matrix based on data received
         selectedCoordinates = new int[]{-1, -1};
         waypointCoordinates = new int[]{-1, -1};
         startCoordinates = new int[]{1, 1};
+        imageInfoList = new ArrayList<>(); // TODO: Update image info list based on data received
 
         createMaze();
 
@@ -97,8 +106,7 @@ public class MazeView extends View {
         drawObstacles(canvas);
         drawSelectedPoint(canvas);
         drawWaypoint(canvas);
-
-        // TODO: Draw image number ID blocks
+        drawImageNumberIds(canvas);
     }
 
     private void drawGrids(Canvas canvas) {
@@ -203,6 +211,31 @@ public class MazeView extends View {
 
         canvas.drawRect(waypointCoordinates[0] * gridSize, (ROW_NUM - 1 - waypointCoordinates[1]) * gridSize,
                 (waypointCoordinates[0] + 1) * gridSize, (ROW_NUM - waypointCoordinates[1]) * gridSize, waypointPaint);
+    }
+
+    private void drawImageNumberIds(Canvas canvas) {
+        // Do not draw if there is no identified image
+        if (imageInfoList.isEmpty()) {
+            return;
+        }
+
+        for (int[] imageInfo : imageInfoList) {
+            int imageX = imageInfo[0];
+            int imageY = imageInfo[1];
+            int imageNumberId = imageInfo[2];
+
+            // Draw the obstacle block
+            canvas.drawRect(imageX * gridSize, (ROW_NUM - 1 - imageY) * gridSize,
+                    (imageX + 1) * gridSize, (ROW_NUM - imageY) * gridSize, obstaclePaint);
+
+            // Draw the image number ID
+            int pixelY = (ROW_NUM - imageY) * gridSize - 12;
+            if (imageNumberId < 10 && imageNumberId > 0) {
+                canvas.drawText(String.valueOf(imageNumberId), imageX * gridSize + 18, pixelY, numberIdPaint);
+            } else if (imageNumberId > 9 && imageNumberId < 16) {
+                canvas.drawText(String.valueOf(imageNumberId), imageX * gridSize + 5, pixelY, numberIdPaint);
+            }
+        }
     }
 
     private void createMaze() {
