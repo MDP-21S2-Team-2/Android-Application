@@ -13,10 +13,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mdpapplication.R;
+import com.example.mdpapplication.service.BluetoothService;
 
 public class BluetoothFragment extends Fragment {
 
     private BluetoothViewModel bluetoothViewModel;
+    private BluetoothService bluetoothService;
+
     private ListView myDevicesListView;
     private ListView otherDevicesListView;
     private Button enableBluetoothButton;
@@ -30,6 +33,9 @@ public class BluetoothFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         bluetoothViewModel =
                 new ViewModelProvider(this).get(BluetoothViewModel.class);
+
+        bluetoothService = new BluetoothService();
+
         View root = inflater.inflate(R.layout.fragment_bluetooth, container, false);
         myDevicesListView = root.findViewById(R.id.myDevicesListView);
         otherDevicesListView = root.findViewById(R.id.otherDevicesListView);
