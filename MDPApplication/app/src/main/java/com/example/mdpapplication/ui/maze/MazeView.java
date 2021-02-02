@@ -39,7 +39,6 @@ public class MazeView extends View {
     private final Paint emptyGridPaint;
     private final Paint goalPaint;
     private final Paint startPaint;
-    private final Paint robotPaint;
     private final Paint obstaclePaint;
     private final Paint selectedGridPaint;
     private final Paint waypointPaint;
@@ -54,7 +53,6 @@ public class MazeView extends View {
         emptyGridPaint = new Paint();
         goalPaint = new Paint();
         startPaint = new Paint();
-        robotPaint = new Paint();
         obstaclePaint = new Paint();
         selectedGridPaint = new Paint();
         waypointPaint = new Paint();
@@ -64,7 +62,6 @@ public class MazeView extends View {
         emptyGridPaint.setColor(Color.LTGRAY);
         goalPaint.setColor(Color.CYAN);
         startPaint.setColor(Color.CYAN);
-        robotPaint.setColor(Color.BLUE);
         obstaclePaint.setColor(Color.BLACK);
         selectedGridPaint.setColor(Color.BLUE);
         waypointPaint.setColor(Color.GREEN);
