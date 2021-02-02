@@ -49,25 +49,25 @@ public class CommunicationFragment extends Fragment {
         receivedDataClearButton = root.findViewById(R.id.receivedDataClearButton);
 
         persistentStringSendButton1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(View view) {
                 // TODO: Send textViewPersistentCommunicationString1
             }
         });
 
         persistentStringSendButton2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(View view) {
                 // TODO: Send textViewPersistentCommunicationString2
             }
         });
 
         volatileStringSendButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(View view) {
                 // TODO: Send textViewVolatileCommunicationString
             }
         });
 
         receivedDataClearButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(View view) {
                 textViewReceivedStrings.setText(RECEIVED_DATA_PLACEHOLDER);
             }
         });

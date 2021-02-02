@@ -52,19 +52,19 @@ public class BluetoothFragment extends Fragment {
         otherDevicesArrayAdapter.add("Dummy Device B");
 
         enableBluetoothButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(View view) {
                 // TODO: Enable discovery by other bluetooth devices using BluetoothAdapter
             }
         });
 
         refreshMyDevicesButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(View view) {
                 // TODO: Refresh my devices list
             }
         });
 
         refreshOtherDevicesButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(View view) {
                 // TODO: Refresh other available devices list
             }
         });

@@ -6,12 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mdpapplication.R;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MazeFragment extends Fragment {
 
@@ -25,8 +27,11 @@ public class MazeFragment extends Fragment {
     private static final String RUNNING_ROBOT_STATUS = "Running";
     private static final String CALIBRATING_ROBOT_STATUS = "Calibrating";
     private static final String REACHED_GOAL_ROBOT_STATUS = "Reached Goal";
+    private static final String AUTO_MAZE_UPDATE_IS_SWITCHED_OFF = "Auto maze update is switched OFF";
+    private static final String AUTO_MAZE_UPDATE_IS_SWITCHED_ON = "Auto maze update is switched ON";
 
     private RobotStatus robotStatus;
+    private MazeUpdateMode mazeUpdateMode;
 
     private MazeView mazeView;
     private TextView textViewRobotStatus;
@@ -35,6 +40,7 @@ public class MazeFragment extends Fragment {
     private TextView textViewSelectedGrid;
     private Button updateWaypointButton;
     private Button updateStartPositionButton;
+    private ToggleButton autoUpdateModeToggleButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -44,6 +50,7 @@ public class MazeFragment extends Fragment {
         instance = this;
 
         robotStatus = RobotStatus.IDLE;
+        mazeUpdateMode = MazeUpdateMode.MANUAL;
 
         View root = inflater.inflate(R.layout.fragment_maze, container, false);
         mazeView = root.findViewById(R.id.mazeView);
@@ -53,6 +60,7 @@ public class MazeFragment extends Fragment {
         textViewSelectedGrid = root.findViewById(R.id.selectedGridTextView); // TODO: Update selected grid text based on user action
         updateWaypointButton = root.findViewById(R.id.updateWaypointButton);
         updateStartPositionButton = root.findViewById(R.id.updateStartPositionButton);
+        autoUpdateModeToggleButton = root.findViewById(R.id.autoUpdateModeToggleButton); // TODO: Automatically query for maze update when auto update mode is on
 
         updateRobotStatusTextView();
         textViewWaypoint.setText(N_A_COORDINATES);
@@ -60,14 +68,28 @@ public class MazeFragment extends Fragment {
         textViewSelectedGrid.setText(N_A_COORDINATES);
 
         updateWaypointButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(View view) {
                 mazeView.updateWaypointCoordinates();
             }
         });
 
         updateStartPositionButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            public void onClick(View view) {
                 mazeView.updateStartCoordinates();
+            }
+        });
+
+        autoUpdateModeToggleButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (mazeUpdateMode == MazeUpdateMode.AUTO) {
+                    mazeUpdateMode = MazeUpdateMode.MANUAL;
+                    Snackbar.make(view, AUTO_MAZE_UPDATE_IS_SWITCHED_OFF, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    mazeUpdateMode = MazeUpdateMode.AUTO;
+                    Snackbar.make(view, AUTO_MAZE_UPDATE_IS_SWITCHED_ON, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
             }
         });
 
@@ -122,5 +144,10 @@ public class MazeFragment extends Fragment {
         RUNNING,
         CALIBRATING,
         REACHED_GOAL,
+    }
+
+    enum MazeUpdateMode {
+        AUTO,
+        MANUAL,
     }
 }
