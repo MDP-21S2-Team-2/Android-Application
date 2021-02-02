@@ -40,11 +40,11 @@ import java.util.UUID;
  */
 public class BluetoothCommunicationService {
     // Debugging
-    private static final String TAG = "BluetoothChatService";
+    private static final String TAG = "BluetoothCommunicationService";
 
     // Name for the SDP record when creating server socket
-    private static final String NAME_SECURE = "BluetoothChatSecure";
-    private static final String NAME_INSECURE = "BluetoothChatInsecure";
+    private static final String NAME_SECURE = "BluetoothCommunicationSecure";
+    private static final String NAME_INSECURE = "BluetoothCommunicationInsecure";
 
     // Unique UUID for this application
     private static final UUID MY_UUID_SECURE =
@@ -69,12 +69,11 @@ public class BluetoothCommunicationService {
     public static final int STATE_CONNECTED = 3;  // now connected to a remote device
 
     /**
-     * Constructor. Prepares a new BluetoothChat session.
+     * Constructor. Prepares a new BluetoothCommunication session.
      *
-     * @param context The UI Activity Context
      * @param handler A Handler to send messages back to the UI Activity
      */
-    public BluetoothCommunicationService(Context context, Handler handler) {
+    public BluetoothCommunicationService(Handler handler) {
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         mState = STATE_NONE;
         mNewState = mState;
