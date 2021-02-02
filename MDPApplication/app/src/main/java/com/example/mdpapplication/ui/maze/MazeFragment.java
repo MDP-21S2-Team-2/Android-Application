@@ -31,6 +31,9 @@ public class MazeFragment extends Fragment {
     private static final String AUTO_MAZE_UPDATE_IS_SWITCHED_ON = "Auto maze update mode is switched ON";
     private static final String TILT_SENSING_MODE_IS_SWITCHED_OFF = "Tilt sensing mode is switched OFF";
     private static final String TILT_SENSING_MODE_IS_SWITCHED_ON = "Tilt sensing mode is switched ON";
+    private static final String FASTEST_PATH_TASK_STARTED = "Fastest path task started";
+    private static final String EXPLORATION_TASK_STARTED = "Exploration task started";
+    private static final String EXPLORATION_WITH_IMAGE_RECOGNITION_TASK_STARTED = "Exploration with image recognition task started";
 
     private RobotStatus robotStatus;
     private MazeUpdateMode mazeUpdateMode;
@@ -47,6 +50,9 @@ public class MazeFragment extends Fragment {
     private Button moveForwardButton;
     private Button turnLeftButton;
     private Button turnRightButton;
+    private Button startFastestPathButton;
+    private Button startExplorationButton;
+    private Button startImageExplorationButton;
     private ToggleButton autoUpdateModeToggleButton;
     private ToggleButton tiltSensingToggleButton;
 
@@ -73,6 +79,9 @@ public class MazeFragment extends Fragment {
         moveForwardButton = root.findViewById(R.id.moveForwardButton);
         turnLeftButton = root.findViewById(R.id.turnLeftButton);
         turnRightButton = root.findViewById(R.id.turnRightButton);
+        startFastestPathButton = root.findViewById(R.id.startFastestPathButton);
+        startExplorationButton = root.findViewById(R.id.startExplorationButton);
+        startImageExplorationButton = root.findViewById(R.id.startImageExplorationButton);
         autoUpdateModeToggleButton = root.findViewById(R.id.autoUpdateModeToggleButton); // TODO: Automatically query for maze update when auto update mode is on
         tiltSensingToggleButton = root.findViewById(R.id.tiltSensingToggleButton); // TODO: Implement tilt sensing control
 
@@ -114,6 +123,30 @@ public class MazeFragment extends Fragment {
         turnRightButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 // TODO: Send turn right signal via Bluetooth
+            }
+        });
+
+        startFastestPathButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Snackbar.make(view, FASTEST_PATH_TASK_STARTED, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                // TODO: Send start fastest path signal via Bluetooth
+            }
+        });
+
+        startExplorationButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Snackbar.make(view, EXPLORATION_TASK_STARTED, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                // TODO: Send start exploration signal via Bluetooth
+            }
+        });
+
+        startImageExplorationButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Snackbar.make(view, EXPLORATION_WITH_IMAGE_RECOGNITION_TASK_STARTED, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                // TODO: Send start exploration with image recognition signal via Bluetooth
             }
         });
 
