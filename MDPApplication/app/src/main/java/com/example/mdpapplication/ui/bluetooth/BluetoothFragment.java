@@ -1,6 +1,14 @@
 package com.example.mdpapplication.ui.bluetooth;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -18,15 +27,20 @@ import com.example.mdpapplication.R;
 import com.example.mdpapplication.service.BluetoothService;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.jetbrains.annotations.NotNull;
+
 public class BluetoothFragment extends Fragment {
+
+    private static final String BLUETOOTH_FRAGMENT_TAG = "BluetoothFragment";
 
     private BluetoothViewModel bluetoothViewModel;
     private BluetoothService bluetoothService;
+    private BluetoothAdapter bluetoothAdapter;
 
     // Snackbar messages
-    private static final String CONNECTING_TO_DEVICE = "Connecting to device ";
-    private static final String CONNECTED_TO_DEVICE = "Connected to device ";
-    private static final String UNABLE_TO_CONNECT_TO_DEVICE = "Unable to connect to device ";
+    private static final String CONNECTING_TO_DEVICE = "Connecting to ";
+    private static final String CONNECTED_TO_DEVICE = "Connected to ";
+    private static final String UNABLE_TO_CONNECT_TO_DEVICE = "Unable to connect to ";
 
     private ListView myDevicesListView;
     private ListView otherDevicesListView;
@@ -43,6 +57,7 @@ public class BluetoothFragment extends Fragment {
                 new ViewModelProvider(this).get(BluetoothViewModel.class);
 
         bluetoothService = new BluetoothService();
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         View root = inflater.inflate(R.layout.fragment_bluetooth, container, false);
         myDevicesListView = root.findViewById(R.id.myDevicesListView);
@@ -51,41 +66,78 @@ public class BluetoothFragment extends Fragment {
         refreshMyDevicesButton = root.findViewById(R.id.refreshMyDevicesButton);
         refreshOtherDevicesButton = root.findViewById(R.id.refreshOtherDevicesButton);
 
-        // Set adapter for myDevicesArrayAdapter
+        // Initialize my devices list
         myDevicesArrayAdapter = new ArrayAdapter<>(this.getContext(), R.layout.device_name);
-        myDevicesListView.setAdapter(myDevicesArrayAdapter); // TODO: Include MAC address for devices
+        myDevicesListView.setAdapter(myDevicesArrayAdapter);
         myDevicesListView.setOnItemClickListener(deviceListClickListener);
-        // TODO: Remove dummy devices
-        myDevicesArrayAdapter.add("Dummy Dummy Device 1");
-        myDevicesArrayAdapter.add("Dummy Dummy Device 2");
+        refreshMyDevicesList();
 
-        // Set adapter for myDevicesArrayAdapter
+        // Initialize other devices list
         otherDevicesArrayAdapter = new ArrayAdapter<>(this.getContext(), R.layout.device_name);
-        otherDevicesListView.setAdapter(otherDevicesArrayAdapter); // TODO: Include MAC address for devices
+        otherDevicesListView.setAdapter(otherDevicesArrayAdapter);
         otherDevicesListView.setOnItemClickListener(deviceListClickListener);
-        // TODO: Remove dummy devices
-        otherDevicesArrayAdapter.add("Dummy Dummy Device A");
-        otherDevicesArrayAdapter.add("Dummy Dummy Device B");
+        refreshOtherDeviceList();
 
         enableBluetoothButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Enable discovery by other bluetooth devices using BluetoothAdapter
+                enableBluetoothDiscovery();
             }
         });
 
         refreshMyDevicesButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Refresh my devices list
+                refreshMyDevicesList();
             }
         });
 
         refreshOtherDevicesButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Refresh other available devices list
+                refreshOtherDeviceList();
             }
         });
 
+        registerBluetoothBroadcastReceiver();
+
         return root;
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////               Methods for UI             ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private void enableBluetoothDiscovery() {
+        if (bluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+            startActivity(discoverableIntent);
+            Log.d(BLUETOOTH_FRAGMENT_TAG, "Enabled bluetooth discoverable");
+        } else {
+            Log.d(BLUETOOTH_FRAGMENT_TAG, "Bluetooth discoverable already enabled");
+        }
+        // TODO: Show Snackbar to indicate bluetooth of the device is made discoverable
+    }
+
+    private void refreshMyDevicesList() {
+        myDevicesArrayAdapter.clear();
+
+        for (BluetoothDevice bluetoothDevice : bluetoothAdapter.getBondedDevices()) {
+            myDevicesArrayAdapter.add(getDeviceNameWithMacAddress(bluetoothDevice));
+        }
+    }
+
+    private void refreshOtherDeviceList() {
+        otherDevicesArrayAdapter.clear();
+
+        // Cancel current discovery session (if any)
+        if (bluetoothAdapter.isDiscovering()) {
+            bluetoothAdapter.cancelDiscovery();
+        }
+
+        // Start new discovery session
+        checkAndRequestBluetoothPermissions();
+        bluetoothAdapter.startDiscovery();
+        getActivity().registerReceiver(bluetoothBroadcastReceiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
     }
 
     private final AdapterView.OnItemClickListener deviceListClickListener = new AdapterView.OnItemClickListener() {
@@ -95,7 +147,7 @@ public class BluetoothFragment extends Fragment {
                     .setAction("Action", null).show();
 
             // Get the device MAC address from device name (the last 17 chars)
-            String macAddress = deviceName.substring(deviceName.length() - 17);
+            String macAddress = deviceName.substring(deviceName.length() - 19, deviceName.length() - 2);
 
             // Call BluetoothService to connect with the selected device
             if (bluetoothService.connectToBluetoothDevice(macAddress)) {
@@ -107,4 +159,58 @@ public class BluetoothFragment extends Fragment {
             }
         }
     };
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////       Methods for BroadcastReceiver      ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private void registerBluetoothBroadcastReceiver() {
+        getActivity().registerReceiver(bluetoothBroadcastReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED));
+        getActivity().registerReceiver(bluetoothBroadcastReceiver, new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED));
+        getActivity().registerReceiver(bluetoothBroadcastReceiver, new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED));
+        getActivity().registerReceiver(bluetoothBroadcastReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
+        getActivity().registerReceiver(bluetoothBroadcastReceiver, new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED));
+    }
+
+    private final BroadcastReceiver bluetoothBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) { // when a remote device is found during discovery
+                Log.d(BLUETOOTH_FRAGMENT_TAG, "bluetoothBroadcastReceiver: ACTION_FOUND");
+                BluetoothDevice bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                String newDevice = getDeviceNameWithMacAddress(bluetoothDevice);
+                otherDevicesArrayAdapter.add(newDevice); // add device to array adapter
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) { // when bluetooth has completed scanning
+                Log.d(BLUETOOTH_FRAGMENT_TAG, "bluetoothBroadcastReceiver: ACTION_DISCOVERY_FINISHED");
+            }
+            // TODO: Handle other intents
+        }
+    };
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////              Helper Methods              ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private void checkAndRequestBluetoothPermissions() {
+        int permissionCheck = ActivityCompat.checkSelfPermission(getContext(), "Manifest.permission.ACCESS_FINE_LOCATION")
+                + ActivityCompat.checkSelfPermission(getContext(), "Manifest.permission.ACCESS_COARSE_LOCATION");
+        if (permissionCheck != 0) {
+            this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION}, 1001);
+        } else {
+            Log.d(BLUETOOTH_FRAGMENT_TAG, "Bluetooth permissions already ");
+        }
+    }
+
+    @NotNull
+    private String getDeviceNameWithMacAddress(BluetoothDevice bluetoothDevice) {
+        if (bluetoothDevice.getName() == null) {
+            return "Unnamed Device" + "\n| MAC Address: " + bluetoothDevice.getAddress() + " |";
+        } else {
+            return bluetoothDevice.getName() + "\n| MAC Address: " + bluetoothDevice.getAddress() + " |";
+        }
+    }
 }
