@@ -178,11 +178,12 @@ public class BluetoothFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) { // when a remote device is found during discovery
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 Log.d(BLUETOOTH_FRAGMENT_TAG, "bluetoothBroadcastReceiver: BluetoothDevice.ACTION_FOUND");
+                // Add new found device to other devices list
                 BluetoothDevice bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String newDevice = getDeviceNameWithMacAddress(bluetoothDevice);
-                otherDevicesArrayAdapter.add(newDevice); // add device to array adapter
+                otherDevicesArrayAdapter.add(newDevice);
             } else if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
                 Log.d(BLUETOOTH_FRAGMENT_TAG, "bluetoothBroadcastReceiver: BluetoothDevice.ACTION_BOND_STATE_CHANGED");
                 refreshMyDevicesList();
