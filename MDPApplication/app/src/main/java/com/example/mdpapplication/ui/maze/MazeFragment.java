@@ -116,7 +116,6 @@ public class MazeFragment extends Fragment {
                         .setAction("Action", null).show();
             }
         });
-
         updateStartPositionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 mazeView.updateStartCoordinates();
@@ -139,13 +138,11 @@ public class MazeFragment extends Fragment {
                 MainActivity.sendRobotMoveForwardCommand();
             }
         });
-
         turnLeftButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 MainActivity.sendRobotTurnLeftCommand();
             }
         });
-
         turnRightButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 MainActivity.sendRobotTurnRightCommand();
@@ -159,7 +156,6 @@ public class MazeFragment extends Fragment {
                         .setAction("Action", null).show();
             }
         });
-
         startExplorationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 MainActivity.sendStartExplorationCommand();
@@ -199,22 +195,19 @@ public class MazeFragment extends Fragment {
         return root;
     }
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////              Public Methods              ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
     public static MazeFragment getInstance() {
         return instance;
     }
 
-    private void updateRobotStatusTextView() {
-        switch (robotStatus) {
-            case RUNNING:
-                textViewRobotStatus.setText(RUNNING_ROBOT_STATUS);
-            case CALIBRATING:
-                textViewRobotStatus.setText(CALIBRATING_ROBOT_STATUS);
-            case REACHED_GOAL:
-                textViewRobotStatus.setText(REACHED_GOAL_ROBOT_STATUS);
-            default:
-                textViewRobotStatus.setText(IDLE_ROBOT_STATUS);
-        }
-    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////          TextView Update Methods         ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     protected void updateSelectedGridTextView(int[] selectedPosition) {
         if (selectedPosition[0] < 0 || selectedPosition[1] < 0) {
@@ -239,6 +232,29 @@ public class MazeFragment extends Fragment {
             textViewStartPostion.setText(String.format("(%d, %d)", startCoordinates[0], startCoordinates[1]));
         }
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////              Helper Methods              ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private void updateRobotStatusTextView() {
+        switch (robotStatus) {
+            case RUNNING:
+                textViewRobotStatus.setText(RUNNING_ROBOT_STATUS);
+            case CALIBRATING:
+                textViewRobotStatus.setText(CALIBRATING_ROBOT_STATUS);
+            case REACHED_GOAL:
+                textViewRobotStatus.setText(REACHED_GOAL_ROBOT_STATUS);
+            default:
+                textViewRobotStatus.setText(IDLE_ROBOT_STATUS);
+        }
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////           Enums & Inner Classes          ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     enum RobotStatus {
         IDLE,
