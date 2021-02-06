@@ -59,7 +59,6 @@ public class MazeFragment extends Fragment {
     private Button turnRightButton;
     private Button startFastestPathButton;
     private Button startExplorationButton;
-    private Button startImageExplorationButton;
     private ToggleButton autoUpdateModeToggleButton;
     private ToggleButton tiltSensingToggleButton;
 
@@ -88,7 +87,6 @@ public class MazeFragment extends Fragment {
         turnRightButton = root.findViewById(R.id.turnRightButton);
         startFastestPathButton = root.findViewById(R.id.startFastestPathButton);
         startExplorationButton = root.findViewById(R.id.startExplorationButton);
-        startImageExplorationButton = root.findViewById(R.id.startImageExplorationButton);
         autoUpdateModeToggleButton = root.findViewById(R.id.autoUpdateModeToggleButton); // TODO: Automatically query for maze update when auto update mode is on
         tiltSensingToggleButton = root.findViewById(R.id.tiltSensingToggleButton); // TODO: Implement tilt sensing control
 
@@ -154,15 +152,6 @@ public class MazeFragment extends Fragment {
                 // TODO: Send start exploration signal via Bluetooth
 
                 Snackbar.make(view, EXPLORATION_TASK_STARTED, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        startImageExplorationButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                // TODO: Send start exploration with image recognition signal via Bluetooth
-
-                Snackbar.make(view, EXPLORATION_WITH_IMAGE_RECOGNITION_TASK_STARTED, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
