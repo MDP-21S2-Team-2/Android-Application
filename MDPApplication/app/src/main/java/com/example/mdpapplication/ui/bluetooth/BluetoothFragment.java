@@ -166,11 +166,12 @@ public class BluetoothFragment extends Fragment {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void registerBluetoothBroadcastReceiver() {
-        getActivity().registerReceiver(bluetoothBroadcastReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED));
         getActivity().registerReceiver(bluetoothBroadcastReceiver, new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED));
         getActivity().registerReceiver(bluetoothBroadcastReceiver, new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED));
-        getActivity().registerReceiver(bluetoothBroadcastReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
         getActivity().registerReceiver(bluetoothBroadcastReceiver, new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED));
+
+        getActivity().registerReceiver(bluetoothBroadcastReceiver, new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED));
+        getActivity().registerReceiver(bluetoothBroadcastReceiver, new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED));
     }
 
     private final BroadcastReceiver bluetoothBroadcastReceiver = new BroadcastReceiver() {
@@ -178,14 +179,22 @@ public class BluetoothFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (BluetoothDevice.ACTION_FOUND.equals(action)) { // when a remote device is found during discovery
-                Log.d(BLUETOOTH_FRAGMENT_TAG, "bluetoothBroadcastReceiver: ACTION_FOUND");
+                Log.d(BLUETOOTH_FRAGMENT_TAG, "bluetoothBroadcastReceiver: BluetoothDevice.ACTION_FOUND");
                 BluetoothDevice bluetoothDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String newDevice = getDeviceNameWithMacAddress(bluetoothDevice);
                 otherDevicesArrayAdapter.add(newDevice); // add device to array adapter
-            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) { // when bluetooth has completed scanning
-                Log.d(BLUETOOTH_FRAGMENT_TAG, "bluetoothBroadcastReceiver: ACTION_DISCOVERY_FINISHED");
+            } else if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
+                Log.d(BLUETOOTH_FRAGMENT_TAG, "bluetoothBroadcastReceiver: BluetoothDevice.ACTION_BOND_STATE_CHANGED");
+                refreshMyDevicesList();
+            } else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action)) {
+                Log.d(BLUETOOTH_FRAGMENT_TAG, "bluetoothBroadcastReceiver: BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED");
+            } else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
+                Log.d(BLUETOOTH_FRAGMENT_TAG, "bluetoothBroadcastReceiver: BluetoothDevice.ACTION_ACL_DISCONNECTED");
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                Log.d(BLUETOOTH_FRAGMENT_TAG, "bluetoothBroadcastReceiver: BluetoothAdapter.ACTION_DISCOVERY_FINISHED");
+            } else if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
+                Log.d(BLUETOOTH_FRAGMENT_TAG, "bluetoothBroadcastReceiver: BluetoothAdapter.ACTION_STATE_CHANGED");
             }
-            // TODO: Handle other intents
         }
     };
 
