@@ -13,6 +13,7 @@ public class BluetoothService {
 
     private static final String BLUETOOTH_SERVICE_HANDLER_TAG = "BluetoothService Handler";
     private static final String BLUETOOTH_SERVICE_TAG = "BluetoothService";
+
     private static final String DEVICE_CONNECTION_WAS_LOST = "device connection was lost";
 
     private boolean isConnected;
@@ -31,7 +32,7 @@ public class BluetoothService {
     ///////////////////////////              Public Methods              ///////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // TODO: Test this method on the tablet
+    // TODO: Test this method with AMD Tool
 
     /**
      * Connect to a Bluetooth device.
@@ -65,6 +66,12 @@ public class BluetoothService {
      */
     public String getConnectedDeviceName() {
         return connectedDeviceName;
+    }
+
+    // TODO: Test this method with AMD Tool
+    public void sendOutMessage(String message) {
+        Log.d(BLUETOOTH_SERVICE_TAG, "Sending message: " + message);
+        bluetoothCommunicationService.write(message.getBytes());
     }
 
 

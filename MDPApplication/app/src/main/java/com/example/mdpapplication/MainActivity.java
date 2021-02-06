@@ -3,6 +3,7 @@ package com.example.mdpapplication;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -21,8 +22,16 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String MAIN_ACTIVITY_TAG = "MainActivity";
+
     private static final String NO_BLUETOOTH_DEVICE_CONNECTED = "There is currently no Bluetooth device connected";
     private static final String DEVICE_IS_CONNECTED_TO = "Your device is connected to ";
+
+    // Message strings
+    private static final String TO_ARDUINO = "AN,AR;";
+    private static final String ROBOT_MOVE_FORWARD = "FORWARD";
+    private static final String ROBOT_TURN_LEFT = "LEFT";
+    private static final String ROBOT_TURN_RIGHT = "RIGHT";
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -97,5 +106,27 @@ public class MainActivity extends AppCompatActivity {
         } else {
             bluetoothStatusFloatingActionButton.setBackgroundTintList(ColorStateList.valueOf(Color.LTGRAY));
         }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////             Send Out Messages            ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public static void sendRobotMoveForwardCommand() {
+        String command = TO_ARDUINO + ROBOT_MOVE_FORWARD;
+        Log.d(MAIN_ACTIVITY_TAG, "Sending robot move forward command: " + command);
+        bluetoothService.sendOutMessage(command);
+    }
+
+    public static void sendRobotTurnLeftCommand() {
+        String command = TO_ARDUINO + ROBOT_TURN_LEFT;
+        Log.d(MAIN_ACTIVITY_TAG, "Sending robot turn left command: " + command);
+        bluetoothService.sendOutMessage(command);
+    }
+
+    public static void sendRobotTurnRightCommand() {
+        String command = TO_ARDUINO + ROBOT_TURN_RIGHT;
+        Log.d(MAIN_ACTIVITY_TAG, "Sending robot turn right command: " + command);
+        bluetoothService.sendOutMessage(command);
     }
 }

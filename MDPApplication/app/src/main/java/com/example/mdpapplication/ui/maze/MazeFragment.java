@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.mdpapplication.MainActivity;
 import com.example.mdpapplication.R;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -122,19 +123,19 @@ public class MazeFragment extends Fragment {
 
         moveForwardButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Send move forward signal via Bluetooth
+                MainActivity.sendRobotMoveForwardCommand();
             }
         });
 
         turnLeftButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Send turn left signal via Bluetooth
+                MainActivity.sendRobotTurnLeftCommand();
             }
         });
 
         turnRightButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Send turn right signal via Bluetooth
+                MainActivity.sendRobotTurnRightCommand();
             }
         });
 
