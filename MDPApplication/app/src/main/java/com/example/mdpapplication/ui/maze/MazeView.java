@@ -279,6 +279,10 @@ public class MazeView extends View {
         mazeFragment.updateSelectedGridTextView(selectedCoordinates);
     }
 
+    protected int[] getWaypointCoordinates() {
+        return waypointCoordinates;
+    }
+
     protected void updateStartCoordinates() {
         // Update start coordinates
         startCoordinates[0] = selectedCoordinates[0];
@@ -297,6 +301,10 @@ public class MazeView extends View {
 
         mazeFragment.updateStartPositionTextView(startCoordinates);
         mazeFragment.updateSelectedGridTextView(selectedCoordinates);
+    }
+
+    protected int[] getStartCoordinates() {
+        return startCoordinates;
     }
 
     /*

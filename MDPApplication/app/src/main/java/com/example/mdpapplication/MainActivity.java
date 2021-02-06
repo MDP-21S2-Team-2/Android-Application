@@ -29,9 +29,12 @@ public class MainActivity extends AppCompatActivity {
 
     // Message strings
     private static final String TO_ARDUINO = "AN,AR;";
+    private static final String TO_ALGORITHM = "AN,AL;";
     private static final String ROBOT_MOVE_FORWARD = "FORWARD";
     private static final String ROBOT_TURN_LEFT = "LEFT";
     private static final String ROBOT_TURN_RIGHT = "RIGHT";
+    private static final String WAYPOINT = "WAYPOINT";
+    private static final String START_POSITION = "START";
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -128,5 +131,17 @@ public class MainActivity extends AppCompatActivity {
         String command = TO_ARDUINO + ROBOT_TURN_RIGHT;
         Log.d(MAIN_ACTIVITY_TAG, "Sending robot turn right command: " + command);
         bluetoothService.sendOutMessage(command);
+    }
+
+    public static void sendWaypointPosition(int[] waypointCoordinates) {
+        String waypointMessage = TO_ALGORITHM + WAYPOINT + "," + waypointCoordinates[0] + ":" + waypointCoordinates[1];
+        Log.d(MAIN_ACTIVITY_TAG, "Sending waypoint message: " + waypointMessage);
+        bluetoothService.sendOutMessage(waypointMessage);
+    }
+
+    public static void sendRobotStartPosition(int[] startCoordinates) {
+        String startPositionMessage = TO_ALGORITHM + START_POSITION + "," + startCoordinates[0] + ":" + startCoordinates[1];
+        Log.d(MAIN_ACTIVITY_TAG, "Sending robot start position message: " + startPositionMessage);
+        bluetoothService.sendOutMessage(startPositionMessage);
     }
 }

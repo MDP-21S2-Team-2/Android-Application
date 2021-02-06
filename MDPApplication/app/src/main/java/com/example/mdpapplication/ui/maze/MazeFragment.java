@@ -38,7 +38,6 @@ public class MazeFragment extends Fragment {
     private static final String TILT_SENSING_MODE_IS_SWITCHED_ON = "Tilt sensing mode is switched ON";
     private static final String FASTEST_PATH_TASK_STARTED = "Fastest path task started";
     private static final String EXPLORATION_TASK_STARTED = "Exploration task started";
-    private static final String EXPLORATION_WITH_IMAGE_RECOGNITION_TASK_STARTED = "Exploration with image recognition task started";
     private static final String MAZE_DISPLAY_UPDATED = "Maze display updated";
     private static final String WAYPOINT_POSITION_UPDATED_TO = "Waypoint position updated to ";
     private static final String ROBOT_START_POSITION_UPDATED_TO = "Robot start position updated to";
@@ -99,6 +98,7 @@ public class MazeFragment extends Fragment {
         updateWaypointButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 mazeView.updateWaypointCoordinates();
+                MainActivity.sendWaypointPosition(mazeView.getWaypointCoordinates());
                 Snackbar.make(view, WAYPOINT_POSITION_UPDATED_TO + textViewWaypoint.getText(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -107,6 +107,7 @@ public class MazeFragment extends Fragment {
         updateStartPositionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 mazeView.updateStartCoordinates();
+                MainActivity.sendRobotStartPosition(mazeView.getStartCoordinates());
                 Snackbar.make(view, ROBOT_START_POSITION_UPDATED_TO + textViewStartPostion.getText(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
