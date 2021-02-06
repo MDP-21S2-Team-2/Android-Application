@@ -21,7 +21,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String THE_CURRENT_BLUETOOTH_STATUS_IS = "The current bluetooth status is: ";
+    private static final String NO_BLUETOOTH_DEVICE_CONNECTED = "There is currently no Bluetooth device connected";
+    private static final String DEVICE_IS_CONNECTED_TO = "Your device is connected to ";
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -43,10 +44,13 @@ public class MainActivity extends AppCompatActivity {
         bluetoothStatusFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, THE_CURRENT_BLUETOOTH_STATUS_IS
-                                + (bluetoothService.isConnectedToBluetoothDevice() ? "CONNECTED" : "NOT CONNECTED"),
-                        Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                if (bluetoothService.isConnectedToBluetoothDevice()) {
+                    Snackbar.make(view, DEVICE_IS_CONNECTED_TO + bluetoothService.getConnectedDeviceName(), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    Snackbar.make(view, NO_BLUETOOTH_DEVICE_CONNECTED, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
             }
         });
         updateBluetoothStatusFloatingActionButtonDisplay();

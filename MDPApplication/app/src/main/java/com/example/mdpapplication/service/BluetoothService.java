@@ -13,9 +13,10 @@ public class BluetoothService {
 
     private static final String BLUETOOTH_SERVICE_HANDLER_TAG = "BluetoothService Handler";
     private static final String BLUETOOTH_SERVICE_TAG = "BluetoothService";
+    private static final String DEVICE_CONNECTION_WAS_LOST = "device connection was lost";
 
-    private String connectedDeviceName;
     private boolean isConnected;
+    private String connectedDeviceName;
 
     private static BluetoothCommunicationService bluetoothCommunicationService;
     private static BluetoothAdapter bluetoothAdapter;
@@ -31,6 +32,7 @@ public class BluetoothService {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     // TODO: Test this method on the tablet
+
     /**
      * Connect to a Bluetooth device.
      *
@@ -56,6 +58,15 @@ public class BluetoothService {
         return isConnected;
     }
 
+    /**
+     * Return connected Bluetooth device name
+     *
+     * @return Name of the connected Bluetooth device
+     */
+    public String getConnectedDeviceName() {
+        return connectedDeviceName;
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////                  Handler                 ///////////////////////////
@@ -67,48 +78,58 @@ public class BluetoothService {
      */
     private final Handler handler = new Handler(Looper.myLooper()) {
         @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
+        public void handleMessage(Message message) {
+            switch (message.what) {
                 case Constants.MESSAGE_STATE_CHANGE:
-                    switch (msg.arg1) {
-                        case BluetoothCommunicationService.STATE_CONNECTED: // bluetooth service has connected to a device
+                    switch (message.arg1) {
+                        case BluetoothCommunicationService.STATE_CONNECTED:
                             Log.d(BLUETOOTH_SERVICE_HANDLER_TAG, "STATE_CONNECTED");
-                            isConnected = true; // TODO: Set to false when disconnected (to receive message via LocalBroadcastManager)
-                            MainActivity.updateBluetoothStatusFloatingActionButtonDisplay();
-                            // TODO: Update bluetooth connection status to BluetoothFragment and MainActivity via LocalBroadcastManager
+                            updateIsConnected(true);
                             break;
-                        case BluetoothCommunicationService.STATE_CONNECTING: // bluetooth service is connecting to a device
+                        case BluetoothCommunicationService.STATE_CONNECTING:
                             Log.d(BLUETOOTH_SERVICE_HANDLER_TAG, "STATE_CONNECTING");
-                            // TODO: Update bluetooth connection status to BluetoothFragment and MainActivity via LocalBroadcastManager
+                            updateIsConnected(false);
                             break;
-                        case BluetoothCommunicationService.STATE_LISTEN: // bluetooth service is listening for devices
+                        case BluetoothCommunicationService.STATE_LISTEN:
                             Log.d(BLUETOOTH_SERVICE_HANDLER_TAG, "STATE_LISTEN");
-                            // TODO: Update bluetooth connection status to BluetoothFragment and MainActivity via LocalBroadcastManager
+                            updateIsConnected(false);
                             break;
                         case BluetoothCommunicationService.STATE_NONE:
                             Log.d(BLUETOOTH_SERVICE_HANDLER_TAG, "STATE_NONE");
-                            // TODO: Update bluetooth connection status to BluetoothFragment and MainActivity via LocalBroadcastManager
+                            updateIsConnected(false);
                             break;
                     }
                     break;
                 case Constants.MESSAGE_READ:
-                    byte[] readBuf = (byte[]) msg.obj;
+                    byte[] readBuf = (byte[]) message.obj;
                     // Construct a string from the valid bytes in the buffer
-                    String readMessage = new String(readBuf, 0, msg.arg1);
+                    String readMessage = new String(readBuf, 0, message.arg1);
                     // TODO: Send received message to respective Fragment / MainActivity via LocalBroadcastManager
                     Log.d(BLUETOOTH_SERVICE_HANDLER_TAG, "MESSAGE_READ - " + readMessage);
                 case Constants.MESSAGE_DEVICE_NAME:
-                    connectedDeviceName = msg.getData().getString(Constants.DEVICE_NAME);
+                    updateIsConnected(true);
+                    connectedDeviceName = message.getData().getString(Constants.DEVICE_NAME);
                     Log.d(BLUETOOTH_SERVICE_HANDLER_TAG, "MESSAGE_DEVICE_NAME - " + connectedDeviceName);
-                    // TODO: Send bluetooth device name to MainActivity via LocalBroadcastManager
-                    // TODO: Update bluetooth connection status to MainActivity via LocalBroadcastManager
                     break;
                 case Constants.MESSAGE_TOAST:
-                    Log.d(BLUETOOTH_SERVICE_HANDLER_TAG, "MESSAGE_TOAST");
-                    // TODO: Check if received message is "Device connection was lost", update bluetooth connection status
-                    // TODO: Update bluetooth connection status to BluetoothFragment and MainActivity via LocalBroadcastManager
+                    String toastMessage = message.getData().getString(Constants.TOAST);
+                    Log.d(BLUETOOTH_SERVICE_HANDLER_TAG, "MESSAGE_TOAST - " + toastMessage);
+                    if (toastMessage.equalsIgnoreCase(DEVICE_CONNECTION_WAS_LOST)) {
+                        isConnected = false;
+                        connectedDeviceName = ""; // set name to empty string since connection was lost
+                        MainActivity.updateBluetoothStatusFloatingActionButtonDisplay();
+                    }
                     break;
             }
         }
     };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////              Helper Methods              ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private void updateIsConnected(boolean isConnectedValue) {
+        isConnected = isConnectedValue;
+        MainActivity.updateBluetoothStatusFloatingActionButtonDisplay();
+    }
 }
