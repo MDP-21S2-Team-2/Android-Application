@@ -7,6 +7,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import com.example.mdpapplication.MainActivity;
+
 public class BluetoothService {
 
     private static final String BLUETOOTH_SERVICE_HANDLER_TAG = "BluetoothService Handler";
@@ -23,9 +25,45 @@ public class BluetoothService {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     }
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////              Public Methods              ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // TODO: Test this method on the tablet
+    /**
+     * Connect to a Bluetooth device.
+     *
+     * @param macAddress MAC address of the Bluetooth device to be connected
+     * @return boolean value indicating whether connection is successful
+     */
+    public boolean connectToBluetoothDevice(String macAddress) {
+        Log.d(BLUETOOTH_SERVICE_TAG, "Connecting to device with MAC address: " + macAddress);
+
+        final BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(macAddress);
+        bluetoothCommunicationService = new BluetoothCommunicationService(handler);
+        bluetoothCommunicationService.connect(bluetoothDevice, false);
+
+        return isConnected;
+    }
+
+    /**
+     * Return Bluetooth connection status
+     *
+     * @return boolean value indicating whether the application is connected to another Bluetooth device
+     */
+    public boolean isConnectedToBluetoothDevice() {
+        return isConnected;
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////                  Handler                 ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
     // This method is adopted from The Android Open Source Project by Google
     /**
-     * The Handler that gets information back from the BluetoothCommunicationService
+     * This handler handles messages from the BluetoothCommunicationService
      */
     private final Handler handler = new Handler(Looper.myLooper()) {
         @Override
@@ -36,6 +74,7 @@ public class BluetoothService {
                         case BluetoothCommunicationService.STATE_CONNECTED: // bluetooth service has connected to a device
                             Log.d(BLUETOOTH_SERVICE_HANDLER_TAG, "STATE_CONNECTED");
                             isConnected = true; // TODO: Set to false when disconnected (to receive message via LocalBroadcastManager)
+                            MainActivity.updateBluetoothStatusFloatingActionButtonDisplay();
                             // TODO: Update bluetooth connection status to BluetoothFragment and MainActivity via LocalBroadcastManager
                             break;
                         case BluetoothCommunicationService.STATE_CONNECTING: // bluetooth service is connecting to a device
@@ -72,20 +111,4 @@ public class BluetoothService {
             }
         }
     };
-
-    /**
-     * Connect to a Bluetooth device.
-     *
-     * @param macAddress MAC address of the Bluetooth device to be connected
-     * @return boolean value indicating whether connection is successful
-     */
-    // TODO: Test this method on the tablet
-    public boolean connectToBluetoothDevice(String macAddress) {
-        Log.d(BLUETOOTH_SERVICE_TAG, "Connecting to device with MAC address: " + macAddress);
-
-        final BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(macAddress);
-        bluetoothCommunicationService = new BluetoothCommunicationService(handler);
-        bluetoothCommunicationService.connect(bluetoothDevice, false);
-        return isConnected;
-    }
 }

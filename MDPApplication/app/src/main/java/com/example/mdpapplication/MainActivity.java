@@ -1,5 +1,7 @@
 package com.example.mdpapplication;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -19,7 +21,11 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String THE_CURRENT_BLUETOOTH_STATUS_IS = "The current bluetooth status is: ";
+
     private AppBarConfiguration mAppBarConfiguration;
+
+    private static FloatingActionButton bluetoothStatusFloatingActionButton;
 
     private static BluetoothService bluetoothService;
 
@@ -33,16 +39,17 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton bluetoothStatusFloatingActionButton = findViewById(R.id.bluetoothStatusFloatingActionButton);
+        bluetoothStatusFloatingActionButton = findViewById(R.id.bluetoothStatusFloatingActionButton);
         bluetoothStatusFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Display current bluetooth status
-                Snackbar.make(view, "The current bluetooth status is: NOT CONNECTED", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, THE_CURRENT_BLUETOOTH_STATUS_IS
+                                + (bluetoothService.isConnectedToBluetoothDevice() ? "CONNECTED" : "NOT CONNECTED"),
+                        Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
-        // TODO: Update bluetoothStatusFloatingActionButton background color when bluetooth status changes
+        updateBluetoothStatusFloatingActionButtonDisplay();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -71,7 +78,20 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////              Public Methods              ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
     public static BluetoothService getBluetoothService() {
         return bluetoothService;
+    }
+
+    public static void updateBluetoothStatusFloatingActionButtonDisplay() {
+        if (bluetoothService.isConnectedToBluetoothDevice()) {
+            bluetoothStatusFloatingActionButton.setBackgroundTintList(ColorStateList.valueOf(Color.CYAN));
+        } else {
+            bluetoothStatusFloatingActionButton.setBackgroundTintList(ColorStateList.valueOf(Color.LTGRAY));
+        }
     }
 }
