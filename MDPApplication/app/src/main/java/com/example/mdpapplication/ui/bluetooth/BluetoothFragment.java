@@ -25,7 +25,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mdpapplication.MainActivity;
 import com.example.mdpapplication.R;
-import com.example.mdpapplication.service.BluetoothService;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
@@ -41,6 +40,7 @@ public class BluetoothFragment extends Fragment {
     private static final String CONNECTING_TO_DEVICE = "Connecting to ";
     private static final String CONNECTED_TO_DEVICE = "Connected to ";
     private static final String UNABLE_TO_CONNECT_TO_DEVICE = "Unable to connect to ";
+    private static final String DEVICE_IS_DISCOVERABLE = "Your device is now discoverable via Bluetooth";
 
     private ListView myDevicesListView;
     private ListView otherDevicesListView;
@@ -79,7 +79,7 @@ public class BluetoothFragment extends Fragment {
 
         enableBluetoothButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                enableBluetoothDiscovery();
+                enableBluetoothDiscovery(view);
             }
         });
 
@@ -105,7 +105,7 @@ public class BluetoothFragment extends Fragment {
     ///////////////////////////               Methods for UI             ///////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private void enableBluetoothDiscovery() {
+    private void enableBluetoothDiscovery(View view) {
         if (bluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
@@ -114,7 +114,9 @@ public class BluetoothFragment extends Fragment {
         } else {
             Log.d(BLUETOOTH_FRAGMENT_TAG, "Bluetooth discoverable already enabled");
         }
-        // TODO: Show Snackbar to indicate bluetooth of the device is made discoverable
+
+        Snackbar.make(view, DEVICE_IS_DISCOVERABLE, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
     private void refreshMyDevicesList() {
