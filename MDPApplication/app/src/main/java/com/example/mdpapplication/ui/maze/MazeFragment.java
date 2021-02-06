@@ -115,8 +115,7 @@ public class MazeFragment extends Fragment {
 
         manualUpdateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Query for maze update and update maze display when button is clicked
-
+                MainActivity.sendMazeUpdateRequest(); // TODO: Update maze display when response is received
                 Snackbar.make(view, MAZE_DISPLAY_UPDATED, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -142,8 +141,7 @@ public class MazeFragment extends Fragment {
 
         startFastestPathButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Send start fastest path signal via Bluetooth
-
+                MainActivity.sendStartFastestPathCommand();
                 Snackbar.make(view, FASTEST_PATH_TASK_STARTED, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -151,8 +149,7 @@ public class MazeFragment extends Fragment {
 
         startExplorationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Send start exploration signal via Bluetooth
-
+                MainActivity.sendStartExplorationCommand();
                 Snackbar.make(view, EXPLORATION_TASK_STARTED, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -220,7 +217,6 @@ public class MazeFragment extends Fragment {
         } else {
             textViewWaypoint.setText(String.format("(%d, %d)", waypointCoordinates[0], waypointCoordinates[1]));
         }
-        // TODO: Send waypoint position via Bluetooth
     }
 
     protected void updateStartPositionTextView(int[] startCoordinates) {
@@ -229,7 +225,6 @@ public class MazeFragment extends Fragment {
         } else {
             textViewStartPostion.setText(String.format("(%d, %d)", startCoordinates[0], startCoordinates[1]));
         }
-        // TODO: Send start position via Bluetooth
     }
 
     enum RobotStatus {

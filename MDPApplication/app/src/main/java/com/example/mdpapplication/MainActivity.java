@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String ROBOT_TURN_RIGHT = "RIGHT";
     private static final String WAYPOINT = "WAYPOINT";
     private static final String START_POSITION = "START";
+    private static final String MAZE_UPDATE = "UPDATE";
+    private static final String START_FASTEST_PATH = "FP";
+    private static final String START_EXPLORATION = "EXP";
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -143,5 +146,23 @@ public class MainActivity extends AppCompatActivity {
         String startPositionMessage = TO_ALGORITHM + START_POSITION + "," + startCoordinates[0] + ":" + startCoordinates[1];
         Log.d(MAIN_ACTIVITY_TAG, "Sending robot start position message: " + startPositionMessage);
         bluetoothService.sendOutMessage(startPositionMessage);
+    }
+
+    public static void sendMazeUpdateRequest() {
+        String mazeUpdateRequestMessage = TO_ALGORITHM + MAZE_UPDATE;
+        Log.d(MAIN_ACTIVITY_TAG, "Sending maze update request message: " + mazeUpdateRequestMessage);
+        bluetoothService.sendOutMessage(mazeUpdateRequestMessage);
+    }
+
+    public static void sendStartFastestPathCommand() {
+        String startFastestPathCommand = TO_ALGORITHM + START_FASTEST_PATH;
+        Log.d(MAIN_ACTIVITY_TAG, "Sending start fastest path command: " + startFastestPathCommand);
+        bluetoothService.sendOutMessage(startFastestPathCommand);
+    }
+
+    public static void sendStartExplorationCommand() {
+        String startExplorationCommand = TO_ALGORITHM + START_EXPLORATION;
+        Log.d(MAIN_ACTIVITY_TAG, "Sending start exploration command: " + startExplorationCommand);
+        bluetoothService.sendOutMessage(startExplorationCommand);
     }
 }
