@@ -10,6 +10,7 @@ import android.util.Log;
 public class BluetoothService {
 
     private static final String BLUETOOTH_SERVICE_HANDLER_TAG = "BluetoothService Handler";
+    private static final String BLUETOOTH_SERVICE_TAG = "BluetoothService";
 
     private String connectedDeviceName;
     private boolean isConnected;
@@ -60,8 +61,8 @@ public class BluetoothService {
                 case Constants.MESSAGE_DEVICE_NAME:
                     connectedDeviceName = msg.getData().getString(Constants.DEVICE_NAME);
                     Log.d(BLUETOOTH_SERVICE_HANDLER_TAG, "MESSAGE_DEVICE_NAME - " + connectedDeviceName);
-                    // TODO: Send bluetooth device name to BluetoothFragment via LocalBroadcastManager
-                    // TODO: Update bluetooth connection status to BluetoothFragment and MainActivity via LocalBroadcastManager
+                    // TODO: Send bluetooth device name to MainActivity via LocalBroadcastManager
+                    // TODO: Update bluetooth connection status to MainActivity via LocalBroadcastManager
                     break;
                 case Constants.MESSAGE_TOAST:
                     Log.d(BLUETOOTH_SERVICE_HANDLER_TAG, "MESSAGE_TOAST");
@@ -80,6 +81,8 @@ public class BluetoothService {
      */
     // TODO: Test this method on the tablet
     public boolean connectToBluetoothDevice(String macAddress) {
+        Log.d(BLUETOOTH_SERVICE_TAG, "Connecting to device with MAC address: " + macAddress);
+
         final BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(macAddress);
         bluetoothCommunicationService = new BluetoothCommunicationService(handler);
         bluetoothCommunicationService.connect(bluetoothDevice, false);

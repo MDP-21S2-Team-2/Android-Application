@@ -23,6 +23,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.mdpapplication.MainActivity;
 import com.example.mdpapplication.R;
 import com.example.mdpapplication.service.BluetoothService;
 import com.google.android.material.snackbar.Snackbar;
@@ -34,7 +35,6 @@ public class BluetoothFragment extends Fragment {
     private static final String BLUETOOTH_FRAGMENT_TAG = "BluetoothFragment";
 
     private BluetoothViewModel bluetoothViewModel;
-    private BluetoothService bluetoothService;
     private BluetoothAdapter bluetoothAdapter;
 
     // Snackbar messages
@@ -56,7 +56,6 @@ public class BluetoothFragment extends Fragment {
         bluetoothViewModel =
                 new ViewModelProvider(this).get(BluetoothViewModel.class);
 
-        bluetoothService = new BluetoothService();
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         View root = inflater.inflate(R.layout.fragment_bluetooth, container, false);
@@ -150,7 +149,7 @@ public class BluetoothFragment extends Fragment {
             String macAddress = deviceName.substring(deviceName.length() - 19, deviceName.length() - 2);
 
             // Call BluetoothService to connect with the selected device
-            if (bluetoothService.connectToBluetoothDevice(macAddress)) {
+            if (MainActivity.getBluetoothService().connectToBluetoothDevice(macAddress)) {
                 Snackbar.make(view, CONNECTED_TO_DEVICE + deviceName, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             } else {
