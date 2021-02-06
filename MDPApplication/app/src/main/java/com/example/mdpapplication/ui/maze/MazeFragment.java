@@ -16,6 +16,9 @@ import com.example.mdpapplication.MainActivity;
 import com.example.mdpapplication.R;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MazeFragment extends Fragment {
 
     private MazeViewModel mazeViewModel;
@@ -41,6 +44,11 @@ public class MazeFragment extends Fragment {
     private static final String MAZE_DISPLAY_UPDATED = "Maze display updated";
     private static final String WAYPOINT_POSITION_UPDATED_TO = "Waypoint position updated to ";
     private static final String ROBOT_START_POSITION_UPDATED_TO = "Robot start position updated to";
+
+    private Timer timer;
+    private SendMazeUpdateRequestTask sendMazeUpdateRequestTask;
+    private static final int MAZE_UPDATE_DELAY = 0;
+    private static final int MAZE_UPDATE_INTERVAL = 5000;
 
     private RobotStatus robotStatus;
     private MazeUpdateMode mazeUpdateMode;
@@ -69,12 +77,15 @@ public class MazeFragment extends Fragment {
 
         instance = this;
 
+        timer = new Timer();
+        sendMazeUpdateRequestTask = new SendMazeUpdateRequestTask();
+
         robotStatus = RobotStatus.IDLE;
         mazeUpdateMode = MazeUpdateMode.MANUAL;
         tiltSensingMode = false;
 
         View root = inflater.inflate(R.layout.fragment_maze, container, false);
-        mazeView = root.findViewById(R.id.mazeView);
+        mazeView = root.findViewById(R.id.mazeView); // TODO: Update maze view based on data received
         textViewRobotStatus = root.findViewById(R.id.robotStatusTextView); // TODO: Update robot status based on data received
         textViewWaypoint = root.findViewById(R.id.waypointTextView);
         textViewStartPostion = root.findViewById(R.id.startPositionTextView);
@@ -87,8 +98,10 @@ public class MazeFragment extends Fragment {
         turnRightButton = root.findViewById(R.id.turnRightButton);
         startFastestPathButton = root.findViewById(R.id.startFastestPathButton);
         startExplorationButton = root.findViewById(R.id.startExplorationButton);
-        autoUpdateModeToggleButton = root.findViewById(R.id.autoUpdateModeToggleButton); // TODO: Automatically query for maze update when auto update mode is on
+        autoUpdateModeToggleButton = root.findViewById(R.id.autoUpdateModeToggleButton);
         tiltSensingToggleButton = root.findViewById(R.id.tiltSensingToggleButton); // TODO: Implement tilt sensing control
+
+        timer.schedule(sendMazeUpdateRequestTask, MAZE_UPDATE_DELAY, MAZE_UPDATE_INTERVAL);
 
         updateRobotStatusTextView();
         textViewWaypoint.setText(N_A_COORDINATES);
@@ -237,5 +250,13 @@ public class MazeFragment extends Fragment {
     enum MazeUpdateMode {
         AUTO,
         MANUAL,
+    }
+
+    class SendMazeUpdateRequestTask extends TimerTask {
+        public void run() {
+            if (autoUpdateModeToggleButton.isChecked()) {
+                MainActivity.sendMazeUpdateRequest();
+            }
+        }
     }
 }
