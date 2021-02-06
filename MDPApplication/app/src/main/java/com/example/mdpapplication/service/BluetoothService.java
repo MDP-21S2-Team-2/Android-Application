@@ -8,6 +8,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.example.mdpapplication.MainActivity;
+import com.example.mdpapplication.ui.communication.CommunicationFragment;
 
 public class BluetoothService {
 
@@ -32,14 +33,13 @@ public class BluetoothService {
     ///////////////////////////              Public Methods              ///////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // TODO: Test this method with AMD Tool
-
     /**
      * Connect to a Bluetooth device.
      *
      * @param macAddress MAC address of the Bluetooth device to be connected
-     * @return boolean value indicating whether connection is successful
+     * @return Boolean value indicating whether connection is successful
      */
+    // TODO: Test this method with AMD Tool
     public boolean connectToBluetoothDevice(String macAddress) {
         Log.d(BLUETOOTH_SERVICE_TAG, "Connecting to device with MAC address: " + macAddress);
 
@@ -53,7 +53,7 @@ public class BluetoothService {
     /**
      * Return Bluetooth connection status
      *
-     * @return boolean value indicating whether the application is connected to another Bluetooth device
+     * @return Boolean value indicating whether the application is connected to another Bluetooth device
      */
     public boolean isConnectedToBluetoothDevice() {
         return isConnected;
@@ -68,6 +68,11 @@ public class BluetoothService {
         return connectedDeviceName;
     }
 
+    /**
+     * Send out message to the connected Bluetooth device
+     *
+     * @param message The message to be sent out
+     */
     // TODO: Test this method with AMD Tool
     public void sendOutMessage(String message) {
         Log.d(BLUETOOTH_SERVICE_TAG, "Sending message: " + message);
@@ -108,11 +113,13 @@ public class BluetoothService {
                     }
                     break;
                 case Constants.MESSAGE_READ:
-                    byte[] readBuf = (byte[]) message.obj;
-                    // Construct a string from the valid bytes in the buffer
-                    String readMessage = new String(readBuf, 0, message.arg1);
-                    // TODO: Send received message to respective Fragment / MainActivity via LocalBroadcastManager
+                    byte[] readBytes = (byte[]) message.obj;
+                    String readMessage = new String(readBytes, 0, message.arg1);
                     Log.d(BLUETOOTH_SERVICE_HANDLER_TAG, "MESSAGE_READ - " + readMessage);
+
+                    // Always display the received text in receive data section in CommunicationFragment
+                    CommunicationFragment.getInstance().updateReceivedStrings(readMessage);
+                    // TODO: Update maze display if it is maze update response
                 case Constants.MESSAGE_DEVICE_NAME:
                     updateIsConnected(true);
                     connectedDeviceName = message.getData().getString(Constants.DEVICE_NAME);

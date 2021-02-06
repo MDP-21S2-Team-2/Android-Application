@@ -3,6 +3,7 @@ package com.example.mdpapplication.ui.communication;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +18,19 @@ import com.example.mdpapplication.R;
 
 public class CommunicationFragment extends Fragment {
 
+    private CommunicationViewModel communicationViewModel;
+
+    private static CommunicationFragment instance;
+
     private static final String PERSISTENT_STRING_KEY_1 = "persistent_string_1";
     private static final String PERSISTENT_STRING_KEY_2 = "persistent_string_2";
     private static final String PERSISTENT_STRING_DEFAULT_1 = "This is persistent text string 1";
     private static final String PERSISTENT_STRING_DEFAULT_2 = "This is persistent text string 2";
     private static final String RECEIVED_DATA_PLACEHOLDER = "Your received text strings will appear here";
 
-    private CommunicationViewModel communicationViewModel;
+
+    private String receivedStrings;
+
     private TextView textViewPersistentCommunicationString1;
     private TextView textViewPersistentCommunicationString2;
     private TextView textViewVolatileCommunicationString;
@@ -38,6 +45,10 @@ public class CommunicationFragment extends Fragment {
         communicationViewModel =
                 new ViewModelProvider(this).get(CommunicationViewModel.class);
 
+        instance = this;
+
+        receivedStrings = "";
+
         View root = inflater.inflate(R.layout.fragment_communication, container, false);
         textViewPersistentCommunicationString1 = root.findViewById(R.id.editTextCommunicationString1);
         textViewPersistentCommunicationString2 = root.findViewById(R.id.editTextCommunicationString2);
@@ -47,6 +58,8 @@ public class CommunicationFragment extends Fragment {
         persistentStringSendButton2 = root.findViewById(R.id.stringSendButton2);
         volatileStringSendButton = root.findViewById(R.id.stringSendButton);
         receivedDataClearButton = root.findViewById(R.id.receivedDataClearButton);
+
+        textViewReceivedStrings.setMovementMethod(new ScrollingMovementMethod());
 
         persistentStringSendButton1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -69,6 +82,7 @@ public class CommunicationFragment extends Fragment {
         receivedDataClearButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 textViewReceivedStrings.setText(RECEIVED_DATA_PLACEHOLDER);
+                receivedStrings = "";
             }
         });
 
@@ -100,5 +114,14 @@ public class CommunicationFragment extends Fragment {
         String communicationStringValue2 = sharedPreferences.getString(PERSISTENT_STRING_KEY_2, PERSISTENT_STRING_DEFAULT_2);
         textViewPersistentCommunicationString1.setText(communicationStringValue1);
         textViewPersistentCommunicationString2.setText(communicationStringValue2);
+    }
+
+    public static CommunicationFragment getInstance() {
+        return instance;
+    }
+
+    public void updateReceivedStrings(String newReceivedString) {
+        receivedStrings = newReceivedString + "\n" + receivedStrings;
+        textViewReceivedStrings.setText(receivedStrings);
     }
 }
