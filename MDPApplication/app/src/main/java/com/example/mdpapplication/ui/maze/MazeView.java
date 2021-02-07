@@ -324,6 +324,17 @@ public class MazeView extends View {
         invalidate();
     }
 
+    protected void updateObstacles(String mdfString) {
+        for (int i = 0; i < COLUMN_NUM; i++) {
+            for (int j = 0; j < ROW_NUM; j++) {
+                obstacles[i][j] = mdfString.charAt(j * COLUMN_NUM + i) == '1';
+            }
+        }
+
+        // Redraw the canvas
+        invalidate();
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////               Inner Classes              ///////////////////////////

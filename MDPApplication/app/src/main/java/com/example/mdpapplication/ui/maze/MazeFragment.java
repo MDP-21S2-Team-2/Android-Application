@@ -242,6 +242,12 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         updateRobotStatusTextView();
     }
 
+    public void updateObstacles(String mdfString) {
+        Log.d(MAZE_FRAGMENT_TAG, "Updating obstacles in maze: " + mdfString);
+
+        mazeView.updateObstacles(mdfString);
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////          TextView Update Methods         ///////////////////////////

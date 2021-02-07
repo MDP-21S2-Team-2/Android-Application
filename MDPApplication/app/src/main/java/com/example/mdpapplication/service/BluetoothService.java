@@ -78,7 +78,7 @@ public class BluetoothService {
     public void sendOutMessage(String message) {
         Log.d(BLUETOOTH_SERVICE_TAG, "Sending message: " + message);
         bluetoothCommunicationService.write(message.getBytes());
-//        processMazeUpdateResponseMessage("ROBOT,CALIBRATING,180,5:10"); // TODO: Remove
+//        processMazeUpdateResponseMessage("ROBOT,CALIBRATING,180,5:10;MDF,000000000000000000000000000000011100000000000000000000000000000000000000000000001110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"); // TODO: Remove
     }
 
 
@@ -161,8 +161,14 @@ public class BluetoothService {
                 int robotDirection = Integer.parseInt(robotInfoArr[2]);
                 int robotX = Integer.parseInt(robotInfoArr[3].split(":")[0]);
                 int robotY = Integer.parseInt(robotInfoArr[3].split(":")[1]);
+
                 MazeFragment.getInstance().updateRobotDisplay(new int[]{robotX, robotY}, robotDirection);
                 MazeFragment.getInstance().updateRobotStatus(robotStatus);
+            } else if (info.startsWith("MDF")) {
+                String[] mdfInfoArr = info.split(",");
+                String mdfString = mdfInfoArr[1];
+
+                MazeFragment.getInstance().updateObstacles(mdfString);
             }
         }
     }
