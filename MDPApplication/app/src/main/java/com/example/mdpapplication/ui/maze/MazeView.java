@@ -66,7 +66,7 @@ public class MazeView extends View {
         selectedGridPaint.setColor(Color.BLUE);
         waypointPaint.setColor(Color.GREEN);
         numberIdPaint.setColor(Color.WHITE);
-        numberIdPaint.setTextSize(40f);
+        numberIdPaint.setTextSize(30f);
 
         robotPosition = new RobotPosition(new int[]{1, 1}, 0); // TODO: Update robot position based on data received
         obstacles = new boolean[COLUMN_NUM][ROW_NUM]; // TODO: Update the boolean matrix based on data received
@@ -232,9 +232,9 @@ public class MazeView extends View {
             // Draw the image number ID
             int pixelY = (ROW_NUM - imageY) * gridSize - 12;
             if (imageNumberId < 10 && imageNumberId > 0) {
-                canvas.drawText(String.valueOf(imageNumberId), imageX * gridSize + 18, pixelY, numberIdPaint);
+                canvas.drawText(String.valueOf(imageNumberId), imageX * gridSize + 10, pixelY, numberIdPaint);
             } else if (imageNumberId > 9 && imageNumberId < 16) {
-                canvas.drawText(String.valueOf(imageNumberId), imageX * gridSize + 5, pixelY, numberIdPaint);
+                canvas.drawText(String.valueOf(imageNumberId), imageX * gridSize + 3, pixelY, numberIdPaint);
             }
         }
     }
@@ -330,6 +330,13 @@ public class MazeView extends View {
                 obstacles[i][j] = mdfString.charAt(j * COLUMN_NUM + i) == '1';
             }
         }
+
+        // Redraw the canvas
+        invalidate();
+    }
+
+    protected void updateImageInfoList(List<int[]> newImageInfoList) {
+        imageInfoList = newImageInfoList;
 
         // Redraw the canvas
         invalidate();

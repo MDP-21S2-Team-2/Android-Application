@@ -11,6 +11,9 @@ import com.example.mdpapplication.MainActivity;
 import com.example.mdpapplication.ui.communication.CommunicationFragment;
 import com.example.mdpapplication.ui.maze.MazeFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BluetoothService {
 
     private static final String BLUETOOTH_SERVICE_HANDLER_TAG = "BluetoothService Handler";
@@ -78,7 +81,7 @@ public class BluetoothService {
     public void sendOutMessage(String message) {
         Log.d(BLUETOOTH_SERVICE_TAG, "Sending message: " + message);
         bluetoothCommunicationService.write(message.getBytes());
-//        processMazeUpdateResponseMessage("ROBOT,CALIBRATING,180,5:10;MDF,000000000000000000000000000000011100000000000000000000000000000000000000000000001110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"); // TODO: Remove
+//        processMazeUpdateResponseMessage("ROBOT,CALIBRATING,180,5:10;MDF,000000000000000000000000000000011100000000000000000000000000000000000000000000001110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;IMAGE,4:5:10,6:6:8"); // TODO: Remove
     }
 
 
@@ -169,6 +172,20 @@ public class BluetoothService {
                 String mdfString = mdfInfoArr[1];
 
                 MazeFragment.getInstance().updateObstacles(mdfString);
+            } else if (info.startsWith("IMAGE")) {
+                String[] imageInfoArr = info.split(",");
+                List<int[]> imageInfoList = new ArrayList<>();
+                for (int i = 1; i < imageInfoArr.length; i++) {
+                    String imageInfo = imageInfoArr[i];
+                    String[] imageInfoValues = imageInfo.split(":");
+                    imageInfoList.add(new int[] {
+                            Integer.parseInt(imageInfoValues[0]),
+                            Integer.parseInt(imageInfoValues[1]),
+                            Integer.parseInt(imageInfoValues[2])
+                    });
+                }
+
+                MazeFragment.getInstance().updateImageInfoList(imageInfoList);
             }
         }
     }

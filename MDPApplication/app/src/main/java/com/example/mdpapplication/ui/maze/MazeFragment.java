@@ -21,6 +21,8 @@ import com.example.mdpapplication.MainActivity;
 import com.example.mdpapplication.R;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -246,6 +248,12 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         Log.d(MAZE_FRAGMENT_TAG, "Updating obstacles in maze: " + mdfString);
 
         mazeView.updateObstacles(mdfString);
+    }
+
+    public void updateImageInfoList(List<int[]> imageInfoList) {
+        Log.d(MAZE_FRAGMENT_TAG, "Updating image info list: " + Arrays.deepToString(imageInfoList.toArray()));
+
+        mazeView.updateImageInfoList(imageInfoList);
     }
 
 
