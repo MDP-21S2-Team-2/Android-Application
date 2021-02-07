@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.example.mdpapplication.MainActivity;
 import com.example.mdpapplication.ui.communication.CommunicationFragment;
+import com.example.mdpapplication.ui.maze.MazeFragment;
 
 public class BluetoothService {
 
@@ -77,6 +78,7 @@ public class BluetoothService {
     public void sendOutMessage(String message) {
         Log.d(BLUETOOTH_SERVICE_TAG, "Sending message: " + message);
         bluetoothCommunicationService.write(message.getBytes());
+//        processMazeUpdateResponseMessage("ROBOT,CALIBRATING,180,5:10"); // TODO: Remove
     }
 
 
@@ -121,6 +123,7 @@ public class BluetoothService {
                     // Always display the received text in receive data section in CommunicationFragment
                     CommunicationFragment.getInstance().updateReceivedStrings(readMessage);
                     // TODO: Update maze display if it is maze update response
+                    processMazeUpdateResponseMessage(readMessage);
                 case Constants.MESSAGE_DEVICE_NAME:
                     updateIsConnected(true);
                     connectedDeviceName = message.getData().getString(Constants.DEVICE_NAME);
@@ -146,5 +149,21 @@ public class BluetoothService {
     private void updateIsConnected(boolean isConnectedValue) {
         isConnected = isConnectedValue;
         MainActivity.updateBluetoothStatusFloatingActionButtonDisplay();
+    }
+
+    private void processMazeUpdateResponseMessage(String mazeUpdateResponseMessage) {
+        // Message format: ROBOT,IDLE/RUNNING/CALIBRATING/ARRIVED,0/90/180/270,X:Y;MDF,000011000...;IMAGE,X1:Y1:ID1,X2:Y2:ID2,...Xn:Yn:IDn
+        String[] infoArr = mazeUpdateResponseMessage.split(";");
+        for (String info : infoArr) {
+            if (info.startsWith("ROBOT")) {
+                String[] robotInfoArr = info.split(",");
+                String robotStatus = robotInfoArr[1];
+                int robotDirection = Integer.parseInt(robotInfoArr[2]);
+                int robotX = Integer.parseInt(robotInfoArr[3].split(":")[0]);
+                int robotY = Integer.parseInt(robotInfoArr[3].split(":")[1]);
+                MazeFragment.getInstance().updateRobotDisplay(new int[]{robotX, robotY}, robotDirection);
+                MazeFragment.getInstance().updateRobotStatus(robotStatus);
+            }
+        }
     }
 }

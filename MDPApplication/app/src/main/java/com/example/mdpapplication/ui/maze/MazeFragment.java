@@ -5,6 +5,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import java.util.TimerTask;
 import static android.content.Context.SENSOR_SERVICE;
 
 public class MazeFragment extends Fragment implements SensorEventListener {
+
+    private static final String MAZE_FRAGMENT_TAG = "MazeFragment";
 
     private MazeViewModel mazeViewModel;
 
@@ -98,7 +101,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
 
         View root = inflater.inflate(R.layout.fragment_maze, container, false);
         mazeView = root.findViewById(R.id.mazeView); // TODO: Update maze view based on data received
-        textViewRobotStatus = root.findViewById(R.id.robotStatusTextView); // TODO: Update robot status based on data received
+        textViewRobotStatus = root.findViewById(R.id.robotStatusTextView);
         textViewWaypoint = root.findViewById(R.id.waypointTextView);
         textViewStartPostion = root.findViewById(R.id.startPositionTextView);
         textViewSelectedGrid = root.findViewById(R.id.selectedGridTextView);
@@ -216,6 +219,29 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         return instance;
     }
 
+    public void updateRobotDisplay(int[] robotCoordinates, int robotDirection) {
+        Log.d(MAZE_FRAGMENT_TAG, "Updating robot coordinates: " + robotCoordinates[0] + ", " + robotCoordinates[1]);
+        Log.d(MAZE_FRAGMENT_TAG, "Updating robot direction: " + robotDirection);
+
+        mazeView.updateRobotCoordinates(robotCoordinates, robotDirection);
+    }
+
+    public void updateRobotStatus(String robotStatusString) {
+        Log.d(MAZE_FRAGMENT_TAG, "Updating robot status: " + robotStatusString);
+
+        if (robotStatusString.equalsIgnoreCase("IDLE")) {
+            robotStatus = RobotStatus.IDLE;
+        } else if (robotStatusString.equalsIgnoreCase("RUNNING")) {
+            robotStatus = RobotStatus.RUNNING;
+        } else if (robotStatusString.equalsIgnoreCase("CALIBRATING")) {
+            robotStatus = RobotStatus.CALIBRATING;
+        } else if (robotStatusString.equalsIgnoreCase("REACHED_GOAL")) {
+            robotStatus = RobotStatus.REACHED_GOAL;
+        }
+
+        updateRobotStatusTextView();
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////          TextView Update Methods         ///////////////////////////
@@ -276,18 +302,16 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void updateRobotStatusTextView() {
-        switch (robotStatus) {
-            case RUNNING:
-                textViewRobotStatus.setText(RUNNING_ROBOT_STATUS);
-            case CALIBRATING:
-                textViewRobotStatus.setText(CALIBRATING_ROBOT_STATUS);
-            case REACHED_GOAL:
-                textViewRobotStatus.setText(REACHED_GOAL_ROBOT_STATUS);
-            default:
-                textViewRobotStatus.setText(IDLE_ROBOT_STATUS);
+        if (robotStatus.equals(RobotStatus.IDLE)) {
+            textViewRobotStatus.setText(IDLE_ROBOT_STATUS);
+        } else if (robotStatus.equals(RobotStatus.RUNNING)) {
+            textViewRobotStatus.setText(RUNNING_ROBOT_STATUS);
+        } else if (robotStatus.equals(RobotStatus.CALIBRATING)) {
+            textViewRobotStatus.setText(CALIBRATING_ROBOT_STATUS);
+        } else if (robotStatus.equals(RobotStatus.REACHED_GOAL)) {
+            textViewRobotStatus.setText(REACHED_GOAL_ROBOT_STATUS);
         }
     }
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////           Enums & Inner Classes          ///////////////////////////
