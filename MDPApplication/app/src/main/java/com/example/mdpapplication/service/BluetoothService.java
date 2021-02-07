@@ -93,6 +93,7 @@ public class BluetoothService {
     /**
      * This handler handles messages from the BluetoothCommunicationService
      */
+    // TODO: Test this class on AMD Tool
     private final Handler handler = new Handler(Looper.myLooper()) {
         @Override
         public void handleMessage(Message message) {
@@ -118,14 +119,13 @@ public class BluetoothService {
                     }
                     break;
                 case Constants.MESSAGE_READ:
-                    // TODO: Test this case on AMD Tool
                     byte[] readBytes = (byte[]) message.obj;
                     String readMessage = new String(readBytes, 0, message.arg1);
                     Log.d(BLUETOOTH_SERVICE_HANDLER_TAG, "MESSAGE_READ - " + readMessage);
 
                     // Always display the received text in receive data section in CommunicationFragment
                     CommunicationFragment.getInstance().updateReceivedStrings(readMessage);
-                    // TODO: Update maze display if it is maze update response
+                    // Update maze display if it is maze update response message
                     processMazeUpdateResponseMessage(readMessage);
                 case Constants.MESSAGE_DEVICE_NAME:
                     updateIsConnected(true);

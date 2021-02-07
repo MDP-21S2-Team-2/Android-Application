@@ -68,12 +68,12 @@ public class MazeView extends View {
         numberIdPaint.setColor(Color.WHITE);
         numberIdPaint.setTextSize(30f);
 
-        robotPosition = new RobotPosition(new int[]{1, 1}, 0); // TODO: Update robot position based on data received
-        obstacles = new boolean[COLUMN_NUM][ROW_NUM]; // TODO: Update the boolean matrix based on data received
+        robotPosition = new RobotPosition(new int[]{1, 1}, 0);
+        obstacles = new boolean[COLUMN_NUM][ROW_NUM];
         selectedCoordinates = new int[]{-1, -1};
         waypointCoordinates = new int[]{-1, -1};
         startCoordinates = new int[]{1, 1};
-        imageInfoList = new ArrayList<>(); // TODO: Update image info list based on data received
+        imageInfoList = new ArrayList<>();
 
         createMaze();
 

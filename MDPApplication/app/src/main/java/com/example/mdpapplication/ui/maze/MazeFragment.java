@@ -102,7 +102,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         tiltSensingMode = false;
 
         View root = inflater.inflate(R.layout.fragment_maze, container, false);
-        mazeView = root.findViewById(R.id.mazeView); // TODO: Update maze view based on data received
+        mazeView = root.findViewById(R.id.mazeView);
         textViewRobotStatus = root.findViewById(R.id.robotStatusTextView);
         textViewWaypoint = root.findViewById(R.id.waypointTextView);
         textViewStartPostion = root.findViewById(R.id.startPositionTextView);
@@ -144,7 +144,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
 
         manualUpdateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                MainActivity.sendMazeUpdateRequest(); // TODO: Update maze display when response is received
+                MainActivity.sendMazeUpdateRequest();
                 Snackbar.make(view, MAZE_DISPLAY_UPDATED, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
