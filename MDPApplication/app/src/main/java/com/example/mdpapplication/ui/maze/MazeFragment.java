@@ -1,5 +1,9 @@
 package com.example.mdpapplication.ui.maze;
 
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +23,9 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MazeFragment extends Fragment {
+import static android.content.Context.SENSOR_SERVICE;
+
+public class MazeFragment extends Fragment implements SensorEventListener {
 
     private MazeViewModel mazeViewModel;
 
@@ -50,6 +56,9 @@ public class MazeFragment extends Fragment {
     private static final int MAZE_UPDATE_DELAY = 0;
     private static final int MAZE_UPDATE_INTERVAL = 5000;
 
+    private SensorManager sensorManager;
+    private static final int TILT_SENSOR_DELAY = (int) 5e+6; // 2 seconds
+
     private RobotStatus robotStatus;
     private MazeUpdateMode mazeUpdateMode;
     private boolean tiltSensingMode;
@@ -79,6 +88,9 @@ public class MazeFragment extends Fragment {
 
         timer = new Timer();
         sendMazeUpdateRequestTask = new SendMazeUpdateRequestTask();
+
+        sensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), TILT_SENSOR_DELAY);
 
         robotStatus = RobotStatus.IDLE;
         mazeUpdateMode = MazeUpdateMode.MANUAL;
@@ -231,6 +243,31 @@ public class MazeFragment extends Fragment {
         } else {
             textViewStartPostion.setText(String.format("(%d, %d)", startCoordinates[0], startCoordinates[1]));
         }
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////            Tilt sensing Methods          ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        float x = sensorEvent.values[0];
+        float y = sensorEvent.values[1];
+        if (tiltSensingToggleButton.isChecked()) { // move robot only if tilt has been enabled
+            if (y < -5) { // device has been tilted forward
+                MainActivity.sendRobotMoveForwardCommand();
+            } else if (x < -5) { // device has been tilted to the right
+                MainActivity.sendRobotTurnRightCommand();
+            } else if (x > 5) { // device has been tilted to the left
+                MainActivity.sendRobotTurnLeftCommand();
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 
 
