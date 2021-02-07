@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     // Message strings
     private static final String TO_ARDUINO = "AN,AR;";
     private static final String TO_ALGORITHM = "AN,AL;";
+    private static final String TO_RASPBERRY_PI = "AN,RP;";
     private static final String ROBOT_MOVE_FORWARD = "FORWARD";
     private static final String ROBOT_TURN_LEFT = "LEFT";
     private static final String ROBOT_TURN_RIGHT = "RIGHT";
@@ -164,5 +165,11 @@ public class MainActivity extends AppCompatActivity {
         String startExplorationCommand = TO_ALGORITHM + START_EXPLORATION;
         Log.d(MAIN_ACTIVITY_TAG, "Sending start exploration command: " + startExplorationCommand);
         bluetoothService.sendOutMessage(startExplorationCommand);
+    }
+
+    public static void sendCommunicationMessage(String message) {
+        String communicationMessage = TO_RASPBERRY_PI + message;
+        Log.d(MAIN_ACTIVITY_TAG, "Sending communication message: " + communicationMessage);
+        bluetoothService.sendOutMessage(communicationMessage);
     }
 }

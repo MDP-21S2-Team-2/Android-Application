@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.mdpapplication.MainActivity;
 import com.example.mdpapplication.R;
 
 public class CommunicationFragment extends Fragment {
@@ -63,19 +64,19 @@ public class CommunicationFragment extends Fragment {
 
         persistentStringSendButton1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Send textViewPersistentCommunicationString1
+                MainActivity.sendCommunicationMessage(textViewPersistentCommunicationString1.getText().toString());
             }
         });
 
         persistentStringSendButton2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Send textViewPersistentCommunicationString2
+                MainActivity.sendCommunicationMessage(textViewPersistentCommunicationString2.getText().toString());
             }
         });
 
         volatileStringSendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Send textViewVolatileCommunicationString
+                MainActivity.sendCommunicationMessage(textViewVolatileCommunicationString.getText().toString());
             }
         });
 
