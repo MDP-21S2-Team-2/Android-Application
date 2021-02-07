@@ -54,7 +54,7 @@ public class CommunicationFragment extends Fragment {
         textViewPersistentCommunicationString1 = root.findViewById(R.id.editTextCommunicationString1);
         textViewPersistentCommunicationString2 = root.findViewById(R.id.editTextCommunicationString2);
         textViewVolatileCommunicationString = root.findViewById(R.id.editTextCommunicationString);
-        textViewReceivedStrings = root.findViewById(R.id.textViewReceivedStrings); // TODO: Update textViewReceivedStrings when new strings are received
+        textViewReceivedStrings = root.findViewById(R.id.textViewReceivedStrings);
         persistentStringSendButton1 = root.findViewById(R.id.stringSendButton1);
         persistentStringSendButton2 = root.findViewById(R.id.stringSendButton2);
         volatileStringSendButton = root.findViewById(R.id.stringSendButton);

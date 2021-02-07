@@ -113,6 +113,7 @@ public class BluetoothService {
                     }
                     break;
                 case Constants.MESSAGE_READ:
+                    // TODO: Test this case on AMD Tool
                     byte[] readBytes = (byte[]) message.obj;
                     String readMessage = new String(readBytes, 0, message.arg1);
                     Log.d(BLUETOOTH_SERVICE_HANDLER_TAG, "MESSAGE_READ - " + readMessage);
