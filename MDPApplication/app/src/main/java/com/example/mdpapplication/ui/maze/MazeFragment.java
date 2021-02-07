@@ -57,7 +57,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private static final int MAZE_UPDATE_INTERVAL = 5000;
 
     private SensorManager sensorManager;
-    private static final int TILT_SENSOR_DELAY = (int) 5e+6; // 2 seconds
+    private static final int TILT_SENSOR_DELAY = (int) 5e+6; // TODO: Confirm tilt sensing delay interval
 
     private RobotStatus robotStatus;
     private MazeUpdateMode mazeUpdateMode;
@@ -111,7 +111,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         startFastestPathButton = root.findViewById(R.id.startFastestPathButton);
         startExplorationButton = root.findViewById(R.id.startExplorationButton);
         autoUpdateModeToggleButton = root.findViewById(R.id.autoUpdateModeToggleButton);
-        tiltSensingToggleButton = root.findViewById(R.id.tiltSensingToggleButton); // TODO: Implement tilt sensing control
+        tiltSensingToggleButton = root.findViewById(R.id.tiltSensingToggleButton);
 
         timer.schedule(sendMazeUpdateRequestTask, MAZE_UPDATE_DELAY, MAZE_UPDATE_INTERVAL);
 
