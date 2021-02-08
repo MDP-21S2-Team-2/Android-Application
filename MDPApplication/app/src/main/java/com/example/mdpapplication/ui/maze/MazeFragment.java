@@ -5,6 +5,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,7 +63,8 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private static final int MAZE_UPDATE_INTERVAL = 5000;
 
     private SensorManager sensorManager;
-    private static final int TILT_SENSOR_DELAY = (int) 5e+6; // TODO: Confirm tilt sensing delay interval
+    private static final int TILT_SENSOR_DELAY_MILLISECONDS = 1500;
+    private boolean delayingTiltSensing;
 
     private RobotStatus robotStatus;
     private MazeUpdateMode mazeUpdateMode;
@@ -95,7 +97,8 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         sendMazeUpdateRequestTask = new SendMazeUpdateRequestTask();
 
         sensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
-        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), TILT_SENSOR_DELAY);
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        delayingTiltSensing = false;
 
         robotStatus = RobotStatus.IDLE;
         mazeUpdateMode = MazeUpdateMode.MANUAL;
@@ -294,14 +297,24 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     public void onSensorChanged(SensorEvent sensorEvent) {
         float x = sensorEvent.values[0];
         float y = sensorEvent.values[1];
-        if (tiltSensingToggleButton.isChecked()) { // move robot only if tilt has been enabled
-            if (y < -5) { // device has been tilted forward
-                MainActivity.sendRobotMoveForwardCommand();
-            } else if (x < -5) { // device has been tilted to the right
-                MainActivity.sendRobotTurnRightCommand();
-            } else if (x > 5) { // device has been tilted to the left
-                MainActivity.sendRobotTurnLeftCommand();
+        if (!delayingTiltSensing) {
+            if (tiltSensingToggleButton.isChecked()) { // move robot only if tilt has been enabled
+                if (y < -5) { // device has been tilted forward
+                    MainActivity.sendRobotMoveForwardCommand();
+                } else if (x < -5) { // device has been tilted to the right
+                    MainActivity.sendRobotTurnRightCommand();
+                } else if (x > 5) { // device has been tilted to the left
+                    MainActivity.sendRobotTurnLeftCommand();
+                }
             }
+
+            delayingTiltSensing = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    delayingTiltSensing = false;
+                }
+            }, TILT_SENSOR_DELAY_MILLISECONDS);
         }
     }
 
