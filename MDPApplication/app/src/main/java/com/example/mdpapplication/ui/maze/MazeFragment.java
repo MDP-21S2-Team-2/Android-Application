@@ -57,18 +57,20 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private static final String WAYPOINT_POSITION_UPDATED_TO = "Waypoint position updated to ";
     private static final String ROBOT_START_POSITION_UPDATED_TO = "Robot start position updated to";
 
+    // Maze auto update
+    private MazeUpdateMode mazeUpdateMode;
     private Timer timer;
     private SendMazeUpdateRequestTask sendMazeUpdateRequestTask;
     private static final int MAZE_UPDATE_DELAY = 0;
     private static final int MAZE_UPDATE_INTERVAL = 5000;
 
+    // Tilt sensing
+    private boolean tiltSensingMode;
     private SensorManager sensorManager;
     private static final int TILT_SENSOR_DELAY_MILLISECONDS = 1500;
     private boolean delayingTiltSensing;
 
     private RobotStatus robotStatus;
-    private MazeUpdateMode mazeUpdateMode;
-    private boolean tiltSensingMode;
 
     private MazeView mazeView;
     private TextView textViewRobotStatus;
@@ -93,16 +95,18 @@ public class MazeFragment extends Fragment implements SensorEventListener {
 
         instance = this;
 
+        // Maze auto update
+        mazeUpdateMode = MazeUpdateMode.MANUAL;
         timer = new Timer();
         sendMazeUpdateRequestTask = new SendMazeUpdateRequestTask();
 
+        // Tilt sensing
+        tiltSensingMode = false;
         sensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
         delayingTiltSensing = false;
 
         robotStatus = RobotStatus.IDLE;
-        mazeUpdateMode = MazeUpdateMode.MANUAL;
-        tiltSensingMode = false;
 
         View root = inflater.inflate(R.layout.fragment_maze, container, false);
         mazeView = root.findViewById(R.id.mazeView);
