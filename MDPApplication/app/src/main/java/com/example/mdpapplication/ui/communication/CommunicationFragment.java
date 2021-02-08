@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import com.example.mdpapplication.R;
 
 public class CommunicationFragment extends Fragment {
 
+    private static final String COMMUNICATION_FRAGMENT_TAG = "CommunicationFragment";
+
     private CommunicationViewModel communicationViewModel;
 
     private static CommunicationFragment instance;
@@ -28,7 +31,6 @@ public class CommunicationFragment extends Fragment {
     private static final String PERSISTENT_STRING_DEFAULT_1 = "This is persistent text string 1";
     private static final String PERSISTENT_STRING_DEFAULT_2 = "This is persistent text string 2";
     private static final String RECEIVED_DATA_PLACEHOLDER = "Your received text strings will appear here";
-
 
     private String receivedStrings;
 
@@ -67,7 +69,6 @@ public class CommunicationFragment extends Fragment {
                 MainActivity.sendCommunicationMessage(textViewPersistentCommunicationString1.getText().toString());
             }
         });
-
         persistentStringSendButton2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 MainActivity.sendCommunicationMessage(textViewPersistentCommunicationString2.getText().toString());
@@ -117,6 +118,11 @@ public class CommunicationFragment extends Fragment {
         textViewPersistentCommunicationString2.setText(communicationStringValue2);
     }
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////              Public Methods              ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
     public static CommunicationFragment getInstance() {
         return instance;
     }
@@ -124,5 +130,6 @@ public class CommunicationFragment extends Fragment {
     public void updateReceivedStrings(String newReceivedString) {
         receivedStrings = newReceivedString + "\n" + receivedStrings;
         textViewReceivedStrings.setText(receivedStrings);
+        Log.d(COMMUNICATION_FRAGMENT_TAG, "Updated received data: " + receivedStrings);
     }
 }
