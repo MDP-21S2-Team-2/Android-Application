@@ -66,14 +66,14 @@ public class MazeView extends View {
         selectedGridPaint.setColor(Color.BLUE);
         waypointPaint.setColor(Color.GREEN);
         numberIdPaint.setColor(Color.WHITE);
-        numberIdPaint.setTextSize(40f);
+        numberIdPaint.setTextSize(30f);
 
-        robotPosition = new RobotPosition(new int[]{1, 1}, 0); // TODO: Update robot position based on data received
-        obstacles = new boolean[COLUMN_NUM][ROW_NUM]; // TODO: Update the boolean matrix based on data received
+        robotPosition = new RobotPosition(new int[]{1, 1}, 0);
+        obstacles = new boolean[COLUMN_NUM][ROW_NUM];
         selectedCoordinates = new int[]{-1, -1};
         waypointCoordinates = new int[]{-1, -1};
         startCoordinates = new int[]{1, 1};
-        imageInfoList = new ArrayList<>(); // TODO: Update image info list based on data received
+        imageInfoList = new ArrayList<>();
 
         createMaze();
 
@@ -90,6 +90,10 @@ public class MazeView extends View {
 
         super.invalidate();
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////              Drawing Methods             ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -228,9 +232,9 @@ public class MazeView extends View {
             // Draw the image number ID
             int pixelY = (ROW_NUM - imageY) * gridSize - 12;
             if (imageNumberId < 10 && imageNumberId > 0) {
-                canvas.drawText(String.valueOf(imageNumberId), imageX * gridSize + 18, pixelY, numberIdPaint);
+                canvas.drawText(String.valueOf(imageNumberId), imageX * gridSize + 10, pixelY, numberIdPaint);
             } else if (imageNumberId > 9 && imageNumberId < 16) {
-                canvas.drawText(String.valueOf(imageNumberId), imageX * gridSize + 5, pixelY, numberIdPaint);
+                canvas.drawText(String.valueOf(imageNumberId), imageX * gridSize + 3, pixelY, numberIdPaint);
             }
         }
     }
@@ -255,13 +259,18 @@ public class MazeView extends View {
         selectedCoordinates[0] = (x == selectedCoordinates[0] && y == selectedCoordinates[1]) ? -1 : x;
         selectedCoordinates[1] = (x == selectedCoordinates[0] && y == selectedCoordinates[1]) ? -1 : y;
 
-        // Draw the canvas again
+        // Redraw the canvas
         invalidate();
 
         mazeFragment.updateSelectedGridTextView(selectedCoordinates);
 
         return true;
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////         Parameters Update Methods        ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     protected void updateWaypointCoordinates() {
         // Update waypoint coordinates
@@ -272,11 +281,15 @@ public class MazeView extends View {
         selectedCoordinates[0] = -1;
         selectedCoordinates[1] = -1;
 
-        // Draw the canvas again
+        // Redraw the canvas
         invalidate();
 
         mazeFragment.updateWaypointTextView(waypointCoordinates);
         mazeFragment.updateSelectedGridTextView(selectedCoordinates);
+    }
+
+    protected int[] getWaypointCoordinates() {
+        return waypointCoordinates;
     }
 
     protected void updateStartCoordinates() {
@@ -292,12 +305,47 @@ public class MazeView extends View {
         selectedCoordinates[0] = -1;
         selectedCoordinates[1] = -1;
 
-        // Draw the canvas again
+        // Redraw the canvas
         invalidate();
 
         mazeFragment.updateStartPositionTextView(startCoordinates);
         mazeFragment.updateSelectedGridTextView(selectedCoordinates);
     }
+
+    protected int[] getStartCoordinates() {
+        return startCoordinates;
+    }
+
+    protected void updateRobotCoordinates(int[] robotCoordinates, int robotDirection) {
+        robotPosition.robotCoordinates = robotCoordinates;
+        robotPosition.robotDirection = robotDirection;
+
+        // Redraw the canvas
+        invalidate();
+    }
+
+    protected void updateObstacles(String mdfString) {
+        for (int i = 0; i < COLUMN_NUM; i++) {
+            for (int j = 0; j < ROW_NUM; j++) {
+                obstacles[i][j] = mdfString.charAt(j * COLUMN_NUM + i) == '1';
+            }
+        }
+
+        // Redraw the canvas
+        invalidate();
+    }
+
+    protected void updateImageInfoList(List<int[]> newImageInfoList) {
+        imageInfoList = newImageInfoList;
+
+        // Redraw the canvas
+        invalidate();
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////               Inner Classes              ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     /*
     Class representing one grid in the maze.

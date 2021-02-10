@@ -9,10 +9,10 @@
     <com.example.mdpapplication.ui.maze.MazeView
         android:id="@+id/mazeView"
         android:layout_width="0dp"
-        android:layout_height="590dp"
+        android:layout_height="580dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="128dp"
+        android:layout_marginEnd="144dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -87,7 +87,6 @@
         android:layout_width="wrap_content"
         android:layout_height="28dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/robot_movement_control"
         android:textSize="18sp"
@@ -100,7 +99,6 @@
         android:layout_width="wrap_content"
         android:layout_height="28dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="80dp"
         android:text="@string/start_robot"
         android:textSize="18sp"
@@ -173,9 +171,9 @@
 
     <TextView
         android:id="@+id/tiltSensingTextView"
-        android:layout_width="84dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="32dp"
         android:text="@string/tilt_sensing"
         android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/tiltSensingToggleButton"
@@ -269,7 +267,6 @@
         android:id="@+id/autoUpdateModeToggleButton"
         android:layout_width="0dp"
         android:layout_height="44dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -289,7 +286,7 @@
 
     <Button
         android:id="@+id/moveForwardButton"
-        android:layout_width="70dp"
+        android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -300,9 +297,9 @@
 
     <Button
         android:id="@+id/turnLeftButton"
-        android:layout_width="70dp"
+        android:layout_width="75dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:text="↶"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -310,7 +307,7 @@
 
     <Button
         android:id="@+id/turnRightButton"
-        android:layout_width="70dp"
+        android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="↷"
@@ -352,16 +349,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/divider13"
         app:layout_constraintTop_toBottomOf="@+id/startFastestPathButton" />
-
-    <Button
-        android:id="@+id/startImageExplorationButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="80dp"
-        android:text="@string/start_image_exploration"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/divider13"
-        app:layout_constraintTop_toBottomOf="@+id/startExplorationButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

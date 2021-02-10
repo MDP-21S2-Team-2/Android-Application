@@ -1,6 +1,13 @@
 package com.example.mdpapplication.ui.maze;
 
+import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +18,22 @@ import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.example.mdpapplication.MainActivity;
 import com.example.mdpapplication.R;
 import com.google.android.material.snackbar.Snackbar;
 
-public class MazeFragment extends Fragment {
+import java.util.Arrays;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static android.content.Context.SENSOR_SERVICE;
+
+public class MazeFragment extends Fragment implements SensorEventListener {
+
+    private static final String MAZE_FRAGMENT_TAG = "MazeFragment";
 
     private MazeViewModel mazeViewModel;
 
@@ -30,21 +48,31 @@ public class MazeFragment extends Fragment {
     private static final String CALIBRATING_ROBOT_STATUS = "Calibrating";
     private static final String REACHED_GOAL_ROBOT_STATUS = "Reached Goal";
 
-    // SnackBar messages
+    // Snackbar messages
     private static final String AUTO_MAZE_UPDATE_IS_SWITCHED_OFF = "Auto maze update mode is switched OFF";
     private static final String AUTO_MAZE_UPDATE_IS_SWITCHED_ON = "Auto maze update mode is switched ON";
     private static final String TILT_SENSING_MODE_IS_SWITCHED_OFF = "Tilt sensing mode is switched OFF";
     private static final String TILT_SENSING_MODE_IS_SWITCHED_ON = "Tilt sensing mode is switched ON";
     private static final String FASTEST_PATH_TASK_STARTED = "Fastest path task started";
     private static final String EXPLORATION_TASK_STARTED = "Exploration task started";
-    private static final String EXPLORATION_WITH_IMAGE_RECOGNITION_TASK_STARTED = "Exploration with image recognition task started";
     private static final String MAZE_DISPLAY_UPDATED = "Maze display updated";
     private static final String WAYPOINT_POSITION_UPDATED_TO = "Waypoint position updated to ";
     private static final String ROBOT_START_POSITION_UPDATED_TO = "Robot start position updated to";
 
-    private RobotStatus robotStatus;
+    // Maze auto update
     private MazeUpdateMode mazeUpdateMode;
+    private Timer timer;
+    private SendMazeUpdateRequestTask sendMazeUpdateRequestTask;
+    private static final int MAZE_UPDATE_DELAY = 0;
+    private static final int MAZE_UPDATE_INTERVAL = 5000;
+
+    // Tilt sensing
     private boolean tiltSensingMode;
+    private SensorManager sensorManager;
+    private static final int TILT_SENSOR_DELAY_MILLISECONDS = 1500;
+    private boolean delayingTiltSensing;
+
+    private RobotStatus robotStatus;
 
     private MazeView mazeView;
     private TextView textViewRobotStatus;
@@ -59,7 +87,6 @@ public class MazeFragment extends Fragment {
     private Button turnRightButton;
     private Button startFastestPathButton;
     private Button startExplorationButton;
-    private Button startImageExplorationButton;
     private ToggleButton autoUpdateModeToggleButton;
     private ToggleButton tiltSensingToggleButton;
 
@@ -70,13 +97,22 @@ public class MazeFragment extends Fragment {
 
         instance = this;
 
-        robotStatus = RobotStatus.IDLE;
+        // Maze auto update
         mazeUpdateMode = MazeUpdateMode.MANUAL;
+        timer = new Timer();
+        sendMazeUpdateRequestTask = new SendMazeUpdateRequestTask();
+
+        // Tilt sensing
         tiltSensingMode = false;
+        sensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        delayingTiltSensing = false;
+
+        robotStatus = RobotStatus.IDLE;
 
         View root = inflater.inflate(R.layout.fragment_maze, container, false);
         mazeView = root.findViewById(R.id.mazeView);
-        textViewRobotStatus = root.findViewById(R.id.robotStatusTextView); // TODO: Update robot status based on data received
+        textViewRobotStatus = root.findViewById(R.id.robotStatusTextView);
         textViewWaypoint = root.findViewById(R.id.waypointTextView);
         textViewStartPostion = root.findViewById(R.id.startPositionTextView);
         textViewSelectedGrid = root.findViewById(R.id.selectedGridTextView);
@@ -88,9 +124,10 @@ public class MazeFragment extends Fragment {
         turnRightButton = root.findViewById(R.id.turnRightButton);
         startFastestPathButton = root.findViewById(R.id.startFastestPathButton);
         startExplorationButton = root.findViewById(R.id.startExplorationButton);
-        startImageExplorationButton = root.findViewById(R.id.startImageExplorationButton);
-        autoUpdateModeToggleButton = root.findViewById(R.id.autoUpdateModeToggleButton); // TODO: Automatically query for maze update when auto update mode is on
-        tiltSensingToggleButton = root.findViewById(R.id.tiltSensingToggleButton); // TODO: Implement tilt sensing control
+        autoUpdateModeToggleButton = root.findViewById(R.id.autoUpdateModeToggleButton);
+        tiltSensingToggleButton = root.findViewById(R.id.tiltSensingToggleButton);
+
+        timer.schedule(sendMazeUpdateRequestTask, MAZE_UPDATE_DELAY, MAZE_UPDATE_INTERVAL);
 
         updateRobotStatusTextView();
         textViewWaypoint.setText(N_A_COORDINATES);
@@ -100,14 +137,15 @@ public class MazeFragment extends Fragment {
         updateWaypointButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 mazeView.updateWaypointCoordinates();
+                MainActivity.sendWaypointPosition(mazeView.getWaypointCoordinates());
                 Snackbar.make(view, WAYPOINT_POSITION_UPDATED_TO + textViewWaypoint.getText(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
-
         updateStartPositionButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 mazeView.updateStartCoordinates();
+                MainActivity.sendRobotStartPosition(mazeView.getStartCoordinates());
                 Snackbar.make(view, ROBOT_START_POSITION_UPDATED_TO + textViewStartPostion.getText(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -115,8 +153,7 @@ public class MazeFragment extends Fragment {
 
         manualUpdateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Query for maze update and update maze display when button is clicked
-
+                MainActivity.sendMazeUpdateRequest();
                 Snackbar.make(view, MAZE_DISPLAY_UPDATED, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -124,45 +161,31 @@ public class MazeFragment extends Fragment {
 
         moveForwardButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Send move forward signal via Bluetooth
+                MainActivity.sendRobotMoveForwardCommand();
             }
         });
-
         turnLeftButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Send turn left signal via Bluetooth
+                MainActivity.sendRobotTurnLeftCommand();
             }
         });
-
         turnRightButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Send turn right signal via Bluetooth
+                MainActivity.sendRobotTurnRightCommand();
             }
         });
 
         startFastestPathButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Send start fastest path signal via Bluetooth
-
+                MainActivity.sendStartFastestPathCommand();
                 Snackbar.make(view, FASTEST_PATH_TASK_STARTED, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
-
         startExplorationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                // TODO: Send start exploration signal via Bluetooth
-
+                MainActivity.sendStartExplorationCommand();
                 Snackbar.make(view, EXPLORATION_TASK_STARTED, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        startImageExplorationButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                // TODO: Send start exploration with image recognition signal via Bluetooth
-
-                Snackbar.make(view, EXPLORATION_WITH_IMAGE_RECOGNITION_TASK_STARTED, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -198,22 +221,61 @@ public class MazeFragment extends Fragment {
         return root;
     }
 
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////              Public Methods              ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
     public static MazeFragment getInstance() {
         return instance;
     }
 
-    private void updateRobotStatusTextView() {
-        switch (robotStatus) {
-            case RUNNING:
-                textViewRobotStatus.setText(RUNNING_ROBOT_STATUS);
-            case CALIBRATING:
-                textViewRobotStatus.setText(CALIBRATING_ROBOT_STATUS);
-            case REACHED_GOAL:
-                textViewRobotStatus.setText(REACHED_GOAL_ROBOT_STATUS);
-            default:
-                textViewRobotStatus.setText(IDLE_ROBOT_STATUS);
-        }
+    public void updateRobotDisplay(int[] robotCoordinates, int robotDirection) {
+        Log.d(MAZE_FRAGMENT_TAG, "Updating robot coordinates: " + robotCoordinates[0] + ", " + robotCoordinates[1]);
+        Log.d(MAZE_FRAGMENT_TAG, "Updating robot direction: " + robotDirection);
+
+        mazeView.updateRobotCoordinates(robotCoordinates, robotDirection);
     }
+
+    public void updateRobotStatus(String robotStatusString) {
+        Log.d(MAZE_FRAGMENT_TAG, "Updating robot status: " + robotStatusString);
+
+        if (robotStatusString.equalsIgnoreCase("IDLE")) {
+            robotStatus = RobotStatus.IDLE;
+        } else if (robotStatusString.equalsIgnoreCase("RUNNING")) {
+            robotStatus = RobotStatus.RUNNING;
+        } else if (robotStatusString.equalsIgnoreCase("CALIBRATING")) {
+            robotStatus = RobotStatus.CALIBRATING;
+        } else if (robotStatusString.equalsIgnoreCase("REACHED_GOAL")) {
+            robotStatus = RobotStatus.REACHED_GOAL;
+        }
+
+        updateRobotStatusTextView();
+    }
+
+    public void updateObstacles(String mdfString) {
+        Log.d(MAZE_FRAGMENT_TAG, "Updating obstacles in maze: " + mdfString);
+
+        mazeView.updateObstacles(mdfString);
+    }
+
+    public void updateImageInfoList(List<int[]> imageInfoList) {
+        Log.d(MAZE_FRAGMENT_TAG, "Updating image info list: " + Arrays.deepToString(imageInfoList.toArray()));
+
+        mazeView.updateImageInfoList(imageInfoList);
+    }
+
+    public void sendMessageToCommunicationFragment(String newReceivedString) {
+        Log.d(MAZE_FRAGMENT_TAG, "Sending getTextFromDevice intent with new string: " + newReceivedString);
+        Intent intent = new Intent("getTextFromDevice");
+        intent.putExtra("text", newReceivedString);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////          TextView Update Methods         ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     protected void updateSelectedGridTextView(int[] selectedPosition) {
         if (selectedPosition[0] < 0 || selectedPosition[1] < 0) {
@@ -229,7 +291,6 @@ public class MazeFragment extends Fragment {
         } else {
             textViewWaypoint.setText(String.format("(%d, %d)", waypointCoordinates[0], waypointCoordinates[1]));
         }
-        // TODO: Send waypoint position via Bluetooth
     }
 
     protected void updateStartPositionTextView(int[] startCoordinates) {
@@ -238,8 +299,63 @@ public class MazeFragment extends Fragment {
         } else {
             textViewStartPostion.setText(String.format("(%d, %d)", startCoordinates[0], startCoordinates[1]));
         }
-        // TODO: Send start position via Bluetooth
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////            Tilt sensing Methods          ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        float x = sensorEvent.values[0];
+        float y = sensorEvent.values[1];
+        if (!delayingTiltSensing) {
+            if (tiltSensingToggleButton.isChecked()) { // move robot only if tilt has been enabled
+                if (y < -5) { // device has been tilted forward
+                    MainActivity.sendRobotMoveForwardCommand();
+                } else if (x < -5) { // device has been tilted to the right
+                    MainActivity.sendRobotTurnRightCommand();
+                } else if (x > 5) { // device has been tilted to the left
+                    MainActivity.sendRobotTurnLeftCommand();
+                }
+            }
+
+            delayingTiltSensing = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    delayingTiltSensing = false;
+                }
+            }, TILT_SENSOR_DELAY_MILLISECONDS);
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////              Helper Methods              ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private void updateRobotStatusTextView() {
+        if (robotStatus.equals(RobotStatus.IDLE)) {
+            textViewRobotStatus.setText(IDLE_ROBOT_STATUS);
+        } else if (robotStatus.equals(RobotStatus.RUNNING)) {
+            textViewRobotStatus.setText(RUNNING_ROBOT_STATUS);
+        } else if (robotStatus.equals(RobotStatus.CALIBRATING)) {
+            textViewRobotStatus.setText(CALIBRATING_ROBOT_STATUS);
+        } else if (robotStatus.equals(RobotStatus.REACHED_GOAL)) {
+            textViewRobotStatus.setText(REACHED_GOAL_ROBOT_STATUS);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////           Enums & Inner Classes          ///////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     enum RobotStatus {
         IDLE,
@@ -251,5 +367,13 @@ public class MazeFragment extends Fragment {
     enum MazeUpdateMode {
         AUTO,
         MANUAL,
+    }
+
+    class SendMazeUpdateRequestTask extends TimerTask {
+        public void run() {
+            if (autoUpdateModeToggleButton.isChecked()) {
+                MainActivity.sendMazeUpdateRequest();
+            }
+        }
     }
 }
