@@ -127,6 +127,10 @@ public class MainActivity extends AppCompatActivity {
         Log.d(MAIN_ACTIVITY_TAG, "Updated received string text view: " + receivedTextStrings);
     }
 
+    public static void resetReceivedTextStrings() {
+        receivedTextStrings = "";
+    }
+
     public static String getReceivedTextStrings() {
         return receivedTextStrings;
     }

@@ -81,7 +81,8 @@ public class CommunicationFragment extends Fragment {
 
         receivedDataClearButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                textViewReceivedStrings.setText("");
+                MainActivity.resetReceivedTextStrings();
+                textViewReceivedStrings.setText(MainActivity.getReceivedTextStrings());
                 Log.d(COMMUNICATION_FRAGMENT_TAG, "Reset received data: " + textViewReceivedStrings.getText());
             }
         });
