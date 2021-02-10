@@ -154,9 +154,6 @@ public class BluetoothFragment extends Fragment {
             if (MainActivity.getBluetoothService().connectToBluetoothDevice(macAddress)) {
                 Snackbar.make(view, CONNECTED_TO_DEVICE + deviceName, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-            } else {
-                Snackbar.make(view, UNABLE_TO_CONNECT_TO_DEVICE + deviceName, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         }
     };

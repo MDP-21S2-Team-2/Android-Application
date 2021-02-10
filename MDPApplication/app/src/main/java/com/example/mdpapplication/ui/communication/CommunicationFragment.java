@@ -100,7 +100,6 @@ public class CommunicationFragment extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(PERSISTENT_STRING_KEY_1, "" + textViewPersistentCommunicationString1.getText());
-        System.out.println("Saved to shared preferences: " + textViewPersistentCommunicationString1.getText());
         editor.putString(PERSISTENT_STRING_KEY_2, "" + textViewPersistentCommunicationString2.getText());
         editor.apply();
     }
