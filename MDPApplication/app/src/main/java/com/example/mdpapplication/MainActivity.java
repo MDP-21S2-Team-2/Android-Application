@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TO_ARDUINO = "AN-AR-";
     private static final String TO_ALGORITHM = "AN-AL-";
     private static final String TO_RASPBERRY_PI = "AN-RP-";
-    private static final String ROBOT_MOVE_FORWARD = "MF1";
+    private static final String ROBOT_MOVE_FORWARD = "M1";
     private static final String ROBOT_TURN_LEFT = "TL";
     private static final String ROBOT_TURN_RIGHT = "TR";
     private static final String WAYPOINT = "WAYPOINT";

@@ -1,19 +1,27 @@
 package com.example.mdpapplication.ui.communication;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class CommunicationViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private MutableLiveData<String> receivedStringsText;
 
     public CommunicationViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("Default persistent communication string 1");
+        receivedStringsText = new MutableLiveData<>();
+        receivedStringsText.setValue("");
     }
 
     public LiveData<String> getText() {
-        return mText;
+        Log.d("CommunicationViewModel", "Returning view model received strings: " + receivedStringsText.getValue());
+        return receivedStringsText;
+    }
+
+    public void updateReceivedStringsText(String newReceivedString) {
+        receivedStringsText.setValue(newReceivedString + "\n" + receivedStringsText.getValue());
+        Log.d("CommunicationViewModel", "Updated view model received strings: " + receivedStringsText.getValue());
     }
 }

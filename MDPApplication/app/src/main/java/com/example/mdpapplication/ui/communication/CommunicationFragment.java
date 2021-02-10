@@ -1,6 +1,9 @@
 package com.example.mdpapplication.ui.communication;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -12,8 +15,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.mdpapplication.MainActivity;
 import com.example.mdpapplication.R;
@@ -24,15 +29,11 @@ public class CommunicationFragment extends Fragment {
 
     private CommunicationViewModel communicationViewModel;
 
-    private static CommunicationFragment instance;
-
     private static final String PERSISTENT_STRING_KEY_1 = "persistent_string_1";
     private static final String PERSISTENT_STRING_KEY_2 = "persistent_string_2";
     private static final String PERSISTENT_STRING_DEFAULT_1 = "This is persistent text string 1";
     private static final String PERSISTENT_STRING_DEFAULT_2 = "This is persistent text string 2";
     private static final String RECEIVED_DATA_PLACEHOLDER = "Your received text strings will appear here";
-
-    private String receivedStrings;
 
     private TextView textViewPersistentCommunicationString1;
     private TextView textViewPersistentCommunicationString2;
@@ -43,14 +44,11 @@ public class CommunicationFragment extends Fragment {
     private Button volatileStringSendButton;
     private Button receivedDataClearButton;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         communicationViewModel =
                 new ViewModelProvider(this).get(CommunicationViewModel.class);
-
-        instance = this;
-
-        receivedStrings = "";
 
         View root = inflater.inflate(R.layout.fragment_communication, container, false);
         textViewPersistentCommunicationString1 = root.findViewById(R.id.editTextCommunicationString1);
@@ -83,10 +81,13 @@ public class CommunicationFragment extends Fragment {
 
         receivedDataClearButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                textViewReceivedStrings.setText(RECEIVED_DATA_PLACEHOLDER);
-                receivedStrings = "";
+                textViewReceivedStrings.setText("");
+                Log.d(COMMUNICATION_FRAGMENT_TAG,"Reset received data: " + textViewReceivedStrings.getText());
             }
         });
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageBroadcastReceiver,
+                new IntentFilter("getTextFromDevice"));
 
         return root;
     }
@@ -123,13 +124,22 @@ public class CommunicationFragment extends Fragment {
     ///////////////////////////              Public Methods              ///////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public static CommunicationFragment getInstance() {
-        return instance;
+    public void updateReceivedStrings(String newReceivedString) {
+        String currentReceivedStrings = "" + textViewReceivedStrings.getText();
+        String updatedReceivedStrings = newReceivedString + "\n" + currentReceivedStrings;
+        textViewReceivedStrings.setText(updatedReceivedStrings);
+        Log.d(COMMUNICATION_FRAGMENT_TAG, "Updated received string text view: " + textViewReceivedStrings.getText());
     }
 
-    public void updateReceivedStrings(String newReceivedString) {
-        receivedStrings = newReceivedString + "\n" + receivedStrings;
-        textViewReceivedStrings.setText(receivedStrings);
-        Log.d(COMMUNICATION_FRAGMENT_TAG, "Updated received data: " + receivedStrings);
-    }
+    // Update text received from bluetooth service
+    private final BroadcastReceiver messageBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String newReceivedString = intent.getStringExtra("text");
+            Log.d(COMMUNICATION_FRAGMENT_TAG, "Got message from broadcast receiver: " + newReceivedString);
+//            updateReceivedStrings(newReceivedString);
+            communicationViewModel.updateReceivedStringsText(newReceivedString);
+            textViewReceivedStrings.setText(communicationViewModel.getText().getValue());
+        }
+    };
 }

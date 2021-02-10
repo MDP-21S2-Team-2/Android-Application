@@ -2,10 +2,13 @@ package com.example.mdpapplication.service;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.mdpapplication.MainActivity;
 import com.example.mdpapplication.ui.communication.CommunicationFragment;
@@ -124,9 +127,11 @@ public class BluetoothService {
                     Log.d(BLUETOOTH_SERVICE_HANDLER_TAG, "MESSAGE_READ - " + readMessage);
 
                     // Always display the received text in receive data section in CommunicationFragment
-                    CommunicationFragment.getInstance().updateReceivedStrings(readMessage);
+                    MazeFragment.getInstance().sendMessageToCommunicationFragment(readMessage);
                     // Update maze display if it is maze update response message
-                    processMazeUpdateResponseMessage(readMessage);
+                    if (!readMessage.equalsIgnoreCase("ack")) {
+                        processMazeUpdateResponseMessage(readMessage);
+                    }
                 case Constants.MESSAGE_DEVICE_NAME:
                     updateIsConnected(true);
                     connectedDeviceName = message.getData().getString(Constants.DEVICE_NAME);

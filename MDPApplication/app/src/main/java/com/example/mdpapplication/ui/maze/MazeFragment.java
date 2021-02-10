@@ -1,5 +1,6 @@
 package com.example.mdpapplication.ui.maze;
 
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -17,6 +18,7 @@ import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.mdpapplication.MainActivity;
 import com.example.mdpapplication.R;
@@ -261,6 +263,13 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         Log.d(MAZE_FRAGMENT_TAG, "Updating image info list: " + Arrays.deepToString(imageInfoList.toArray()));
 
         mazeView.updateImageInfoList(imageInfoList);
+    }
+
+    public void sendMessageToCommunicationFragment(String newReceivedString) {
+        Log.d(MAZE_FRAGMENT_TAG, "Sending getTextFromDevice intent with new string: " + newReceivedString);
+        Intent intent = new Intent("getTextFromDevice");
+        intent.putExtra("text", newReceivedString);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
 
