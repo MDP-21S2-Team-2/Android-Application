@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -82,7 +81,7 @@ public class CommunicationFragment extends Fragment {
         receivedDataClearButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 textViewReceivedStrings.setText("");
-                Log.d(COMMUNICATION_FRAGMENT_TAG,"Reset received data: " + textViewReceivedStrings.getText());
+                Log.d(COMMUNICATION_FRAGMENT_TAG, "Reset received data: " + textViewReceivedStrings.getText());
             }
         });
 
