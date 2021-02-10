@@ -60,6 +60,7 @@ public class CommunicationFragment extends Fragment {
         receivedDataClearButton = root.findViewById(R.id.receivedDataClearButton);
 
         textViewReceivedStrings.setMovementMethod(new ScrollingMovementMethod());
+        textViewReceivedStrings.setText(MainActivity.getReceivedTextStrings());
 
         persistentStringSendButton1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -135,9 +136,7 @@ public class CommunicationFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             String newReceivedString = intent.getStringExtra("text");
             Log.d(COMMUNICATION_FRAGMENT_TAG, "Got message from broadcast receiver: " + newReceivedString);
-//            updateReceivedStrings(newReceivedString);
-            communicationViewModel.updateReceivedStringsText(newReceivedString);
-            textViewReceivedStrings.setText(communicationViewModel.getText().getValue());
+            MainActivity.updateReceivedTextStrings(newReceivedString);
         }
     };
 }

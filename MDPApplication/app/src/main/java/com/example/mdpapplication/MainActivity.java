@@ -1,5 +1,8 @@
 package com.example.mdpapplication;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -46,11 +49,15 @@ public class MainActivity extends AppCompatActivity {
 
     private static BluetoothService bluetoothService;
 
+    private static String receivedTextStrings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         bluetoothService = new BluetoothService();
+
+        receivedTextStrings = "";
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -114,6 +121,16 @@ public class MainActivity extends AppCompatActivity {
             bluetoothStatusFloatingActionButton.setBackgroundTintList(ColorStateList.valueOf(Color.LTGRAY));
         }
     }
+
+    public static void updateReceivedTextStrings(String newReceivedString) {
+        receivedTextStrings = newReceivedString + "\n" + receivedTextStrings;
+        Log.d(MAIN_ACTIVITY_TAG, "Updated received string text view: " + receivedTextStrings);
+    }
+
+    public static String getReceivedTextStrings() {
+        return receivedTextStrings;
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////             Send Out Messages            ///////////////////////////
