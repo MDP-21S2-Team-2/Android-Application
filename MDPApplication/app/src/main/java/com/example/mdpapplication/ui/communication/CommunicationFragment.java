@@ -120,15 +120,8 @@ public class CommunicationFragment extends Fragment {
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////              Public Methods              ///////////////////////////
+    ///////////////////////////            Broadcast Receiver            ///////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public void updateReceivedStrings(String newReceivedString) {
-        String currentReceivedStrings = "" + textViewReceivedStrings.getText();
-        String updatedReceivedStrings = newReceivedString + "\n" + currentReceivedStrings;
-        textViewReceivedStrings.setText(updatedReceivedStrings);
-        Log.d(COMMUNICATION_FRAGMENT_TAG, "Updated received string text view: " + textViewReceivedStrings.getText());
-    }
 
     // Update text received from bluetooth service
     private final BroadcastReceiver messageBroadcastReceiver = new BroadcastReceiver() {
