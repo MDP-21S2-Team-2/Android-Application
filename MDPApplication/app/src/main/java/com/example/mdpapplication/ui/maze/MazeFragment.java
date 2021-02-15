@@ -67,6 +67,8 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private static final String ROBOT_DIRECTION = "Robot Direction";
     private static final String START_COORDINATE_X = "Start Coordinate X";
     private static final String START_COORDINATE_Y = "Start Coordinate Y";
+    private static final String WAYPOINT_COORDINATE_X = "Waypoint Coordinate X";
+    private static final String WAYPOINT_COORDINATE_Y = "Waypoint Coordinate Y";
 
     // Maze auto update
     private MazeUpdateMode mazeUpdateMode;
@@ -246,6 +248,10 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         editor.putInt(START_COORDINATE_X, mazeView.getStartCoordinates()[0]);
         editor.putInt(START_COORDINATE_Y, mazeView.getStartCoordinates()[1]);
 
+        // Save waypoint coordinates
+        editor.putInt(WAYPOINT_COORDINATE_X, mazeView.getWaypointCoordinates()[0]);
+        editor.putInt(WAYPOINT_COORDINATE_Y, mazeView.getWaypointCoordinates()[1]);
+
         editor.apply();
     }
 
@@ -268,6 +274,12 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         startCoordinates[0] = sharedPreferences.getInt(START_COORDINATE_X, 1);
         startCoordinates[1] = sharedPreferences.getInt(START_COORDINATE_Y, 1);
         mazeView.reloadStartCoordinates(startCoordinates);
+
+        // Reload waypoint coordinates
+        int[] waypointCoordinates = new int[2];
+        waypointCoordinates[0] = sharedPreferences.getInt(WAYPOINT_COORDINATE_X, -1);
+        waypointCoordinates[1] = sharedPreferences.getInt(WAYPOINT_COORDINATE_Y, -1);
+        mazeView.reloadWaypointCoordinates(waypointCoordinates);
     }
 
 

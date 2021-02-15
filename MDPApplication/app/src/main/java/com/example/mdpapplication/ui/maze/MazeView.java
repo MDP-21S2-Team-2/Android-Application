@@ -292,6 +292,14 @@ public class MazeView extends View {
         return waypointCoordinates;
     }
 
+    protected void reloadWaypointCoordinates(int[] coordinates) {
+        waypointCoordinates[0] = coordinates[0];
+        waypointCoordinates[1] = coordinates[1];
+
+        // Redraw the canvas
+        invalidate();
+    }
+
     protected void updateStartCoordinates() {
         // Update start coordinates
         startCoordinates[0] = selectedCoordinates[0];
@@ -343,12 +351,14 @@ public class MazeView extends View {
         robotPosition.robotCoordinates[0] = coordinates[0];
         robotPosition.robotCoordinates[1] = coordinates[1];
 
+        // Redraw the canvas
         invalidate();
     }
 
     protected void reloadRobotDirection(int robotDirection) {
         robotPosition.robotDirection = robotDirection;
 
+        // Redraw the canvas
         invalidate();
     }
 
