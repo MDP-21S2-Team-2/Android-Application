@@ -316,11 +316,39 @@ public class MazeView extends View {
         return startCoordinates;
     }
 
-    protected void updateRobotCoordinates(int[] robotCoordinates, int robotDirection) {
+    protected void reloadStartCoordinates(int[] coordinates) {
+        startCoordinates[0] = coordinates[0];
+        startCoordinates[1] = coordinates[1];
+
+        mazeFragment.updateStartPositionTextView(coordinates);
+    }
+
+    protected void updateRobotCoordinatesAndDirection(int[] robotCoordinates, int robotDirection) {
         robotPosition.robotCoordinates = robotCoordinates;
         robotPosition.robotDirection = robotDirection;
 
         // Redraw the canvas
+        invalidate();
+    }
+
+    protected int[] getRobotCoordinates() {
+        return robotPosition.robotCoordinates;
+    }
+
+    protected int getRobotDirection() {
+        return robotPosition.robotDirection;
+    }
+
+    protected void reloadRobotCoordinates(int[] coordinates) {
+        robotPosition.robotCoordinates[0] = coordinates[0];
+        robotPosition.robotCoordinates[1] = coordinates[1];
+
+        invalidate();
+    }
+
+    protected void reloadRobotDirection(int robotDirection) {
+        robotPosition.robotDirection = robotDirection;
+
         invalidate();
     }
 
