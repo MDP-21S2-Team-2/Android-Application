@@ -16,14 +16,25 @@ import androidx.annotation.Nullable;
 import com.example.mdpapplication.R;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MazeView extends View {
 
+    protected static final String DEFAULT_MDF_STRING = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    protected static final int[] DEFAULT_ROBOT_COORDINATES = new int[]{1, 1};
+    protected static final int DEFAULT_ROBOT_DIRECTION = 0;
+    protected static final int[] DEFAULT_START_COORDINATES = new int[]{1, 1};
+    protected static final int[] DEFAULT_WAYPOINT_COORDINATES = new int[]{-1, -1};
+    private static final int[] DEFAULT_SELECTED_COORDINATES = new int[]{-1, -1};
+
     private static final int COLUMN_NUM = 15;
     private static final int ROW_NUM = 20;
-    public static final int START_ZONE_SIZE = 3;
-    public static final int GOAL_ZONE_SIZE = 3;
+    private static final int START_ZONE_SIZE = 3;
+    private static final int GOAL_ZONE_SIZE = 3;
+
+    private static final String SPACE_SEPARATOR = " ";
 
     private static Grid[][] grids;
     private RobotPosition robotPosition;
@@ -68,11 +79,22 @@ public class MazeView extends View {
         numberIdPaint.setColor(Color.WHITE);
         numberIdPaint.setTextSize(30f);
 
-        robotPosition = new RobotPosition(new int[]{1, 1}, 0);
+        robotPosition = new RobotPosition(DEFAULT_ROBOT_COORDINATES, DEFAULT_ROBOT_DIRECTION);
+
         obstacles = new boolean[COLUMN_NUM][ROW_NUM];
-        selectedCoordinates = new int[]{-1, -1};
-        waypointCoordinates = new int[]{-1, -1};
-        startCoordinates = new int[]{1, 1};
+
+        selectedCoordinates = new int[2];
+        selectedCoordinates[0] = DEFAULT_SELECTED_COORDINATES[0];
+        selectedCoordinates[1] = DEFAULT_SELECTED_COORDINATES[1];
+
+        startCoordinates = new int[2];
+        startCoordinates[0] = DEFAULT_START_COORDINATES[0];
+        startCoordinates[1] = DEFAULT_START_COORDINATES[1];
+
+        waypointCoordinates = new int[2];
+        waypointCoordinates[0] = DEFAULT_WAYPOINT_COORDINATES[0];
+        waypointCoordinates[1] = DEFAULT_WAYPOINT_COORDINATES[1];
+
         imageInfoList = new ArrayList<>();
 
         createMaze();
@@ -256,8 +278,8 @@ public class MazeView extends View {
         int x = (int) (event.getX() / gridSize);
         int y = ROW_NUM - 1 - (int) (event.getY() / gridSize);
 
-        selectedCoordinates[0] = (x == selectedCoordinates[0] && y == selectedCoordinates[1]) ? -1 : x;
-        selectedCoordinates[1] = (x == selectedCoordinates[0] && y == selectedCoordinates[1]) ? -1 : y;
+        selectedCoordinates[0] = (x == selectedCoordinates[0] && y == selectedCoordinates[1]) ? DEFAULT_SELECTED_COORDINATES[0] : x;
+        selectedCoordinates[1] = (x == selectedCoordinates[0] && y == selectedCoordinates[1]) ? DEFAULT_SELECTED_COORDINATES[1] : y;
 
         // Redraw the canvas
         invalidate();
@@ -272,24 +294,36 @@ public class MazeView extends View {
     ///////////////////////////         Parameters Update Methods        ///////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    protected void updateWaypointCoordinates() {
-        // Update waypoint coordinates
-        waypointCoordinates[0] = selectedCoordinates[0];
-        waypointCoordinates[1] = selectedCoordinates[1];
-
-        // Clear selected grid
-        selectedCoordinates[0] = -1;
-        selectedCoordinates[1] = -1;
+    protected void updateRobotCoordinatesAndDirection(int[] robotCoordinates, int robotDirection) {
+        robotPosition.robotCoordinates[0] = robotCoordinates[0];
+        robotPosition.robotCoordinates[1] = robotCoordinates[1];
+        robotPosition.robotDirection = robotDirection;
 
         // Redraw the canvas
         invalidate();
-
-        mazeFragment.updateWaypointTextView(waypointCoordinates);
-        mazeFragment.updateSelectedGridTextView(selectedCoordinates);
     }
 
-    protected int[] getWaypointCoordinates() {
-        return waypointCoordinates;
+    protected int[] getRobotCoordinates() {
+        return robotPosition.robotCoordinates;
+    }
+
+    protected int getRobotDirection() {
+        return robotPosition.robotDirection;
+    }
+
+    protected void reloadRobotCoordinates(int[] coordinates) {
+        robotPosition.robotCoordinates[0] = coordinates[0];
+        robotPosition.robotCoordinates[1] = coordinates[1];
+
+        // Redraw the canvas
+        invalidate();
+    }
+
+    protected void reloadRobotDirection(int robotDirection) {
+        robotPosition.robotDirection = robotDirection;
+
+        // Redraw the canvas
+        invalidate();
     }
 
     protected void updateStartCoordinates() {
@@ -300,10 +334,11 @@ public class MazeView extends View {
         // Update robot position
         robotPosition.robotCoordinates[0] = startCoordinates[0];
         robotPosition.robotCoordinates[1] = startCoordinates[1];
+        robotPosition.robotDirection = DEFAULT_ROBOT_DIRECTION;
 
         // Clear selected grid
-        selectedCoordinates[0] = -1;
-        selectedCoordinates[1] = -1;
+        selectedCoordinates[0] = DEFAULT_SELECTED_COORDINATES[0];
+        selectedCoordinates[1] = DEFAULT_SELECTED_COORDINATES[1];
 
         // Redraw the canvas
         invalidate();
@@ -316,9 +351,38 @@ public class MazeView extends View {
         return startCoordinates;
     }
 
-    protected void updateRobotCoordinates(int[] robotCoordinates, int robotDirection) {
-        robotPosition.robotCoordinates = robotCoordinates;
-        robotPosition.robotDirection = robotDirection;
+    protected void reloadStartCoordinates(int[] coordinates) {
+        startCoordinates[0] = coordinates[0];
+        startCoordinates[1] = coordinates[1];
+
+        mazeFragment.updateStartPositionTextView(coordinates);
+    }
+
+    protected void updateWaypointCoordinates() {
+        // Update waypoint coordinates
+        waypointCoordinates[0] = selectedCoordinates[0];
+        waypointCoordinates[1] = selectedCoordinates[1];
+
+        // Clear selected grid
+        selectedCoordinates[0] = DEFAULT_SELECTED_COORDINATES[0];
+        selectedCoordinates[1] = DEFAULT_SELECTED_COORDINATES[1];
+
+        // Redraw the canvas
+        invalidate();
+
+        mazeFragment.updateWaypointTextView(waypointCoordinates);
+        mazeFragment.updateSelectedGridTextView(selectedCoordinates);
+    }
+
+    protected int[] getWaypointCoordinates() {
+        return waypointCoordinates;
+    }
+
+    protected void reloadWaypointCoordinates(int[] coordinates) {
+        waypointCoordinates[0] = coordinates[0];
+        waypointCoordinates[1] = coordinates[1];
+
+        mazeFragment.updateWaypointTextView(waypointCoordinates);
 
         // Redraw the canvas
         invalidate();
@@ -335,8 +399,41 @@ public class MazeView extends View {
         invalidate();
     }
 
+    protected String getMdfString() {
+        StringBuilder mdfStringBuilder = new StringBuilder();
+        for (int j = 0; j < ROW_NUM; j++) {
+            for (int i = 0; i < COLUMN_NUM; i++) {
+                mdfStringBuilder.append(obstacles[i][j] ? "1" : "0");
+            }
+        }
+        return mdfStringBuilder.toString();
+    }
+
     protected void updateImageInfoList(List<int[]> newImageInfoList) {
         imageInfoList = newImageInfoList;
+
+        // Redraw the canvas
+        invalidate();
+    }
+
+    protected Set<String> getImageInfoStringSet() {
+        Set<String> imageInfoStringSet = new HashSet<>();
+        for (int[] imageInfo : imageInfoList) {
+            imageInfoStringSet.add(imageInfo[0] + SPACE_SEPARATOR + imageInfo[1] + SPACE_SEPARATOR + imageInfo[2]);
+        }
+        return imageInfoStringSet;
+    }
+
+    protected void reloadImageInfoStringSet(Set<String> imageInfoStringSet) {
+        imageInfoList = new ArrayList<>();
+        for (String imageInfoString : imageInfoStringSet) {
+            String[] imageInfoValues = imageInfoString.split(SPACE_SEPARATOR);
+            imageInfoList.add(new int[]{
+                    Integer.parseInt(imageInfoValues[0]),
+                    Integer.parseInt(imageInfoValues[1]),
+                    Integer.parseInt(imageInfoValues[2])
+            });
+        }
 
         // Redraw the canvas
         invalidate();
@@ -367,7 +464,9 @@ public class MazeView extends View {
         int robotDirection; // 0, 90, 180, 270
 
         public RobotPosition(int[] robotCoordinates, int robotDirection) {
-            this.robotCoordinates = robotCoordinates;
+            this.robotCoordinates = new int[2];
+            this.robotCoordinates[0] = robotCoordinates[0];
+            this.robotCoordinates[1] = robotCoordinates[1];
             this.robotDirection = robotDirection;
         }
     }

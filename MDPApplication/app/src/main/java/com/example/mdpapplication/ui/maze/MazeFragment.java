@@ -1,6 +1,8 @@
 package com.example.mdpapplication.ui.maze;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -25,6 +27,7 @@ import com.example.mdpapplication.R;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -58,6 +61,17 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private static final String MAZE_DISPLAY_UPDATED = "Maze display updated";
     private static final String WAYPOINT_POSITION_UPDATED_TO = "Waypoint position updated to ";
     private static final String ROBOT_START_POSITION_UPDATED_TO = "Robot start position updated to";
+
+    // Save maze status keys
+    private static final String ROBOT_COORDINATE_X = "Robot Coordinate X";
+    private static final String ROBOT_COORDINATE_Y = "Robot Coordinate Y";
+    private static final String ROBOT_DIRECTION = "Robot Direction";
+    private static final String START_COORDINATE_X = "Start Coordinate X";
+    private static final String START_COORDINATE_Y = "Start Coordinate Y";
+    private static final String WAYPOINT_COORDINATE_X = "Waypoint Coordinate X";
+    private static final String WAYPOINT_COORDINATE_Y = "Waypoint Coordinate Y";
+    private static final String MDF_STRING = "MDF String";
+    private static final String IMAGE_INFO_LIST = "Image Info List";
 
     // Maze auto update
     private MazeUpdateMode mazeUpdateMode;
@@ -221,6 +235,68 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         return root;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        // Save robot coordinates and direction
+        editor.putInt(ROBOT_COORDINATE_X, mazeView.getRobotCoordinates()[0]);
+        editor.putInt(ROBOT_COORDINATE_Y, mazeView.getRobotCoordinates()[1]);
+        editor.putInt(ROBOT_DIRECTION, mazeView.getRobotDirection());
+
+        // Save start coordinates
+        editor.putInt(START_COORDINATE_X, mazeView.getStartCoordinates()[0]);
+        editor.putInt(START_COORDINATE_Y, mazeView.getStartCoordinates()[1]);
+
+        // Save waypoint coordinates
+        editor.putInt(WAYPOINT_COORDINATE_X, mazeView.getWaypointCoordinates()[0]);
+        editor.putInt(WAYPOINT_COORDINATE_Y, mazeView.getWaypointCoordinates()[1]);
+
+        // Save obstacles
+        editor.putString(MDF_STRING, mazeView.getMdfString());
+
+        // Save image number ID blocks
+        editor.putStringSet(IMAGE_INFO_LIST, mazeView.getImageInfoStringSet());
+
+        editor.apply();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+
+        // Reload robot coordinates and direction
+        int[] robotCoordinates = new int[2];
+        robotCoordinates[0] = sharedPreferences.getInt(ROBOT_COORDINATE_X, MazeView.DEFAULT_ROBOT_COORDINATES[0]);
+        robotCoordinates[1] = sharedPreferences.getInt(ROBOT_COORDINATE_Y, MazeView.DEFAULT_ROBOT_COORDINATES[1]);
+        mazeView.reloadRobotCoordinates(robotCoordinates);
+        int robotDirection = sharedPreferences.getInt(ROBOT_DIRECTION, MazeView.DEFAULT_ROBOT_DIRECTION);
+        mazeView.reloadRobotDirection(robotDirection);
+
+        // Reload start coordinates
+        int[] startCoordinates = new int[2];
+        startCoordinates[0] = sharedPreferences.getInt(START_COORDINATE_X, 1);
+        startCoordinates[1] = sharedPreferences.getInt(START_COORDINATE_Y, 1);
+        mazeView.reloadStartCoordinates(startCoordinates);
+
+        // Reload waypoint coordinates
+        int[] waypointCoordinates = new int[2];
+        waypointCoordinates[0] = sharedPreferences.getInt(WAYPOINT_COORDINATE_X, MazeView.DEFAULT_WAYPOINT_COORDINATES[0]);
+        waypointCoordinates[1] = sharedPreferences.getInt(WAYPOINT_COORDINATE_Y, MazeView.DEFAULT_WAYPOINT_COORDINATES[1]);
+        mazeView.reloadWaypointCoordinates(waypointCoordinates);
+
+        // Reload obstacles
+        mazeView.updateObstacles(sharedPreferences.getString(MDF_STRING, MazeView.DEFAULT_MDF_STRING));
+
+        // Reload image number ID blocks
+        mazeView.reloadImageInfoStringSet(sharedPreferences.getStringSet(IMAGE_INFO_LIST, new HashSet<>()));
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////              Public Methods              ///////////////////////////
@@ -234,7 +310,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         Log.d(MAZE_FRAGMENT_TAG, "Updating robot coordinates: " + robotCoordinates[0] + ", " + robotCoordinates[1]);
         Log.d(MAZE_FRAGMENT_TAG, "Updating robot direction: " + robotDirection);
 
-        mazeView.updateRobotCoordinates(robotCoordinates, robotDirection);
+        mazeView.updateRobotCoordinatesAndDirection(robotCoordinates, robotDirection);
     }
 
     public void updateRobotStatus(String robotStatusString) {

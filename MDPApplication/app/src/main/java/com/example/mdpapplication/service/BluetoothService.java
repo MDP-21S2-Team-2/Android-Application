@@ -2,19 +2,16 @@ package com.example.mdpapplication.service;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import com.example.mdpapplication.MainActivity;
-import com.example.mdpapplication.ui.communication.CommunicationFragment;
 import com.example.mdpapplication.ui.maze.MazeFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BluetoothService {
@@ -23,6 +20,14 @@ public class BluetoothService {
     private static final String BLUETOOTH_SERVICE_TAG = "BluetoothService";
 
     private static final String DEVICE_CONNECTION_WAS_LOST = "device connection was lost";
+
+    // Constants for maze update command
+    private static final String ROBOT_STRING = "ROBOT";
+    private static final String MDF_STRING = "MDF";
+    private static final String IMAGE_STRING = "IMAGE";
+    private static final String LEVEL_1_SEPARATOR = ";";
+    private static final String LEVEL_2_SEPARATOR = ",";
+    private static final String LEVEL_3_SEPARATOR = ":";
 
     private boolean isConnected;
     private String connectedDeviceName;
@@ -80,7 +85,6 @@ public class BluetoothService {
      *
      * @param message The message to be sent out
      */
-    // TODO: Test this method with AMD Tool
     public void sendOutMessage(String message) {
         Log.d(BLUETOOTH_SERVICE_TAG, "Sending message: " + message);
         bluetoothCommunicationService.write(message.getBytes());
@@ -161,36 +165,40 @@ public class BluetoothService {
 
     private void processMazeUpdateResponseMessage(String mazeUpdateResponseMessage) {
         // Message format: ROBOT,IDLE/RUNNING/CALIBRATING/ARRIVED,0/90/180/270,X:Y;MDF,000011000...;IMAGE,X1:Y1:ID1,X2:Y2:ID2,...Xn:Yn:IDn
-        String[] infoArr = mazeUpdateResponseMessage.split(";");
+        String[] infoArr = mazeUpdateResponseMessage.split(LEVEL_1_SEPARATOR);
         for (String info : infoArr) {
-            if (info.startsWith("ROBOT")) {
-                String[] robotInfoArr = info.split(",");
-                String robotStatus = robotInfoArr[1];
-                int robotDirection = Integer.parseInt(robotInfoArr[2]);
-                int robotX = Integer.parseInt(robotInfoArr[3].split(":")[0]);
-                int robotY = Integer.parseInt(robotInfoArr[3].split(":")[1]);
+            try {
+                if (info.startsWith(ROBOT_STRING)) {
+                    String[] robotInfoArr = info.split(LEVEL_2_SEPARATOR);
+                    String robotStatus = robotInfoArr[1];
+                    int robotDirection = Integer.parseInt(robotInfoArr[2]);
+                    int robotX = Integer.parseInt(robotInfoArr[3].split(LEVEL_3_SEPARATOR)[0]);
+                    int robotY = Integer.parseInt(robotInfoArr[3].split(LEVEL_3_SEPARATOR)[1]);
 
-                MazeFragment.getInstance().updateRobotDisplay(new int[]{robotX, robotY}, robotDirection);
-                MazeFragment.getInstance().updateRobotStatus(robotStatus);
-            } else if (info.startsWith("MDF")) {
-                String[] mdfInfoArr = info.split(",");
-                String mdfString = mdfInfoArr[1];
+                    MazeFragment.getInstance().updateRobotDisplay(new int[]{robotX, robotY}, robotDirection);
+                    MazeFragment.getInstance().updateRobotStatus(robotStatus);
+                } else if (info.startsWith(MDF_STRING)) {
+                    String[] mdfInfoArr = info.split(LEVEL_2_SEPARATOR);
+                    String mdfString = mdfInfoArr[1];
 
-                MazeFragment.getInstance().updateObstacles(mdfString);
-            } else if (info.startsWith("IMAGE")) {
-                String[] imageInfoArr = info.split(",");
-                List<int[]> imageInfoList = new ArrayList<>();
-                for (int i = 1; i < imageInfoArr.length; i++) {
-                    String imageInfo = imageInfoArr[i];
-                    String[] imageInfoValues = imageInfo.split(":");
-                    imageInfoList.add(new int[] {
-                            Integer.parseInt(imageInfoValues[0]),
-                            Integer.parseInt(imageInfoValues[1]),
-                            Integer.parseInt(imageInfoValues[2])
-                    });
+                    MazeFragment.getInstance().updateObstacles(mdfString);
+                } else if (info.startsWith(IMAGE_STRING)) {
+                    String[] imageInfoArr = info.split(LEVEL_2_SEPARATOR);
+                    List<int[]> imageInfoList = new ArrayList<>();
+                    for (int i = 1; i < imageInfoArr.length; i++) {
+                        String imageInfo = imageInfoArr[i];
+                        String[] imageInfoValues = imageInfo.split(LEVEL_3_SEPARATOR);
+                        imageInfoList.add(new int[]{
+                                Integer.parseInt(imageInfoValues[0]),
+                                Integer.parseInt(imageInfoValues[1]),
+                                Integer.parseInt(imageInfoValues[2])
+                        });
+                    }
+
+                    MazeFragment.getInstance().updateImageInfoList(imageInfoList);
                 }
-
-                MazeFragment.getInstance().updateImageInfoList(imageInfoList);
+            } catch (Exception exception) {
+                Log.d(BLUETOOTH_SERVICE_TAG, Arrays.toString(exception.getStackTrace()));
             }
         }
     }
