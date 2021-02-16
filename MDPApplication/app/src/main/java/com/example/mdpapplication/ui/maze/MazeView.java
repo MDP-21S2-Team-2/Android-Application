@@ -272,29 +272,32 @@ public class MazeView extends View {
     ///////////////////////////         Parameters Update Methods        ///////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    protected void updateWaypointCoordinates() {
-        // Update waypoint coordinates
-        waypointCoordinates[0] = selectedCoordinates[0];
-        waypointCoordinates[1] = selectedCoordinates[1];
-
-        // Clear selected grid
-        selectedCoordinates[0] = -1;
-        selectedCoordinates[1] = -1;
+    protected void updateRobotCoordinatesAndDirection(int[] robotCoordinates, int robotDirection) {
+        robotPosition.robotCoordinates = robotCoordinates;
+        robotPosition.robotDirection = robotDirection;
 
         // Redraw the canvas
         invalidate();
-
-        mazeFragment.updateWaypointTextView(waypointCoordinates);
-        mazeFragment.updateSelectedGridTextView(selectedCoordinates);
     }
 
-    protected int[] getWaypointCoordinates() {
-        return waypointCoordinates;
+    protected int[] getRobotCoordinates() {
+        return robotPosition.robotCoordinates;
     }
 
-    protected void reloadWaypointCoordinates(int[] coordinates) {
-        waypointCoordinates[0] = coordinates[0];
-        waypointCoordinates[1] = coordinates[1];
+    protected int getRobotDirection() {
+        return robotPosition.robotDirection;
+    }
+
+    protected void reloadRobotCoordinates(int[] coordinates) {
+        robotPosition.robotCoordinates[0] = coordinates[0];
+        robotPosition.robotCoordinates[1] = coordinates[1];
+
+        // Redraw the canvas
+        invalidate();
+    }
+
+    protected void reloadRobotDirection(int robotDirection) {
+        robotPosition.robotDirection = robotDirection;
 
         // Redraw the canvas
         invalidate();
@@ -331,32 +334,31 @@ public class MazeView extends View {
         mazeFragment.updateStartPositionTextView(coordinates);
     }
 
-    protected void updateRobotCoordinatesAndDirection(int[] robotCoordinates, int robotDirection) {
-        robotPosition.robotCoordinates = robotCoordinates;
-        robotPosition.robotDirection = robotDirection;
+    protected void updateWaypointCoordinates() {
+        // Update waypoint coordinates
+        waypointCoordinates[0] = selectedCoordinates[0];
+        waypointCoordinates[1] = selectedCoordinates[1];
+
+        // Clear selected grid
+        selectedCoordinates[0] = -1;
+        selectedCoordinates[1] = -1;
 
         // Redraw the canvas
         invalidate();
+
+        mazeFragment.updateWaypointTextView(waypointCoordinates);
+        mazeFragment.updateSelectedGridTextView(selectedCoordinates);
     }
 
-    protected int[] getRobotCoordinates() {
-        return robotPosition.robotCoordinates;
+    protected int[] getWaypointCoordinates() {
+        return waypointCoordinates;
     }
 
-    protected int getRobotDirection() {
-        return robotPosition.robotDirection;
-    }
+    protected void reloadWaypointCoordinates(int[] coordinates) {
+        waypointCoordinates[0] = coordinates[0];
+        waypointCoordinates[1] = coordinates[1];
 
-    protected void reloadRobotCoordinates(int[] coordinates) {
-        robotPosition.robotCoordinates[0] = coordinates[0];
-        robotPosition.robotCoordinates[1] = coordinates[1];
-
-        // Redraw the canvas
-        invalidate();
-    }
-
-    protected void reloadRobotDirection(int robotDirection) {
-        robotPosition.robotDirection = robotDirection;
+        mazeFragment.updateWaypointTextView(waypointCoordinates);
 
         // Redraw the canvas
         invalidate();
