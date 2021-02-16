@@ -267,10 +267,10 @@ public class MazeFragment extends Fragment implements SensorEventListener {
 
         // Reload robot coordinates and direction
         int[] robotCoordinates = new int[2];
-        robotCoordinates[0] = sharedPreferences.getInt(ROBOT_COORDINATE_X, 1);
-        robotCoordinates[1] = sharedPreferences.getInt(ROBOT_COORDINATE_Y, 1);
+        robotCoordinates[0] = sharedPreferences.getInt(ROBOT_COORDINATE_X, MazeView.DEFAULT_ROBOT_COORDINATES[0]);
+        robotCoordinates[1] = sharedPreferences.getInt(ROBOT_COORDINATE_Y, MazeView.DEFAULT_ROBOT_COORDINATES[1]);
         mazeView.reloadRobotCoordinates(robotCoordinates);
-        int robotDirection = sharedPreferences.getInt(ROBOT_DIRECTION, 0);
+        int robotDirection = sharedPreferences.getInt(ROBOT_DIRECTION, MazeView.DEFAULT_ROBOT_DIRECTION);
         mazeView.reloadRobotDirection(robotDirection);
 
         // Reload start coordinates

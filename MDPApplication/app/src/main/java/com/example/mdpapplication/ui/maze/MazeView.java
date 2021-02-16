@@ -21,6 +21,10 @@ import java.util.List;
 public class MazeView extends View {
 
     protected static final String DEFAULT_MDF_STRING = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+    protected static final int[] DEFAULT_ROBOT_COORDINATES = new int[]{1, 1};
+    protected static final int DEFAULT_ROBOT_DIRECTION = 0;
+    private static final int[] DEFAULT_SELECTED_COORDINATES = new int[]{-1, -1};
+    // TODO: Add more default values here
 
     private static final int COLUMN_NUM = 15;
     private static final int ROW_NUM = 20;
@@ -70,9 +74,11 @@ public class MazeView extends View {
         numberIdPaint.setColor(Color.WHITE);
         numberIdPaint.setTextSize(30f);
 
-        robotPosition = new RobotPosition(new int[]{1, 1}, 0);
+        robotPosition = new RobotPosition(DEFAULT_ROBOT_COORDINATES, DEFAULT_ROBOT_DIRECTION);
         obstacles = new boolean[COLUMN_NUM][ROW_NUM];
-        selectedCoordinates = new int[]{-1, -1};
+        selectedCoordinates = new int[2];
+        selectedCoordinates[0] = DEFAULT_SELECTED_COORDINATES[0];
+        selectedCoordinates[1] = DEFAULT_SELECTED_COORDINATES[1];
         waypointCoordinates = new int[]{-1, -1};
         startCoordinates = new int[]{1, 1};
         imageInfoList = new ArrayList<>();
@@ -258,8 +264,8 @@ public class MazeView extends View {
         int x = (int) (event.getX() / gridSize);
         int y = ROW_NUM - 1 - (int) (event.getY() / gridSize);
 
-        selectedCoordinates[0] = (x == selectedCoordinates[0] && y == selectedCoordinates[1]) ? -1 : x;
-        selectedCoordinates[1] = (x == selectedCoordinates[0] && y == selectedCoordinates[1]) ? -1 : y;
+        selectedCoordinates[0] = (x == selectedCoordinates[0] && y == selectedCoordinates[1]) ? DEFAULT_SELECTED_COORDINATES[0] : x;
+        selectedCoordinates[1] = (x == selectedCoordinates[0] && y == selectedCoordinates[1]) ? DEFAULT_SELECTED_COORDINATES[1] : y;
 
         // Redraw the canvas
         invalidate();
@@ -315,8 +321,8 @@ public class MazeView extends View {
         robotPosition.robotCoordinates[1] = startCoordinates[1];
 
         // Clear selected grid
-        selectedCoordinates[0] = -1;
-        selectedCoordinates[1] = -1;
+        selectedCoordinates[0] = DEFAULT_SELECTED_COORDINATES[0];
+        selectedCoordinates[1] = DEFAULT_SELECTED_COORDINATES[1];
 
         // Redraw the canvas
         invalidate();
@@ -342,8 +348,8 @@ public class MazeView extends View {
         waypointCoordinates[1] = selectedCoordinates[1];
 
         // Clear selected grid
-        selectedCoordinates[0] = -1;
-        selectedCoordinates[1] = -1;
+        selectedCoordinates[0] = DEFAULT_SELECTED_COORDINATES[0];
+        selectedCoordinates[1] = DEFAULT_SELECTED_COORDINATES[1];
 
         // Redraw the canvas
         invalidate();
