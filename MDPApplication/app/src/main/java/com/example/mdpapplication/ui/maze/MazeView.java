@@ -16,7 +16,9 @@ import androidx.annotation.Nullable;
 import com.example.mdpapplication.R;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MazeView extends View {
 
@@ -31,6 +33,8 @@ public class MazeView extends View {
     private static final int ROW_NUM = 20;
     private static final int START_ZONE_SIZE = 3;
     private static final int GOAL_ZONE_SIZE = 3;
+
+    private static final String SPACE_SEPARATOR = " ";
 
     private static Grid[][] grids;
     private RobotPosition robotPosition;
@@ -291,7 +295,8 @@ public class MazeView extends View {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     protected void updateRobotCoordinatesAndDirection(int[] robotCoordinates, int robotDirection) {
-        robotPosition.robotCoordinates = robotCoordinates;
+        robotPosition.robotCoordinates[0] = robotCoordinates[0];
+        robotPosition.robotCoordinates[1] = robotCoordinates[1];
         robotPosition.robotDirection = robotDirection;
 
         // Redraw the canvas
@@ -329,6 +334,7 @@ public class MazeView extends View {
         // Update robot position
         robotPosition.robotCoordinates[0] = startCoordinates[0];
         robotPosition.robotCoordinates[1] = startCoordinates[1];
+        robotPosition.robotDirection = DEFAULT_ROBOT_DIRECTION;
 
         // Clear selected grid
         selectedCoordinates[0] = DEFAULT_SELECTED_COORDINATES[0];
@@ -410,6 +416,29 @@ public class MazeView extends View {
         invalidate();
     }
 
+    protected Set<String> getImageInfoStringSet() {
+        Set<String> imageInfoStringSet = new HashSet<>();
+        for (int[] imageInfo : imageInfoList) {
+            imageInfoStringSet.add(imageInfo[0] + SPACE_SEPARATOR + imageInfo[1] + SPACE_SEPARATOR + imageInfo[2]);
+        }
+        return imageInfoStringSet;
+    }
+
+    protected void reloadImageInfoStringSet(Set<String> imageInfoStringSet) {
+        imageInfoList = new ArrayList<>();
+        for (String imageInfoString : imageInfoStringSet) {
+            String[] imageInfoValues = imageInfoString.split(SPACE_SEPARATOR);
+            imageInfoList.add(new int[]{
+                    Integer.parseInt(imageInfoValues[0]),
+                    Integer.parseInt(imageInfoValues[1]),
+                    Integer.parseInt(imageInfoValues[2])
+            });
+        }
+
+        // Redraw the canvas
+        invalidate();
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////               Inner Classes              ///////////////////////////
@@ -435,7 +464,9 @@ public class MazeView extends View {
         int robotDirection; // 0, 90, 180, 270
 
         public RobotPosition(int[] robotCoordinates, int robotDirection) {
-            this.robotCoordinates = robotCoordinates;
+            this.robotCoordinates = new int[2];
+            this.robotCoordinates[0] = robotCoordinates[0];
+            this.robotCoordinates[1] = robotCoordinates[1];
             this.robotDirection = robotDirection;
         }
     }

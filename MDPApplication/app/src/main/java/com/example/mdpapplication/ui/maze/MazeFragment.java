@@ -27,6 +27,7 @@ import com.example.mdpapplication.R;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -70,6 +71,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private static final String WAYPOINT_COORDINATE_X = "Waypoint Coordinate X";
     private static final String WAYPOINT_COORDINATE_Y = "Waypoint Coordinate Y";
     private static final String MDF_STRING = "MDF String";
+    private static final String IMAGE_INFO_LIST = "Image Info List";
 
     // Maze auto update
     private MazeUpdateMode mazeUpdateMode;
@@ -256,6 +258,9 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         // Save obstacles
         editor.putString(MDF_STRING, mazeView.getMdfString());
 
+        // Save image number ID blocks
+        editor.putStringSet(IMAGE_INFO_LIST, mazeView.getImageInfoStringSet());
+
         editor.apply();
     }
 
@@ -287,6 +292,9 @@ public class MazeFragment extends Fragment implements SensorEventListener {
 
         // Reload obstacles
         mazeView.updateObstacles(sharedPreferences.getString(MDF_STRING, MazeView.DEFAULT_MDF_STRING));
+
+        // Reload image number ID blocks
+        mazeView.reloadImageInfoStringSet(sharedPreferences.getStringSet(IMAGE_INFO_LIST, new HashSet<>()));
     }
 
 
