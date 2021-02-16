@@ -25,9 +25,9 @@ public class BluetoothService {
     private static final String ROBOT_STRING = "ROBOT";
     private static final String MDF_STRING = "MDF";
     private static final String IMAGE_STRING = "IMAGE";
-    public static final String LEVEL_1_SEPARATOR = ";";
-    public static final String LEVEL_2_SEPARATOR = ",";
-    public static final String LEVEL_3_SEPARATOR = ":";
+    private static final String LEVEL_1_SEPARATOR = ";";
+    private static final String LEVEL_2_SEPARATOR = ",";
+    private static final String LEVEL_3_SEPARATOR = ":";
 
     private boolean isConnected;
     private String connectedDeviceName;
