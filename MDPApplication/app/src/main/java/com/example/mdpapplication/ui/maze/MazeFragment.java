@@ -69,6 +69,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private static final String START_COORDINATE_Y = "Start Coordinate Y";
     private static final String WAYPOINT_COORDINATE_X = "Waypoint Coordinate X";
     private static final String WAYPOINT_COORDINATE_Y = "Waypoint Coordinate Y";
+    private static final String MDF_STRING = "MDF String";
 
     // Maze auto update
     private MazeUpdateMode mazeUpdateMode;
@@ -252,6 +253,9 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         editor.putInt(WAYPOINT_COORDINATE_X, mazeView.getWaypointCoordinates()[0]);
         editor.putInt(WAYPOINT_COORDINATE_Y, mazeView.getWaypointCoordinates()[1]);
 
+        // Save obstacles
+        editor.putString(MDF_STRING, mazeView.getMdfString());
+
         editor.apply();
     }
 
@@ -280,6 +284,9 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         waypointCoordinates[0] = sharedPreferences.getInt(WAYPOINT_COORDINATE_X, -1);
         waypointCoordinates[1] = sharedPreferences.getInt(WAYPOINT_COORDINATE_Y, -1);
         mazeView.reloadWaypointCoordinates(waypointCoordinates);
+
+        // Reload obstacles
+        mazeView.updateObstacles(sharedPreferences.getString(MDF_STRING, MazeView.DEFAULT_MDF_STRING));
     }
 
 

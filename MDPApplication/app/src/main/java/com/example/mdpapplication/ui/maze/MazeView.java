@@ -20,10 +20,12 @@ import java.util.List;
 
 public class MazeView extends View {
 
+    protected static final String DEFAULT_MDF_STRING = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
+
     private static final int COLUMN_NUM = 15;
     private static final int ROW_NUM = 20;
-    public static final int START_ZONE_SIZE = 3;
-    public static final int GOAL_ZONE_SIZE = 3;
+    private static final int START_ZONE_SIZE = 3;
+    private static final int GOAL_ZONE_SIZE = 3;
 
     private static Grid[][] grids;
     private RobotPosition robotPosition;
@@ -373,6 +375,16 @@ public class MazeView extends View {
 
         // Redraw the canvas
         invalidate();
+    }
+
+    protected String getMdfString() {
+        StringBuilder mdfStringBuilder = new StringBuilder();
+        for (int j = 0; j < ROW_NUM; j++) {
+            for (int i = 0; i < COLUMN_NUM; i++) {
+                mdfStringBuilder.append(obstacles[i][j] ? "1" : "0");
+            }
+        }
+        return mdfStringBuilder.toString();
     }
 
     protected void updateImageInfoList(List<int[]> newImageInfoList) {
