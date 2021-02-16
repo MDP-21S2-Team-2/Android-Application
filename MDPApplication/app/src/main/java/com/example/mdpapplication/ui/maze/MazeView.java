@@ -26,7 +26,6 @@ public class MazeView extends View {
     protected static final int[] DEFAULT_START_COORDINATES = new int[]{1, 1};
     protected static final int[] DEFAULT_WAYPOINT_COORDINATES = new int[]{-1, -1};
     private static final int[] DEFAULT_SELECTED_COORDINATES = new int[]{-1, -1};
-    // TODO: Add more default values here
 
     private static final int COLUMN_NUM = 15;
     private static final int ROW_NUM = 20;
