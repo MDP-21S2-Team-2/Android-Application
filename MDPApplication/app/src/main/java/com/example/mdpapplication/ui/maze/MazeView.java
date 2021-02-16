@@ -23,6 +23,8 @@ public class MazeView extends View {
     protected static final String DEFAULT_MDF_STRING = "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
     protected static final int[] DEFAULT_ROBOT_COORDINATES = new int[]{1, 1};
     protected static final int DEFAULT_ROBOT_DIRECTION = 0;
+    protected static final int[] DEFAULT_START_COORDINATES = new int[]{1, 1};
+    protected static final int[] DEFAULT_WAYPOINT_COORDINATES = new int[]{-1, -1};
     private static final int[] DEFAULT_SELECTED_COORDINATES = new int[]{-1, -1};
     // TODO: Add more default values here
 
@@ -75,12 +77,21 @@ public class MazeView extends View {
         numberIdPaint.setTextSize(30f);
 
         robotPosition = new RobotPosition(DEFAULT_ROBOT_COORDINATES, DEFAULT_ROBOT_DIRECTION);
+
         obstacles = new boolean[COLUMN_NUM][ROW_NUM];
+
         selectedCoordinates = new int[2];
         selectedCoordinates[0] = DEFAULT_SELECTED_COORDINATES[0];
         selectedCoordinates[1] = DEFAULT_SELECTED_COORDINATES[1];
-        waypointCoordinates = new int[]{-1, -1};
-        startCoordinates = new int[]{1, 1};
+
+        startCoordinates = new int[2];
+        startCoordinates[0] = DEFAULT_START_COORDINATES[0];
+        startCoordinates[1] = DEFAULT_START_COORDINATES[1];
+
+        waypointCoordinates = new int[2];
+        waypointCoordinates[0] = DEFAULT_WAYPOINT_COORDINATES[0];
+        waypointCoordinates[1] = DEFAULT_WAYPOINT_COORDINATES[1];
+
         imageInfoList = new ArrayList<>();
 
         createMaze();

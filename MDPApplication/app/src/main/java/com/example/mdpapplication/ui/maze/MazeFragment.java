@@ -281,8 +281,8 @@ public class MazeFragment extends Fragment implements SensorEventListener {
 
         // Reload waypoint coordinates
         int[] waypointCoordinates = new int[2];
-        waypointCoordinates[0] = sharedPreferences.getInt(WAYPOINT_COORDINATE_X, -1);
-        waypointCoordinates[1] = sharedPreferences.getInt(WAYPOINT_COORDINATE_Y, -1);
+        waypointCoordinates[0] = sharedPreferences.getInt(WAYPOINT_COORDINATE_X, MazeView.DEFAULT_WAYPOINT_COORDINATES[0]);
+        waypointCoordinates[1] = sharedPreferences.getInt(WAYPOINT_COORDINATE_Y, MazeView.DEFAULT_WAYPOINT_COORDINATES[1]);
         mazeView.reloadWaypointCoordinates(waypointCoordinates);
 
         // Reload obstacles
