@@ -360,6 +360,9 @@ public class MazeView extends View {
             default:
                 break;
         }
+
+        // Redraw the canvas
+        invalidate();
     }
 
     protected void manualTurnRight() {
@@ -379,6 +382,9 @@ public class MazeView extends View {
             default:
                 break;
         }
+
+        // Redraw the canvas
+        invalidate();
     }
 
     protected void updateRobotCoordinatesAndDirection(int[] robotCoordinates, int robotDirection) {
