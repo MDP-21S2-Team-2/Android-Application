@@ -28,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String DEVICE_IS_CONNECTED_TO = "Your device is connected to ";
 
     // Message strings
-    private static final String TO_ARDUINO = "AN-AR-";
-    private static final String TO_ALGORITHM = "AN-AL-";
-    private static final String TO_RASPBERRY_PI = "AN-RP-";
+    private static final String TO_ARDUINO = "";
+    private static final String TO_ALGORITHM = "";
+    private static final String TO_RASPBERRY_PI = "";
     private static final String ROBOT_MOVE_FORWARD = "M1";
     private static final String ROBOT_TURN_LEFT = "TL";
     private static final String ROBOT_TURN_RIGHT = "TR";

@@ -45,6 +45,8 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private static final String N_A_COORDINATES = "N/A";
     private static final String INITIAL_START_COORDINATES = "(1, 1)";
 
+    private static final boolean UPDATE_ROBOT_POSITION_ON_BUTTON_PRESSED = true; // TODO: Set to false after checklist completed
+
     // Robot status texts
     private static final String IDLE_ROBOT_STATUS = "Idle";
     private static final String RUNNING_ROBOT_STATUS = "Running";
@@ -175,16 +177,28 @@ public class MazeFragment extends Fragment implements SensorEventListener {
 
         moveForwardButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                MainActivity.sendRobotMoveForwardCommand();
+                if (UPDATE_ROBOT_POSITION_ON_BUTTON_PRESSED) {
+                    if (mazeView.manualMoveRobotForward()) {
+                        MainActivity.sendRobotMoveForwardCommand();
+                    }
+                } else {
+                    MainActivity.sendRobotMoveForwardCommand();
+                }
             }
         });
         turnLeftButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                if (UPDATE_ROBOT_POSITION_ON_BUTTON_PRESSED) {
+                    mazeView.manualTurnLeft();
+                }
                 MainActivity.sendRobotTurnLeftCommand();
             }
         });
         turnRightButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                if (UPDATE_ROBOT_POSITION_ON_BUTTON_PRESSED) {
+                    mazeView.manualTurnRight();
+                }
                 MainActivity.sendRobotTurnRightCommand();
             }
         });
