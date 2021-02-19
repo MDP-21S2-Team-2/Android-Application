@@ -171,10 +171,10 @@ public class MazeView extends View {
 
     private void drawRobot(Canvas canvas) {
         // Do not draw robot if coordinates are invalid
-        if (robotPosition.robotCoordinates[0] < 0
-                || robotPosition.robotCoordinates[0] >= COLUMN_NUM
-                || robotPosition.robotCoordinates[1] < 0
-                || robotPosition.robotCoordinates[1] >= ROW_NUM) {
+        if (robotPosition.robotCoordinates[0] <= 0
+                || robotPosition.robotCoordinates[0] >= COLUMN_NUM - 1
+                || robotPosition.robotCoordinates[1] <= 0
+                || robotPosition.robotCoordinates[1] >= ROW_NUM - 1) {
             return;
         }
 
@@ -293,6 +293,93 @@ public class MazeView extends View {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////         Parameters Update Methods        ///////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    protected boolean manualMoveRobotForward() {
+        switch (robotPosition.robotDirection) {
+            case 0:
+                if (robotPosition.robotCoordinates[1] + 1 < ROW_NUM - 1) {
+                    robotPosition.robotCoordinates[1]++;
+
+                    // Redraw the canvas
+                    invalidate();
+
+                    return true;
+                }
+                break;
+            case 90:
+                if (robotPosition.robotCoordinates[0] + 1 < COLUMN_NUM - 1) {
+                    robotPosition.robotCoordinates[0]++;
+
+                    // Redraw the canvas
+                    invalidate();
+
+                    return true;
+                }
+                break;
+            case 180:
+                if (robotPosition.robotCoordinates[1] - 1 > 0) {
+                    robotPosition.robotCoordinates[1]--;
+
+                    // Redraw the canvas
+                    invalidate();
+
+                    return true;
+                }
+                break;
+            case 270:
+                if (robotPosition.robotCoordinates[0] - 1 > 0) {
+                    robotPosition.robotCoordinates[0]--;
+
+                    // Redraw the canvas
+                    invalidate();
+
+                    return true;
+                }
+                break;
+            default:
+                break;
+        }
+
+        return false;
+    }
+
+    protected void manualTurnLeft() {
+        switch (robotPosition.robotDirection) {
+            case 0:
+                robotPosition.robotDirection = 270;
+                break;
+            case 90:
+                robotPosition.robotDirection = 0;
+                break;
+            case 180:
+                robotPosition.robotDirection = 90;
+                break;
+            case 270:
+                robotPosition.robotDirection = 180;
+                break;
+            default:
+                break;
+        }
+    }
+
+    protected void manualTurnRight() {
+        switch (robotPosition.robotDirection) {
+            case 0:
+                robotPosition.robotDirection = 90;
+                break;
+            case 90:
+                robotPosition.robotDirection = 180;
+                break;
+            case 180:
+                robotPosition.robotDirection = 270;
+                break;
+            case 270:
+                robotPosition.robotDirection = 0;
+                break;
+            default:
+                break;
+        }
+    }
 
     protected void updateRobotCoordinatesAndDirection(int[] robotCoordinates, int robotDirection) {
         robotPosition.robotCoordinates[0] = robotCoordinates[0];
