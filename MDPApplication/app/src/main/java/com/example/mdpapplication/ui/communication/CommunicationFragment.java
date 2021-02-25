@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mdpapplication.MainActivity;
 import com.example.mdpapplication.R;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,6 +27,10 @@ public class CommunicationFragment extends Fragment {
     private static final String COMMUNICATION_FRAGMENT_TAG = "CommunicationFragment";
 
     private CommunicationViewModel communicationViewModel;
+
+    // Snackbar messages
+    private static final String SENT_PERSISTENT_STRING = "Sent persistent string: ";
+    private static final String SENT_VOLATILE_STRING = "Sent volatile string: ";
 
     private static final String PERSISTENT_STRING_KEY_1 = "persistent_string_1";
     private static final String PERSISTENT_STRING_KEY_2 = "persistent_string_2";
@@ -72,17 +77,23 @@ public class CommunicationFragment extends Fragment {
 
         persistentStringSendButton1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                Snackbar.make(view, SENT_PERSISTENT_STRING + textViewPersistentCommunicationString1.getText().toString(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
                 MainActivity.sendCommunicationMessage(textViewPersistentCommunicationString1.getText().toString());
             }
         });
         persistentStringSendButton2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                Snackbar.make(view, SENT_PERSISTENT_STRING + textViewPersistentCommunicationString2.getText().toString(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
                 MainActivity.sendCommunicationMessage(textViewPersistentCommunicationString2.getText().toString());
             }
         });
 
         volatileStringSendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                Snackbar.make(view, SENT_VOLATILE_STRING + textViewVolatileCommunicationString.getText().toString(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
                 MainActivity.sendCommunicationMessage(textViewVolatileCommunicationString.getText().toString());
             }
         });
