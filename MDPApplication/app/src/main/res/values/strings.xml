@@ -38,4 +38,5 @@
     <string name="start_fastest_path">Start Fastest Path</string>
     <string name="start_exploration">Start Exploration</string>
     <string name="start_image_exploration">Start Image Exploration</string>
+    <string name="initiate_calibration">Initiate Calibration</string>
 </resources>
