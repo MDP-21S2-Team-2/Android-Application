@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String MAZE_UPDATE = "UPDATE";
     private static final String START_FASTEST_PATH = "FP";
     private static final String START_EXPLORATION = "EXP";
+    private static final String INITIATE_CALIBRATION = "C";
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -183,6 +184,12 @@ public class MainActivity extends AppCompatActivity {
         String startExplorationCommand = TO_ALGORITHM + START_EXPLORATION;
         Log.d(MAIN_ACTIVITY_TAG, "Sending start exploration command: " + startExplorationCommand);
         bluetoothService.sendOutMessage(startExplorationCommand);
+    }
+
+    public static void sendInitiateCalibrationCommand() {
+        String initiateCalibrationCommand = TO_ALGORITHM + INITIATE_CALIBRATION;
+        Log.d(MAIN_ACTIVITY_TAG, "Sending initiate calibration command: " + initiateCalibrationCommand);
+        bluetoothService.sendOutMessage(initiateCalibrationCommand);
     }
 
     public static void sendCommunicationMessage(String message) {
