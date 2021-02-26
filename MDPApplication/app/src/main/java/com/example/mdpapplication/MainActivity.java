@@ -31,9 +31,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TO_ARDUINO = "";
     private static final String TO_ALGORITHM = "";
     private static final String TO_RASPBERRY_PI = "";
-    private static final String ROBOT_MOVE_FORWARD = "M1";
-    private static final String ROBOT_TURN_LEFT = "TL";
-    private static final String ROBOT_TURN_RIGHT = "TR";
+    private static final String ROBOT_MOVE_FORWARD = "M0";
+    private static final String ROBOT_TURN_LEFT = "L";
+    private static final String ROBOT_TURN_RIGHT = "R";
     private static final String WAYPOINT = "WAYPOINT";
     private static final String START_POSITION = "START";
     private static final String MAZE_UPDATE = "UPDATE";
