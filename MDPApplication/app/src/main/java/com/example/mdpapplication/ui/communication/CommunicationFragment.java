@@ -1,9 +1,6 @@
 package com.example.mdpapplication.ui.communication;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -17,10 +14,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.mdpapplication.MainActivity;
 import com.example.mdpapplication.R;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class CommunicationFragment extends Fragment {
 
@@ -28,11 +28,20 @@ public class CommunicationFragment extends Fragment {
 
     private CommunicationViewModel communicationViewModel;
 
+    // Snackbar messages
+    private static final String SENT_PERSISTENT_STRING = "Sent persistent string: ";
+    private static final String SENT_VOLATILE_STRING = "Sent volatile string: ";
+
     private static final String PERSISTENT_STRING_KEY_1 = "persistent_string_1";
     private static final String PERSISTENT_STRING_KEY_2 = "persistent_string_2";
     private static final String PERSISTENT_STRING_DEFAULT_1 = "This is persistent text string 1";
     private static final String PERSISTENT_STRING_DEFAULT_2 = "This is persistent text string 2";
     private static final String RECEIVED_DATA_PLACEHOLDER = "Your received text strings will appear here";
+
+    private Timer timer;
+    private UpdateReceivedDataTimerTask updateReceivedDataTimerTask;
+    private static final int RECEIVE_DATA_UPDATE_DELAY = 0;
+    private static final int RECEIVE_DATA_UPDATE_INTERVAL = 500;
 
     private TextView textViewPersistentCommunicationString1;
     private TextView textViewPersistentCommunicationString2;
@@ -49,6 +58,10 @@ public class CommunicationFragment extends Fragment {
         communicationViewModel =
                 new ViewModelProvider(this).get(CommunicationViewModel.class);
 
+        // Update receive data
+        timer = new Timer();
+        updateReceivedDataTimerTask = new UpdateReceivedDataTimerTask();
+
         View root = inflater.inflate(R.layout.fragment_communication, container, false);
         textViewPersistentCommunicationString1 = root.findViewById(R.id.editTextCommunicationString1);
         textViewPersistentCommunicationString2 = root.findViewById(R.id.editTextCommunicationString2);
@@ -60,21 +73,27 @@ public class CommunicationFragment extends Fragment {
         receivedDataClearButton = root.findViewById(R.id.receivedDataClearButton);
 
         textViewReceivedStrings.setMovementMethod(new ScrollingMovementMethod());
-        textViewReceivedStrings.setText(MainActivity.getReceivedTextStrings());
+        textViewReceivedStrings.setText(RECEIVED_DATA_PLACEHOLDER);
 
         persistentStringSendButton1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                Snackbar.make(view, SENT_PERSISTENT_STRING + textViewPersistentCommunicationString1.getText().toString(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
                 MainActivity.sendCommunicationMessage(textViewPersistentCommunicationString1.getText().toString());
             }
         });
         persistentStringSendButton2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                Snackbar.make(view, SENT_PERSISTENT_STRING + textViewPersistentCommunicationString2.getText().toString(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
                 MainActivity.sendCommunicationMessage(textViewPersistentCommunicationString2.getText().toString());
             }
         });
 
         volatileStringSendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
+                Snackbar.make(view, SENT_VOLATILE_STRING + textViewVolatileCommunicationString.getText().toString(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
                 MainActivity.sendCommunicationMessage(textViewVolatileCommunicationString.getText().toString());
             }
         });
@@ -82,13 +101,12 @@ public class CommunicationFragment extends Fragment {
         receivedDataClearButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 MainActivity.resetReceivedTextStrings();
-                textViewReceivedStrings.setText(MainActivity.getReceivedTextStrings());
+                textViewReceivedStrings.setText(RECEIVED_DATA_PLACEHOLDER);
                 Log.d(COMMUNICATION_FRAGMENT_TAG, "Reset received data: " + textViewReceivedStrings.getText());
             }
         });
 
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageBroadcastReceiver,
-                new IntentFilter("getTextFromDevice"));
+        timer.schedule(updateReceivedDataTimerTask, RECEIVE_DATA_UPDATE_DELAY, RECEIVE_DATA_UPDATE_INTERVAL);
 
         return root;
     }
@@ -121,16 +139,26 @@ public class CommunicationFragment extends Fragment {
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////            Broadcast Receiver            ///////////////////////////
+    ///////////////////////////           Update Received Data           ///////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Update text received from bluetooth service
-    private final BroadcastReceiver messageBroadcastReceiver = new BroadcastReceiver() {
+    class UpdateReceivedDataTimerTask extends TimerTask {
         @Override
-        public void onReceive(Context context, Intent intent) {
-            String newReceivedString = intent.getStringExtra("text");
-            Log.d(COMMUNICATION_FRAGMENT_TAG, "Got message from broadcast receiver: " + newReceivedString);
-            MainActivity.updateReceivedTextStrings(newReceivedString);
+        public void run() {
+            try {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!MainActivity.getReceivedTextStrings().isEmpty()) {
+                            textViewReceivedStrings.setText(MainActivity.getReceivedTextStrings());
+                        }
+                    }
+                });
+            } catch (NullPointerException ignored) {
+
+            } catch (Exception exception) {
+                Log.d(COMMUNICATION_FRAGMENT_TAG, exception.getLocalizedMessage());
+            }
         }
-    };
+    }
 }

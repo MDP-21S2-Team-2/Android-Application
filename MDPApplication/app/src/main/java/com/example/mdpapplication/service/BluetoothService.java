@@ -131,7 +131,7 @@ public class BluetoothService {
                     Log.d(BLUETOOTH_SERVICE_HANDLER_TAG, "MESSAGE_READ - " + readMessage);
 
                     // Always display the received text in receive data section in CommunicationFragment
-                    MazeFragment.getInstance().sendMessageToCommunicationFragment(readMessage);
+                    MainActivity.updateReceivedTextStrings(readMessage);
                     // Update maze display if it is maze update response message
                     if (!readMessage.equalsIgnoreCase("ack")) {
                         processMazeUpdateResponseMessage(readMessage);
