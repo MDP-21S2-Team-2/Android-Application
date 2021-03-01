@@ -95,6 +95,12 @@ The `service` package contains the code needed for supporting Bluetooth connecti
 - The `BluetoothService` class implements the Bluetooth functionalities specific for the MDP robot remote control application. It supports connecting to a remote device, sending out messages to the connected remote device, and processing messages received via Bluetooth. This class interacts with the classes in the `ui` package.
 - The `Constants` class defines the constants used in the `BluetoothCommunicationService` class and the `BluetoothService` class.
 
-The `ui` package contains the code needed for rendering and updating the application UI display.
+The `ui` package contains the code needed for rendering and updating the application UI display:
+
+- The `maze` package: The `MazeFragment` class implements the maze interface based on [fragment_maze.xml](MDPApplication/app/src/main/res/layout/fragment_maze.xml) and manages all user interactions. The `MazeView` class renders the display of the grid map and manages user interactions on the grid map.
+- The `bluetooth` package: The `BluetoothFragment` class implements the bluetooth interface based on [fragment_bluetooth.xml](MDPApplication/app/src/main/res/layout/fragment_bluetooth.xml) and manages all user interactions.
+- The `communication` package: The `CommunicationFragment` class implements the communication interface based on [fragment_communication.xml](MDPApplication/app/src/main/res/layout/fragment_communication.xml) and manages all user interactions.
+
+The `MainActivity` class implements the navigation menu and the floating action button indicating the application's current Bluetooth connection status.
 
 ## References
