@@ -55,6 +55,20 @@ The functionalities of the communication interface are listed as follows:
 
 ## Communication Protocols
 
+The Android application communicates with the Raspberry Pi subsystem following the following communication protocols:
+
+| Functionality	| Android → RPi	| RPi → Android|
+| ------------- | -------------- | ------------ |
+| Robot Movement - Turn Left | L | ACK |
+| Robot Movement - Turn Right | R | ACK |
+| Robot Movement - Move Forward | M0 | ACK |
+| Maze Display Update | UPDATE | ROBOT,IDLE/RUNNING/CALIBRATING/ARRIVED,0/90/180/270,X:Y;MDF,000011000...;IMAGE,X1:Y1:ID1,X2:Y2:ID2,...Xn:Yn:IDn |
+| Send Start Point Location | START,X:Y | ACK |
+| Send Waypoint Location | WAYPOINT,X:Y | ACK |
+| Start Fastest Path | FP | ACK |
+| Start Exploration | EXP | ACK |
+| Initiate Calibration | C | ACK |
+
 ## Implementation
 
 ## References
