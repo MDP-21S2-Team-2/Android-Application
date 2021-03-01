@@ -87,4 +87,14 @@ The overall project structure is as follows:
 		- [CommunicationFragment.java](MDPApplication/app/src/main/java/com/example/mdpapplication/ui/communication/CommunicationFragment.java)
 - [MainActivity.java](MDPApplication/app/src/main/java/com/example/mdpapplication/MainActivity.java)
 
+The project contains two Java packages, `service` and `ui`.
+
+The `service` package contains the code needed for supporting Bluetooth connection and communication:
+
+- The `BluetoothCommunicationService` class implements the general functionalities required for Bluetooth communication. It supports initiating connection to a remote device, checking connected remote device, sending out messages to the connected remote device, etc. This class does not interact directly with the classes in the `ui` package.
+- The `BluetoothService` class implements the Bluetooth functionalities specific for the MDP robot remote control application. It supports connecting to a remote device, sending out messages to the connected remote device, and processing messages received via Bluetooth. This class interacts with the classes in the `ui` package.
+- The `Constants` class defines the constants used in the `BluetoothCommunicationService` class and the `BluetoothService` class.
+
+The `ui` package contains the code needed for rendering and updating the application UI display.
+
 ## References
