@@ -71,4 +71,20 @@ The Android application communicates with the Raspberry Pi subsystem following t
 
 ## Implementation
 
+The overall project structure is as follows:
+
+- service
+	- [BluetoothCommunicationService.java](MDPApplication/app/src/main/java/com/example/mdpapplication/service/BluetoothCommunicationService.java)
+	- [BluetoothService.java](MDPApplication/app/src/main/java/com/example/mdpapplication/service/BluetoothService.java)
+	- [Constants.java](MDPApplication/app/src/main/java/com/example/mdpapplication/service/Constants.java)
+- ui
+	- maze
+		- [MazeFragment.java](MDPApplication/app/src/main/java/com/example/mdpapplication/ui/maze/MazeFragment.java)
+		- [MazeView.java](MDPApplication/app/src/main/java/com/example/mdpapplication/ui/maze/MazeView.java)
+	- bluetooth
+		- [BluetoothFragment.java](MDPApplication/app/src/main/java/com/example/mdpapplication/ui/bluetooth/BluetoothFragment.java)
+	- communication
+		- [CommunicationFragment.java](MDPApplication/app/src/main/java/com/example/mdpapplication/ui/communication/CommunicationFragment.java)
+- [MainActivity.java](MDPApplication/app/src/main/java/com/example/mdpapplication/MainActivity.java)
+
 ## References
