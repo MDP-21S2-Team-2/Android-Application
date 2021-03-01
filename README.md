@@ -69,7 +69,7 @@ The Android application communicates with the Raspberry Pi subsystem following t
 | Start Exploration | EXP | ACK |
 | Initiate Calibration | C | ACK |
 
-## Implementation
+## Code Design & Implementation
 
 The overall project structure is as follows:
 
@@ -104,3 +104,8 @@ The `ui` package contains the code needed for rendering and updating the applica
 The `MainActivity` class implements the navigation menu and the floating action button indicating the application's current Bluetooth connection status.
 
 ## References
+
+- Icons used in the application are downloaded from [https://icons8.com/](https://icons8.com/)
+- The implementation of the `service` package references the [Android BluetoothChat Project](https://github.com/googlearchive/android-BluetoothChat) under The Android Open Source Project by Google
+- Documentation on using Android Broadcasts is available on the [Android Developers](https://developer.android.com/guide/components/broadcasts) website
+- This project is initialized with the [Navigation Drawer Activity](https://developer.android.com/studio/projects/templates#NavigationDrawer) template in [Android Studio](https://developer.android.com/studio)
