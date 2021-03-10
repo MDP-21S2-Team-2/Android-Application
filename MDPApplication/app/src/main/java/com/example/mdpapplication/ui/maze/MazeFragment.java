@@ -104,6 +104,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private Button initiateCalibrationButton;
     private ToggleButton autoUpdateModeToggleButton;
     private ToggleButton tiltSensingToggleButton;
+    private ToggleButton alignmentToggleButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -142,6 +143,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         initiateCalibrationButton = root.findViewById(R.id.initiateCalibration);
         autoUpdateModeToggleButton = root.findViewById(R.id.autoUpdateModeToggleButton);
         tiltSensingToggleButton = root.findViewById(R.id.tiltSensingToggleButton);
+        alignmentToggleButton = root.findViewById(R.id.alignmentToggleButton);
 
         timer.schedule(sendMazeUpdateRequestTask, MAZE_UPDATE_DELAY, MAZE_UPDATE_INTERVAL);
 
@@ -248,6 +250,16 @@ public class MazeFragment extends Fragment implements SensorEventListener {
                     tiltSensingMode = true;
                     Snackbar.make(view, TILT_SENSING_MODE_IS_SWITCHED_ON, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
+                }
+            }
+        });
+
+        alignmentToggleButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (alignmentToggleButton.isChecked()) {
+                    MainActivity.sendEnableAlignmentCheckAfterMoveCommand();
+                } else {
+                    MainActivity.sendDisableAlignmentCheckAfterMoveCommand();
                 }
             }
         });

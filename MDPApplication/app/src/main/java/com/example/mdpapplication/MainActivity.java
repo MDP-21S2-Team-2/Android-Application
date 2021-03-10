@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String START_FASTEST_PATH = "FP";
     private static final String START_EXPLORATION = "EXP";
     private static final String INITIATE_CALIBRATION = "C";
+    private static final String ENABLE_ALIGNMENT = "a";
+    private static final String DISABLE_ALIGNMENT = "b";
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -190,6 +192,18 @@ public class MainActivity extends AppCompatActivity {
         String initiateCalibrationCommand = TO_ALGORITHM + INITIATE_CALIBRATION;
         Log.d(MAIN_ACTIVITY_TAG, "Sending initiate calibration command: " + initiateCalibrationCommand);
         bluetoothService.sendOutMessage(initiateCalibrationCommand);
+    }
+
+    public static void sendEnableAlignmentCheckAfterMoveCommand() {
+        String enableAlignmentCommand = TO_ALGORITHM + ENABLE_ALIGNMENT;
+        Log.d(MAIN_ACTIVITY_TAG, "Sending enable alignment check after move command: " + enableAlignmentCommand);
+        bluetoothService.sendOutMessage(enableAlignmentCommand);
+    }
+
+    public static void sendDisableAlignmentCheckAfterMoveCommand() {
+        String disableAlignmentCommand = TO_ALGORITHM + DISABLE_ALIGNMENT;
+        Log.d(MAIN_ACTIVITY_TAG, "Sending disable alignment check after move command: " + disableAlignmentCommand);
+        bluetoothService.sendOutMessage(disableAlignmentCommand);
     }
 
     public static void sendCommunicationMessage(String message) {
