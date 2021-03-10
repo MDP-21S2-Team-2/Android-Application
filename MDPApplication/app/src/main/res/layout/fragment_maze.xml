@@ -166,6 +166,15 @@
         app:layout_constraintStart_toEndOf="@+id/mazeView" />
 
     <TextView
+        android:id="@+id/eBrakeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/e_brake"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/eBrakeToggleButton"
+        app:layout_constraintStart_toEndOf="@+id/mazeView" />
+
+    <TextView
         android:id="@+id/selectedGridTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -285,11 +294,19 @@
     <ToggleButton
         android:id="@+id/alignmentToggleButton"
         android:layout_width="60dp"
-        android:layout_height="44dp"
+        android:layout_height="40dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider5" />
+
+    <ToggleButton
+        android:id="@+id/eBrakeToggleButton"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alignmentToggleButton" />
 
     <ToggleButton
         android:id="@+id/tiltSensingToggleButton"

@@ -40,4 +40,5 @@
     <string name="start_image_exploration">Start Image Exploration</string>
     <string name="initiate_calibration">Initiate Calibration</string>
     <string name="alignment">Alignment</string>
+    <string name="e_brake">E-Brake</string>
 </resources>
