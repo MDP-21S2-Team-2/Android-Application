@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String INITIATE_CALIBRATION = "C";
     private static final String ENABLE_ALIGNMENT = "a";
     private static final String DISABLE_ALIGNMENT = "b";
+    private static final String ENABLE_EMERGENCY_BRAKE = "e";
+    private static final String DISABLE_EMERGENCY_BRAKE = "f";
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -204,6 +206,18 @@ public class MainActivity extends AppCompatActivity {
         String disableAlignmentCommand = TO_ALGORITHM + DISABLE_ALIGNMENT;
         Log.d(MAIN_ACTIVITY_TAG, "Sending disable alignment check after move command: " + disableAlignmentCommand);
         bluetoothService.sendOutMessage(disableAlignmentCommand);
+    }
+
+    public static void sendEnableEmergencyBrakeCommand() {
+        String enableEmergencyBrakeCommand = TO_ALGORITHM + ENABLE_EMERGENCY_BRAKE;
+        Log.d(MAIN_ACTIVITY_TAG, "Sending enable emergency brake command: " + enableEmergencyBrakeCommand);
+        bluetoothService.sendOutMessage(enableEmergencyBrakeCommand);
+    }
+
+    public static void sendDisableEmergencyBrakeCommand() {
+        String disableEmergencyBrakeCommand = TO_ALGORITHM + DISABLE_EMERGENCY_BRAKE;
+        Log.d(MAIN_ACTIVITY_TAG, "Sending disable emergency brake command: " + disableEmergencyBrakeCommand);
+        bluetoothService.sendOutMessage(disableEmergencyBrakeCommand);
     }
 
     public static void sendCommunicationMessage(String message) {
