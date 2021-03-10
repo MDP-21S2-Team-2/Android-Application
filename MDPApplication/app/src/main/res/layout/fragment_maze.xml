@@ -9,7 +9,7 @@
     <com.example.mdpapplication.ui.maze.MazeView
         android:id="@+id/mazeView"
         android:layout_width="0dp"
-        android:layout_height="580dp"
+        android:layout_height="600dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="144dp"
