@@ -61,6 +61,12 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private static final String MAZE_DISPLAY_UPDATED = "Maze display updated";
     private static final String WAYPOINT_POSITION_UPDATED_TO = "Waypoint position updated to ";
     private static final String ROBOT_START_POSITION_UPDATED_TO = "Robot start position updated to";
+    private static final String SENT_INITIATE_CALIBRATION_COMMAND = "Sent initiate calibration command";
+    private static final String SENT_RESET_COMMAND = "Sent reset command";
+    private static final String ALIGNMENT_CHECK_AFTER_MOVE_IS_ENABLED = "Alignment check after move is enabled";
+    private static final String ALIGNMENT_CHECK_AFTER_MOVE_IS_DISABLED = "Alignment check after move is disabled";
+    private static final String EMERGENCY_BRAKE_IS_ENABLED = "Emergency brake is enabled";
+    private static final String EMERGENCY_BRAKE_IS_DISABLED = "Emergency brake is disabled";
 
     // Save maze status keys
     private static final String ROBOT_COORDINATE_X = "Robot Coordinate X";
@@ -227,12 +233,16 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         initiateCalibrationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 MainActivity.sendInitiateCalibrationCommand();
+                Snackbar.make(view, SENT_INITIATE_CALIBRATION_COMMAND, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
 
         resetButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 MainActivity.sendResetCommand();
+                Snackbar.make(view, SENT_RESET_COMMAND, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
 
@@ -268,8 +278,12 @@ public class MazeFragment extends Fragment implements SensorEventListener {
             public void onClick(View view) {
                 if (alignmentToggleButton.isChecked()) {
                     MainActivity.sendEnableAlignmentCheckAfterMoveCommand();
+                    Snackbar.make(view, ALIGNMENT_CHECK_AFTER_MOVE_IS_ENABLED, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 } else {
                     MainActivity.sendDisableAlignmentCheckAfterMoveCommand();
+                    Snackbar.make(view, ALIGNMENT_CHECK_AFTER_MOVE_IS_DISABLED, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
             }
         });
@@ -278,8 +292,12 @@ public class MazeFragment extends Fragment implements SensorEventListener {
             public void onClick(View view) {
                 if (eBrakeToggleButton.isChecked()) {
                     MainActivity.sendEnableEmergencyBrakeCommand();
+                    Snackbar.make(view, EMERGENCY_BRAKE_IS_ENABLED, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 } else {
                     MainActivity.sendDisableEmergencyBrakeCommand();
+                    Snackbar.make(view, EMERGENCY_BRAKE_IS_DISABLED, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
             }
         });
