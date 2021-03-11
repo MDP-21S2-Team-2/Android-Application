@@ -157,6 +157,7 @@
         app:layout_constraintStart_toEndOf="@+id/mazeView" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/alignmentTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -166,6 +167,7 @@
         app:layout_constraintStart_toEndOf="@+id/mazeView" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/eBrakeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -304,6 +306,7 @@
         app:layout_constraintTop_toBottomOf="@+id/updateModeTitleTextView" />
 
     <ToggleButton
+        android:visibility="gone"
         android:id="@+id/alignmentToggleButton"
         android:layout_width="60dp"
         android:layout_height="40dp"
@@ -313,6 +316,7 @@
         app:layout_constraintTop_toBottomOf="@+id/divider5" />
 
     <ToggleButton
+        android:visibility="gone"
         android:id="@+id/eBrakeToggleButton"
         android:layout_width="60dp"
         android:layout_height="40dp"
