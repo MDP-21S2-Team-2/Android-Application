@@ -99,7 +99,7 @@
         android:layout_width="wrap_content"
         android:layout_height="28dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="150dp"
         android:text="@string/start_robot"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -281,6 +281,18 @@
         app:layout_constraintStart_toEndOf="@+id/mazeView"
         app:layout_constraintTop_toBottomOf="@+id/autoUpdateModeToggleButton" />
 
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/reset"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mazeView"
+        app:layout_constraintTop_toBottomOf="@+id/eBrakeToggleButton" />
+
     <ToggleButton
         android:id="@+id/autoUpdateModeToggleButton"
         android:layout_width="0dp"
@@ -321,7 +333,7 @@
 
     <Button
         android:id="@+id/moveForwardButton"
-        android:layout_width="75dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -332,7 +344,7 @@
 
     <Button
         android:id="@+id/turnLeftButton"
-        android:layout_width="75dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="↶"
@@ -342,7 +354,7 @@
 
     <Button
         android:id="@+id/turnRightButton"
-        android:layout_width="75dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="↷"
@@ -368,7 +380,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="150dp"
         android:text="@string/start_fastest_path"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/divider13"
@@ -379,7 +391,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="150dp"
         android:text="@string/start_exploration"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/divider13"
@@ -390,7 +402,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="150dp"
         android:text="@string/initiate_calibration"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/divider13"
