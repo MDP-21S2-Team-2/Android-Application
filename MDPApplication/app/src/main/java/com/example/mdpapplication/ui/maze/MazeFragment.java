@@ -102,6 +102,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private Button startFastestPathButton;
     private Button startExplorationButton;
     private Button initiateCalibrationButton;
+    private Button resetButton;
     private ToggleButton autoUpdateModeToggleButton;
     private ToggleButton tiltSensingToggleButton;
     private ToggleButton alignmentToggleButton;
@@ -142,6 +143,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         startFastestPathButton = root.findViewById(R.id.startFastestPathButton);
         startExplorationButton = root.findViewById(R.id.startExplorationButton);
         initiateCalibrationButton = root.findViewById(R.id.initiateCalibration);
+        resetButton = root.findViewById(R.id.resetButton);
         autoUpdateModeToggleButton = root.findViewById(R.id.autoUpdateModeToggleButton);
         tiltSensingToggleButton = root.findViewById(R.id.tiltSensingToggleButton);
         alignmentToggleButton = root.findViewById(R.id.alignmentToggleButton);
@@ -225,6 +227,12 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         initiateCalibrationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 MainActivity.sendInitiateCalibrationCommand();
+            }
+        });
+
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                MainActivity.sendResetCommand();
             }
         });
 

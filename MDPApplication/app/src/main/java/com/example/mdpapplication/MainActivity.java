@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String DISABLE_ALIGNMENT = "b";
     private static final String ENABLE_EMERGENCY_BRAKE = "e";
     private static final String DISABLE_EMERGENCY_BRAKE = "f";
+    private static final String RESET = "RESET";
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -194,6 +195,12 @@ public class MainActivity extends AppCompatActivity {
         String initiateCalibrationCommand = TO_ALGORITHM + INITIATE_CALIBRATION;
         Log.d(MAIN_ACTIVITY_TAG, "Sending initiate calibration command: " + initiateCalibrationCommand);
         bluetoothService.sendOutMessage(initiateCalibrationCommand);
+    }
+
+    public static void sendResetCommand() {
+        String resetCommand = TO_ALGORITHM + RESET;
+        Log.d(MAIN_ACTIVITY_TAG, "Sending reset command: " + resetCommand);
+        bluetoothService.sendOutMessage(resetCommand);
     }
 
     public static void sendEnableAlignmentCheckAfterMoveCommand() {
