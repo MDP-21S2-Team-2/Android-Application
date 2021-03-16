@@ -9,7 +9,7 @@
     <com.example.mdpapplication.ui.maze.MazeView
         android:id="@+id/mazeView"
         android:layout_width="0dp"
-        android:layout_height="600dp"
+        android:layout_height="580dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="144dp"
@@ -85,7 +85,7 @@
     <TextView
         android:id="@+id/robotMovementControlTitleTextView"
         android:layout_width="wrap_content"
-        android:layout_height="28dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:text="@string/robot_movement_control"
@@ -97,7 +97,7 @@
     <TextView
         android:id="@+id/startRobotTitleTextView"
         android:layout_width="wrap_content"
-        android:layout_height="28dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="150dp"
         android:text="@string/start_robot"
@@ -340,7 +340,6 @@
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="⬆"
         android:textSize="30sp"
         app:layout_constraintStart_toEndOf="@+id/turnLeftButton"
@@ -372,7 +371,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="40dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/turnRightButton"
@@ -383,7 +382,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="150dp"
         android:text="@string/start_fastest_path"
         app:layout_constraintEnd_toEndOf="parent"
@@ -423,5 +421,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/mazeView"
         app:layout_constraintTop_toBottomOf="@+id/manualUpdateButton" />
+
+    <TextView
+        android:id="@+id/imageProcessingStringTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/image_processing_string"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tiltSensingTextView" />
+
+    <TextView
+        android:id="@+id/imageProcessingString"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@color/purple_100"
+        android:text="@string/initial_image_processing_string"
+        app:layout_constraintBaseline_toBaselineOf="@+id/imageProcessingStringTitle"
+        app:layout_constraintStart_toEndOf="@+id/imageProcessingStringTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

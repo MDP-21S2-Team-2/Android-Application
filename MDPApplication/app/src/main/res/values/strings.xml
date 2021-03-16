@@ -42,4 +42,7 @@
     <string name="alignment">Alignment</string>
     <string name="e_brake">E-Brake</string>
     <string name="reset">Reset</string>
+    <string name="image_processing_string">Image Processing String</string>
+    <string name="image_processing_string_sample">{(10,10,10),(10,10,10),(10,10,10),(10,10,10),(10,10,10)}</string>
+    <string name="initial_image_processing_string">{ }</string>
 </resources>
