@@ -99,6 +99,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private TextView textViewWaypoint;
     private TextView textViewStartPosition;
     private TextView textViewSelectedGrid;
+    private TextView textViewImageProcessingString;
     private Button updateWaypointButton;
     private Button updateStartPositionButton;
     private Button manualUpdateButton;
@@ -140,6 +141,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         textViewWaypoint = root.findViewById(R.id.waypointTextView);
         textViewStartPosition = root.findViewById(R.id.startPositionTextView);
         textViewSelectedGrid = root.findViewById(R.id.selectedGridTextView);
+        textViewImageProcessingString = root.findViewById(R.id.imageProcessingString);
         updateWaypointButton = root.findViewById(R.id.updateWaypointButton);
         updateStartPositionButton = root.findViewById(R.id.updateStartPositionButton);
         manualUpdateButton = root.findViewById(R.id.manualUpdateButton);
@@ -408,7 +410,10 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     public void updateImageInfoList(List<int[]> imageInfoList) {
         Log.d(MAZE_FRAGMENT_TAG, "Updating image info list: " + Arrays.deepToString(imageInfoList.toArray()));
 
+        // Update maze number ID blocks display
         mazeView.updateImageInfoList(imageInfoList);
+        // Update image processing string
+        this.updateImageProcessingStringTextView(imageInfoList);
     }
 
 
@@ -490,6 +495,25 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         } else if (robotStatus.equals(RobotStatus.REACHED_GOAL)) {
             textViewRobotStatus.setText(REACHED_GOAL_ROBOT_STATUS);
         }
+    }
+
+    private void updateImageProcessingStringTextView(List<int[]> imageInfoList) {
+        StringBuilder imageProcessingStringBuilder = new StringBuilder();
+        for (int[] imageInfo : imageInfoList) {
+            if (imageProcessingStringBuilder.length() > 0) {
+                imageProcessingStringBuilder.append(",");
+            }
+            imageProcessingStringBuilder
+                    .append("(")
+                    .append(imageInfo[2])
+                    .append(imageInfo[0])
+                    .append(imageInfo[1])
+                    .append(")");
+        }
+        imageProcessingStringBuilder.insert(0, "{");
+        imageProcessingStringBuilder.append("}");
+
+        textViewImageProcessingString.setText(imageProcessingStringBuilder.toString());
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
