@@ -97,7 +97,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private MazeView mazeView;
     private TextView textViewRobotStatus;
     private TextView textViewWaypoint;
-    private TextView textViewStartPostion;
+    private TextView textViewStartPosition;
     private TextView textViewSelectedGrid;
     private Button updateWaypointButton;
     private Button updateStartPositionButton;
@@ -138,7 +138,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         mazeView = root.findViewById(R.id.mazeView);
         textViewRobotStatus = root.findViewById(R.id.robotStatusTextView);
         textViewWaypoint = root.findViewById(R.id.waypointTextView);
-        textViewStartPostion = root.findViewById(R.id.startPositionTextView);
+        textViewStartPosition = root.findViewById(R.id.startPositionTextView);
         textViewSelectedGrid = root.findViewById(R.id.selectedGridTextView);
         updateWaypointButton = root.findViewById(R.id.updateWaypointButton);
         updateStartPositionButton = root.findViewById(R.id.updateStartPositionButton);
@@ -159,7 +159,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
 
         updateRobotStatusTextView();
         textViewWaypoint.setText(N_A_COORDINATES);
-        textViewStartPostion.setText(INITIAL_START_COORDINATES);
+        textViewStartPosition.setText(INITIAL_START_COORDINATES);
         textViewSelectedGrid.setText(N_A_COORDINATES);
 
         updateWaypointButton.setOnClickListener(new View.OnClickListener() {
@@ -174,7 +174,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
             public void onClick(View view) {
                 mazeView.updateStartCoordinates();
                 MainActivity.sendRobotStartPosition(mazeView.getStartCoordinates());
-                Snackbar.make(view, ROBOT_START_POSITION_UPDATED_TO + textViewStartPostion.getText(), Snackbar.LENGTH_LONG)
+                Snackbar.make(view, ROBOT_START_POSITION_UPDATED_TO + textViewStartPosition.getText(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -434,9 +434,9 @@ public class MazeFragment extends Fragment implements SensorEventListener {
 
     protected void updateStartPositionTextView(int[] startCoordinates) {
         if (startCoordinates[0] < 0 || startCoordinates[1] < 0) {
-            textViewStartPostion.setText(N_A_COORDINATES);
+            textViewStartPosition.setText(N_A_COORDINATES);
         } else {
-            textViewStartPostion.setText(String.format("(%d, %d)", startCoordinates[0], startCoordinates[1]));
+            textViewStartPosition.setText(String.format("(%d, %d)", startCoordinates[0], startCoordinates[1]));
         }
     }
 
