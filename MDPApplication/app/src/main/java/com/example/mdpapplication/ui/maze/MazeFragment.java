@@ -506,7 +506,9 @@ public class MazeFragment extends Fragment implements SensorEventListener {
             imageProcessingStringBuilder
                     .append("(")
                     .append(imageInfo[2])
+                    .append(",")
                     .append(imageInfo[0])
+                    .append(",")
                     .append(imageInfo[1])
                     .append(")");
         }
