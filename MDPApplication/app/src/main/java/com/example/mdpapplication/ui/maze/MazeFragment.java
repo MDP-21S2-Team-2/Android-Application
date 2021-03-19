@@ -61,6 +61,12 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private static final String MAZE_DISPLAY_UPDATED = "Maze display updated";
     private static final String WAYPOINT_POSITION_UPDATED_TO = "Waypoint position updated to ";
     private static final String ROBOT_START_POSITION_UPDATED_TO = "Robot start position updated to";
+    private static final String SENT_INITIATE_CALIBRATION_COMMAND = "Sent initiate calibration command";
+    private static final String SENT_RESET_COMMAND = "Sent reset command";
+    private static final String ALIGNMENT_CHECK_AFTER_MOVE_IS_ENABLED = "Alignment check after move is enabled";
+    private static final String ALIGNMENT_CHECK_AFTER_MOVE_IS_DISABLED = "Alignment check after move is disabled";
+    private static final String EMERGENCY_BRAKE_IS_ENABLED = "Emergency brake is enabled";
+    private static final String EMERGENCY_BRAKE_IS_DISABLED = "Emergency brake is disabled";
 
     // Save maze status keys
     private static final String ROBOT_COORDINATE_X = "Robot Coordinate X";
@@ -91,8 +97,9 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private MazeView mazeView;
     private TextView textViewRobotStatus;
     private TextView textViewWaypoint;
-    private TextView textViewStartPostion;
+    private TextView textViewStartPosition;
     private TextView textViewSelectedGrid;
+    private TextView textViewImageProcessingString;
     private Button updateWaypointButton;
     private Button updateStartPositionButton;
     private Button manualUpdateButton;
@@ -102,8 +109,11 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private Button startFastestPathButton;
     private Button startExplorationButton;
     private Button initiateCalibrationButton;
+    private Button resetButton;
     private ToggleButton autoUpdateModeToggleButton;
     private ToggleButton tiltSensingToggleButton;
+    private ToggleButton alignmentToggleButton;
+    private ToggleButton eBrakeToggleButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -129,8 +139,9 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         mazeView = root.findViewById(R.id.mazeView);
         textViewRobotStatus = root.findViewById(R.id.robotStatusTextView);
         textViewWaypoint = root.findViewById(R.id.waypointTextView);
-        textViewStartPostion = root.findViewById(R.id.startPositionTextView);
+        textViewStartPosition = root.findViewById(R.id.startPositionTextView);
         textViewSelectedGrid = root.findViewById(R.id.selectedGridTextView);
+        textViewImageProcessingString = root.findViewById(R.id.imageProcessingString);
         updateWaypointButton = root.findViewById(R.id.updateWaypointButton);
         updateStartPositionButton = root.findViewById(R.id.updateStartPositionButton);
         manualUpdateButton = root.findViewById(R.id.manualUpdateButton);
@@ -140,14 +151,17 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         startFastestPathButton = root.findViewById(R.id.startFastestPathButton);
         startExplorationButton = root.findViewById(R.id.startExplorationButton);
         initiateCalibrationButton = root.findViewById(R.id.initiateCalibration);
+        resetButton = root.findViewById(R.id.resetButton);
         autoUpdateModeToggleButton = root.findViewById(R.id.autoUpdateModeToggleButton);
         tiltSensingToggleButton = root.findViewById(R.id.tiltSensingToggleButton);
+        alignmentToggleButton = root.findViewById(R.id.alignmentToggleButton);
+        eBrakeToggleButton = root.findViewById(R.id.eBrakeToggleButton);
 
         timer.schedule(sendMazeUpdateRequestTask, MAZE_UPDATE_DELAY, MAZE_UPDATE_INTERVAL);
 
         updateRobotStatusTextView();
         textViewWaypoint.setText(N_A_COORDINATES);
-        textViewStartPostion.setText(INITIAL_START_COORDINATES);
+        textViewStartPosition.setText(INITIAL_START_COORDINATES);
         textViewSelectedGrid.setText(N_A_COORDINATES);
 
         updateWaypointButton.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +176,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
             public void onClick(View view) {
                 mazeView.updateStartCoordinates();
                 MainActivity.sendRobotStartPosition(mazeView.getStartCoordinates());
-                Snackbar.make(view, ROBOT_START_POSITION_UPDATED_TO + textViewStartPostion.getText(), Snackbar.LENGTH_LONG)
+                Snackbar.make(view, ROBOT_START_POSITION_UPDATED_TO + textViewStartPosition.getText(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -221,6 +235,16 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         initiateCalibrationButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 MainActivity.sendInitiateCalibrationCommand();
+                Snackbar.make(view, SENT_INITIATE_CALIBRATION_COMMAND, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                MainActivity.sendResetCommand();
+                Snackbar.make(view, SENT_RESET_COMMAND, Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
 
@@ -247,6 +271,34 @@ public class MazeFragment extends Fragment implements SensorEventListener {
                 } else {
                     tiltSensingMode = true;
                     Snackbar.make(view, TILT_SENSING_MODE_IS_SWITCHED_ON, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            }
+        });
+
+        alignmentToggleButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (alignmentToggleButton.isChecked()) {
+                    MainActivity.sendEnableAlignmentCheckAfterMoveCommand();
+                    Snackbar.make(view, ALIGNMENT_CHECK_AFTER_MOVE_IS_ENABLED, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    MainActivity.sendDisableAlignmentCheckAfterMoveCommand();
+                    Snackbar.make(view, ALIGNMENT_CHECK_AFTER_MOVE_IS_DISABLED, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            }
+        });
+
+        eBrakeToggleButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                if (eBrakeToggleButton.isChecked()) {
+                    MainActivity.sendEnableEmergencyBrakeCommand();
+                    Snackbar.make(view, EMERGENCY_BRAKE_IS_ENABLED, Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    MainActivity.sendDisableEmergencyBrakeCommand();
+                    Snackbar.make(view, EMERGENCY_BRAKE_IS_DISABLED, Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 }
             }
@@ -358,7 +410,10 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     public void updateImageInfoList(List<int[]> imageInfoList) {
         Log.d(MAZE_FRAGMENT_TAG, "Updating image info list: " + Arrays.deepToString(imageInfoList.toArray()));
 
+        // Update maze number ID blocks display
         mazeView.updateImageInfoList(imageInfoList);
+        // Update image processing string
+        this.updateImageProcessingStringTextView(imageInfoList);
     }
 
 
@@ -384,9 +439,9 @@ public class MazeFragment extends Fragment implements SensorEventListener {
 
     protected void updateStartPositionTextView(int[] startCoordinates) {
         if (startCoordinates[0] < 0 || startCoordinates[1] < 0) {
-            textViewStartPostion.setText(N_A_COORDINATES);
+            textViewStartPosition.setText(N_A_COORDINATES);
         } else {
-            textViewStartPostion.setText(String.format("(%d, %d)", startCoordinates[0], startCoordinates[1]));
+            textViewStartPosition.setText(String.format("(%d, %d)", startCoordinates[0], startCoordinates[1]));
         }
     }
 
@@ -440,6 +495,27 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         } else if (robotStatus.equals(RobotStatus.REACHED_GOAL)) {
             textViewRobotStatus.setText(REACHED_GOAL_ROBOT_STATUS);
         }
+    }
+
+    private void updateImageProcessingStringTextView(List<int[]> imageInfoList) {
+        StringBuilder imageProcessingStringBuilder = new StringBuilder();
+        for (int[] imageInfo : imageInfoList) {
+            if (imageProcessingStringBuilder.length() > 0) {
+                imageProcessingStringBuilder.append(",");
+            }
+            imageProcessingStringBuilder
+                    .append("(")
+                    .append(imageInfo[2])
+                    .append(",")
+                    .append(imageInfo[0])
+                    .append(",")
+                    .append(imageInfo[1])
+                    .append(")");
+        }
+        imageProcessingStringBuilder.insert(0, "{");
+        imageProcessingStringBuilder.append("}");
+
+        textViewImageProcessingString.setText(imageProcessingStringBuilder.toString());
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

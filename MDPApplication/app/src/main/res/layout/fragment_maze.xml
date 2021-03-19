@@ -85,7 +85,7 @@
     <TextView
         android:id="@+id/robotMovementControlTitleTextView"
         android:layout_width="wrap_content"
-        android:layout_height="28dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="8dp"
         android:text="@string/robot_movement_control"
@@ -97,9 +97,9 @@
     <TextView
         android:id="@+id/startRobotTitleTextView"
         android:layout_width="wrap_content"
-        android:layout_height="28dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="150dp"
         android:text="@string/start_robot"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -154,6 +154,26 @@
         android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/autoUpdateModeToggleButton"
         app:layout_constraintEnd_toStartOf="@+id/autoUpdateModeToggleButton"
+        app:layout_constraintStart_toEndOf="@+id/mazeView" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/alignmentTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/alignment"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/alignmentToggleButton"
+        app:layout_constraintStart_toEndOf="@+id/mazeView" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/eBrakeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/e_brake"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/eBrakeToggleButton"
         app:layout_constraintStart_toEndOf="@+id/mazeView" />
 
     <TextView
@@ -263,6 +283,18 @@
         app:layout_constraintStart_toEndOf="@+id/mazeView"
         app:layout_constraintTop_toBottomOf="@+id/autoUpdateModeToggleButton" />
 
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/reset"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mazeView"
+        app:layout_constraintTop_toBottomOf="@+id/eBrakeToggleButton" />
+
     <ToggleButton
         android:id="@+id/autoUpdateModeToggleButton"
         android:layout_width="0dp"
@@ -272,6 +304,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/autoTextView"
         app:layout_constraintTop_toBottomOf="@+id/updateModeTitleTextView" />
+
+    <ToggleButton
+        android:visibility="gone"
+        android:id="@+id/alignmentToggleButton"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider5" />
+
+    <ToggleButton
+        android:visibility="gone"
+        android:id="@+id/eBrakeToggleButton"
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/alignmentToggleButton" />
 
     <ToggleButton
         android:id="@+id/tiltSensingToggleButton"
@@ -286,10 +337,9 @@
 
     <Button
         android:id="@+id/moveForwardButton"
-        android:layout_width="75dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="⬆"
         android:textSize="30sp"
         app:layout_constraintStart_toEndOf="@+id/turnLeftButton"
@@ -297,7 +347,7 @@
 
     <Button
         android:id="@+id/turnLeftButton"
-        android:layout_width="75dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="↶"
@@ -307,7 +357,7 @@
 
     <Button
         android:id="@+id/turnRightButton"
-        android:layout_width="75dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="↷"
@@ -321,7 +371,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="40dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/turnRightButton"
@@ -332,8 +382,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="150dp"
         android:text="@string/start_fastest_path"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/divider13"
@@ -344,7 +393,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="150dp"
         android:text="@string/start_exploration"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/divider13"
@@ -355,10 +404,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="150dp"
         android:text="@string/initiate_calibration"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/divider13"
         app:layout_constraintTop_toBottomOf="@+id/startExplorationButton" />
+
+    <View
+        android:id="@+id/divider5"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mazeView"
+        app:layout_constraintTop_toBottomOf="@+id/manualUpdateButton" />
+
+    <TextView
+        android:id="@+id/imageProcessingStringTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/image_processing_string"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tiltSensingTextView" />
+
+    <TextView
+        android:id="@+id/imageProcessingString"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@color/purple_100"
+        android:text="@string/initial_image_processing_string"
+        app:layout_constraintBaseline_toBaselineOf="@+id/imageProcessingStringTitle"
+        app:layout_constraintStart_toEndOf="@+id/imageProcessingStringTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
