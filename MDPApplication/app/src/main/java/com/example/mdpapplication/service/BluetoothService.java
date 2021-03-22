@@ -25,6 +25,8 @@ public class BluetoothService {
     private static final String ROBOT_STRING = "ROBOT";
     private static final String MDF_STRING = "MDF";
     private static final String IMAGE_STRING = "IMAGE";
+    private static final String P1_STRING = "P1";
+    private static final String P2_STRING = "P2";
     private static final String LEVEL_1_SEPARATOR = ";";
     private static final String LEVEL_2_SEPARATOR = ",";
     private static final String LEVEL_3_SEPARATOR = ":";
@@ -90,6 +92,7 @@ public class BluetoothService {
         bluetoothCommunicationService.write(message.getBytes());
 //        processMazeUpdateResponseMessage("ROBOT,CALIBRATING,180,5:10;MDF,000000000000000000000000000000011100000000000000000000000000000000000000000000001110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;IMAGE,4:5:10,6:6:8"); // TODO: Remove
 //        processMazeUpdateResponseMessage("ROBOT,IDLE,0,1:1;MDF,000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;IMAGE;"); // TODO: Remove
+//        processMazeUpdateResponseMessage("P1,AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA;P2,CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC;"); // TODO: Remove
     }
 
 
@@ -197,6 +200,16 @@ public class BluetoothService {
                     }
 
                     MazeFragment.getInstance().updateImageInfoList(imageInfoList);
+                } else if (info.startsWith(P1_STRING)) {
+                    String[] p1StringArr = info.split(LEVEL_2_SEPARATOR);
+                    String p1String = p1StringArr[1];
+
+                    MazeFragment.getInstance().updateP1String(p1String);
+                } else if (info.startsWith(P2_STRING)) {
+                    String[] p1StringArr = info.split(LEVEL_2_SEPARATOR);
+                    String p2String = p1StringArr[1];
+
+                    MazeFragment.getInstance().updateP2String(p2String);
                 }
             } catch (Exception exception) {
                 Log.d(BLUETOOTH_SERVICE_TAG, Arrays.toString(exception.getStackTrace()));

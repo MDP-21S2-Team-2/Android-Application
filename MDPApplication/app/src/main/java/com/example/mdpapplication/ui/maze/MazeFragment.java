@@ -100,6 +100,8 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private TextView textViewStartPosition;
     private TextView textViewSelectedGrid;
     private TextView textViewImageProcessingString;
+    private TextView textViewP1String;
+    private TextView textViewP2String;
     private Button updateWaypointButton;
     private Button updateStartPositionButton;
     private Button manualUpdateButton;
@@ -142,6 +144,8 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         textViewStartPosition = root.findViewById(R.id.startPositionTextView);
         textViewSelectedGrid = root.findViewById(R.id.selectedGridTextView);
         textViewImageProcessingString = root.findViewById(R.id.imageProcessingString);
+        textViewP1String = root.findViewById(R.id.p1String);
+        textViewP2String = root.findViewById(R.id.p2String);
         updateWaypointButton = root.findViewById(R.id.updateWaypointButton);
         updateStartPositionButton = root.findViewById(R.id.updateStartPositionButton);
         manualUpdateButton = root.findViewById(R.id.manualUpdateButton);
@@ -416,6 +420,18 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         this.updateImageProcessingStringTextView(imageInfoList);
     }
 
+    public void updateP1String(String p1String) {
+        Log.d(MAZE_FRAGMENT_TAG, "Updating P1 String: " + p1String);
+
+        textViewP1String.setText(p1String);
+    }
+
+    public void updateP2String(String p2String) {
+        Log.d(MAZE_FRAGMENT_TAG, "Updating P2 String: " + p2String);
+
+        textViewP2String.setText(p2String);
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////          TextView Update Methods         ///////////////////////////
@@ -517,6 +533,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
 
         textViewImageProcessingString.setText(imageProcessingStringBuilder.toString());
     }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////           Enums & Inner Classes          ///////////////////////////
