@@ -49,4 +49,7 @@
     <string name="p2_string">P2 String</string>
     <string name="default_p1_string">FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</string>
     <string name="default_p2_string">00000000000000000000000000000000000000</string>
+    <string name="turn_right_button">↷</string>
+    <string name="turn_left_button">↶</string>
+    <string name="move_forward_button">↑</string>
 </resources>
