@@ -78,6 +78,12 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private static final String WAYPOINT_COORDINATE_Y = "Waypoint Coordinate Y";
     private static final String MDF_STRING = "MDF String";
     private static final String IMAGE_INFO_LIST = "Image Info List";
+    private static final String P1_STRING = "P1 String";
+    private static final String P2_STRING = "P2 String";
+
+    // Default values
+    private static final String P1_STRING_DEFAULT = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
+    private static final String P2_STRING_DEFAULT = "0000000000000000000000000000000000000000000000000000000000000000000000000000";
 
     // Maze auto update
     private MazeUpdateMode mazeUpdateMode;
@@ -337,6 +343,10 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         // Save image number ID blocks
         editor.putStringSet(IMAGE_INFO_LIST, mazeView.getImageInfoStringSet());
 
+        // Save P1 and P2 strings
+        editor.putString(P1_STRING, textViewP1String.getText().toString());
+        editor.putString(P2_STRING, textViewP2String.getText().toString());
+
         editor.apply();
     }
 
@@ -371,6 +381,10 @@ public class MazeFragment extends Fragment implements SensorEventListener {
 
         // Reload image number ID blocks
         mazeView.reloadImageInfoStringSet(sharedPreferences.getStringSet(IMAGE_INFO_LIST, new HashSet<>()));
+
+        // Reload P1 and P2 strings
+        textViewP1String.setText(sharedPreferences.getString(P1_STRING, P1_STRING_DEFAULT));
+        textViewP2String.setText(sharedPreferences.getString(P2_STRING, P2_STRING_DEFAULT));
     }
 
 
