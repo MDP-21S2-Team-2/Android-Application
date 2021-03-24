@@ -202,12 +202,12 @@ public class BluetoothService {
                     MazeFragment.getInstance().updateImageInfoList(imageInfoList);
                 } else if (info.startsWith(P1_STRING)) {
                     String[] p1StringArr = info.split(LEVEL_2_SEPARATOR);
-                    String p1String = p1StringArr[1];
+                    String p1String = p1StringArr[1].toUpperCase();
 
                     MazeFragment.getInstance().updateP1String(p1String);
                 } else if (info.startsWith(P2_STRING)) {
                     String[] p1StringArr = info.split(LEVEL_2_SEPARATOR);
-                    String p2String = p1StringArr[1];
+                    String p2String = p1StringArr[1].toUpperCase();
 
                     MazeFragment.getInstance().updateP2String(p2String);
                 }
