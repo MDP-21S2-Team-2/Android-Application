@@ -451,10 +451,10 @@
         android:id="@+id/p1StringTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="4dp"
         android:text="@string/p1_string"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tiltSensingToggleButton" />
 
@@ -462,11 +462,11 @@
         android:id="@+id/p2StringTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/p2_string"
-        android:textSize="14sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/p1StringTitle" />
@@ -475,9 +475,10 @@
         android:id="@+id/p1String"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="0dp"
         android:background="@color/purple_100"
         android:text="@string/default_p1_string"
+        android:textSize="12sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/p1StringTitle"
         app:layout_constraintStart_toEndOf="@+id/p1StringTitle" />
 
@@ -485,9 +486,10 @@
         android:id="@+id/p2String"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="0dp"
         android:background="@color/purple_100"
         android:text="@string/default_p2_string"
+        android:textSize="12sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/p2StringTitle"
         app:layout_constraintStart_toEndOf="@+id/p2StringTitle" />
 

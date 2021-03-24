@@ -45,10 +45,12 @@
     <string name="image_processing_string">Image Processing String</string>
     <string name="image_processing_string_sample">{(10,10,10),(10,10,10),(10,10,10),(10,10,10),(10,10,10)}</string>
     <string name="initial_image_processing_string">{ }</string>
-    <string name="p1_string">P1 String</string>
-    <string name="p2_string">P2 String</string>
-    <string name="default_p1_string">FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</string>
-    <string name="default_p2_string">00000000000000000000000000000000000000</string>
+    <string name="p1_string">P1</string>
+    <string name="p2_string">P2</string>
+    <string name="default_p1_string">
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF</string>
+    <string name="default_p2_string">
+        0000000000000000000000000000000000000000000000000000000000000000000000000000</string>
     <string name="turn_right_button">↷</string>
     <string name="turn_left_button">↶</string>
     <string name="move_forward_button">↑</string>
