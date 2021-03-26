@@ -78,6 +78,12 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private static final String WAYPOINT_COORDINATE_Y = "Waypoint Coordinate Y";
     private static final String MDF_STRING = "MDF String";
     private static final String IMAGE_INFO_LIST = "Image Info List";
+    private static final String P1_STRING = "P1 String";
+    private static final String P2_STRING = "P2 String";
+
+    // Default values
+    private static final String P1_STRING_DEFAULT = "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
+    private static final String P2_STRING_DEFAULT = "0000000000000000000000000000000000000000000000000000000000000000000000000000";
 
     // Maze auto update
     private MazeUpdateMode mazeUpdateMode;
@@ -100,6 +106,8 @@ public class MazeFragment extends Fragment implements SensorEventListener {
     private TextView textViewStartPosition;
     private TextView textViewSelectedGrid;
     private TextView textViewImageProcessingString;
+    private TextView textViewP1String;
+    private TextView textViewP2String;
     private Button updateWaypointButton;
     private Button updateStartPositionButton;
     private Button manualUpdateButton;
@@ -142,6 +150,8 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         textViewStartPosition = root.findViewById(R.id.startPositionTextView);
         textViewSelectedGrid = root.findViewById(R.id.selectedGridTextView);
         textViewImageProcessingString = root.findViewById(R.id.imageProcessingString);
+        textViewP1String = root.findViewById(R.id.p1String);
+        textViewP2String = root.findViewById(R.id.p2String);
         updateWaypointButton = root.findViewById(R.id.updateWaypointButton);
         updateStartPositionButton = root.findViewById(R.id.updateStartPositionButton);
         manualUpdateButton = root.findViewById(R.id.manualUpdateButton);
@@ -333,6 +343,10 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         // Save image number ID blocks
         editor.putStringSet(IMAGE_INFO_LIST, mazeView.getImageInfoStringSet());
 
+        // Save P1 and P2 strings
+        editor.putString(P1_STRING, textViewP1String.getText().toString());
+        editor.putString(P2_STRING, textViewP2String.getText().toString());
+
         editor.apply();
     }
 
@@ -367,6 +381,10 @@ public class MazeFragment extends Fragment implements SensorEventListener {
 
         // Reload image number ID blocks
         mazeView.reloadImageInfoStringSet(sharedPreferences.getStringSet(IMAGE_INFO_LIST, new HashSet<>()));
+
+        // Reload P1 and P2 strings
+        textViewP1String.setText(sharedPreferences.getString(P1_STRING, P1_STRING_DEFAULT));
+        textViewP2String.setText(sharedPreferences.getString(P2_STRING, P2_STRING_DEFAULT));
     }
 
 
@@ -414,6 +432,18 @@ public class MazeFragment extends Fragment implements SensorEventListener {
         mazeView.updateImageInfoList(imageInfoList);
         // Update image processing string
         this.updateImageProcessingStringTextView(imageInfoList);
+    }
+
+    public void updateP1String(String p1String) {
+        Log.d(MAZE_FRAGMENT_TAG, "Updating P1 String: " + p1String);
+
+        textViewP1String.setText(p1String);
+    }
+
+    public void updateP2String(String p2String) {
+        Log.d(MAZE_FRAGMENT_TAG, "Updating P2 String: " + p2String);
+
+        textViewP2String.setText(p2String);
     }
 
 
@@ -517,6 +547,7 @@ public class MazeFragment extends Fragment implements SensorEventListener {
 
         textViewImageProcessingString.setText(imageProcessingStringBuilder.toString());
     }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////           Enums & Inner Classes          ///////////////////////////
