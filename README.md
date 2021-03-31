@@ -4,7 +4,7 @@ This repository contains the Android application implemented for Multi-Disciplin
 
 ## Overview
 
-The Acer tablet with the Android application installed acts as a wireless remote controller for the team's MDP robotic system.
+The Samsung tablet with the Android application installed acts as a wireless remote controller for the team's MDP robotic system.
 The application sends commands to other components of the system to start various tasks for assessment, initiate calibration, update waypoint position, control robot movement, and many more.
 The current maze environment and robot status is visualized on the application interface.
 
